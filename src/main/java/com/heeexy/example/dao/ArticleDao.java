@@ -29,4 +29,9 @@ public interface ArticleDao {
      * 更新文章
      */
     int updateArticle(JSONObject jsonObject);
+
+    /**
+     * 根据文章id查询文章
+     */
+    JSONObject getArticleById(String articleId, String craft);
 }

@@ -65,7 +65,7 @@ public class WebLogAspect {
             jsonObject.put("took", System.currentTimeMillis() - Long.parseLong(map.getOrDefault("startTime", String.valueOf(System.currentTimeMillis()))));
             jsonObject.put("userId", map.getOrDefault("userId", ""));
             jsonObject.put("req", JSON.parseObject(map.getOrDefault("req", "")));
-            if (result != null && !(result instanceof SseEmitter) && !(result instanceof ResponseEntity)) {
+            if (result != null && !(result instanceof SseEmitter) && !(result instanceof ResponseEntity) && !(result instanceof String)) {
                 jsonObject.put("res", JSON.parseObject(result.toString()));
             }
             log.info(jsonObject.toJSONString());

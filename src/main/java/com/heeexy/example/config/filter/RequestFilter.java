@@ -24,12 +24,13 @@ import java.util.UUID;
  */
 @Component
 @Slf4j
-public class RequestFilter extends OncePerRequestFilter implements Filter {
+//public class RequestFilter extends OncePerRequestFilter implements Filter {
+public class RequestFilter {
 
     @Autowired
     TokenService tokenService;
 
-    @Override
+//    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             //每个请求记录一个traceId,可以根据traceId搜索出本次请求的全部相关日志

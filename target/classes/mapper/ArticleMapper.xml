@@ -5,8 +5,8 @@
 
     <insert id="addArticle" parameterType="com.alibaba.fastjson.JSONObject">
         INSERT INTO article
-            (content)
-        VALUES (#{content})
+            (title)
+        VALUES (#{title})
     </insert>
 
     <select id="countArticle" resultType="Integer">
@@ -17,7 +17,7 @@
 
     <select id="listArticle" resultType="com.alibaba.fastjson.JSONObject">
         SELECT w.id,
-               w.content,
+               w.title,
                date_format(w.create_time, '%Y.%m.%d %T') createTime,
                date_format(w.update_time, '%Y.%m.%d %T') updateTime
         FROM article w
@@ -26,9 +26,18 @@
         LIMIT #{offSet}, #{pageRow}
     </select>
 
+    <!-- 根据id查询文章 -->
+    <select id="getArticleById" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT PK_ID, ARTICLE_ID, CONTENT, CRAFT, CREATE_TS, T2.TITLE
+        FROM ARTICLE_CONTENT T1
+        LEFT JOIN ARTICLE T2 ON T1.ARTICLE_ID = T2.ID
+        WHERE ARTICLE_ID = #{articleId}
+        AND CRAFT = #{craft}
+    </select>
+
     <update id="updateArticle" parameterType="com.alibaba.fastjson.JSONObject">
         UPDATE article
-        SET content = #{content}
+        SET title = #{title}
         WHERE id = #{id}
     </update>
 

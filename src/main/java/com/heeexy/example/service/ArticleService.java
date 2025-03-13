@@ -46,4 +46,16 @@ public class ArticleService {
         articleDao.updateArticle(jsonObject);
         return CommonUtil.successJson();
     }
+
+    /**
+     * 根据文章id查询文章
+     *
+     * @param articleId
+     * @param craft
+     * @return
+     */
+    public JSONObject getArticleById(String articleId, String craft) {
+        JSONObject articleById = articleDao.getArticleById(articleId, craft);
+        return CommonUtil.successJson(articleById);
+    }
 }

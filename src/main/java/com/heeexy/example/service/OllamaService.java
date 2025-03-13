@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.heeexy.example.dto.OllamaChatDto;
 import com.heeexy.example.dto.OllamaChatInfoEntity;
-import com.heeexy.example.feign.OllamaClient;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import okio.BufferedSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -16,8 +15,6 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -25,14 +22,9 @@ import java.util.concurrent.Executors;
 /**
  * Ollama服务
  */
+@Slf4j
 @Component
 public class OllamaService {
-
-    /**
-     * Ollama客户端
-     */
-    @Autowired
-    private OllamaClient ollamaClient;
 
     @Value("${ollama.url}")
     private String ollamaUrl;
@@ -78,6 +70,41 @@ public class OllamaService {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {
+                try {
+                    log.info("finish close writer");
+                    writer.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    /**
+     * 生成参数-测试
+     *
+     * @param ollamaChatDto
+     * @param response
+     */
+    public void generateTest(OllamaChatDto ollamaChatDto, HttpServletResponse response) {
+        executor.execute(() -> {
+            PrintWriter writer = null;
+
+            try {
+                writer = new PrintWriter(response.getWriter());
+
+                for (int index = 0; index < 10; index++) {
+                    writer.write(index + "\\n");
+                    writer.flush();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } catch (Exception e) {
+
             } finally {
                 try {
                     writer.close();

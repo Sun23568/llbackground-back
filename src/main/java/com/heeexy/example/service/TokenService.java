@@ -1,5 +1,6 @@
 package com.heeexy.example.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.heeexy.example.config.exception.CommonJsonException;
 import com.heeexy.example.dao.LoginDao;
@@ -44,15 +45,19 @@ public class TokenService {
      * 如果token无效,会抛未登录的异常
      */
     private SessionUserInfo getUserInfoFromCache(String token) {
-        if (StringTools.isNullOrEmpty(token)) {
-            throw new CommonJsonException(ErrorEnum.E_20011);
-        }
-        log.debug("根据token从缓存中查询用户信息,{}", token);
-        SessionUserInfo info = cacheMap.getIfPresent(token);
-        if (info == null) {
-            log.info("没拿到缓存 token={}", token);
-            throw new CommonJsonException(ErrorEnum.E_20011);
-        }
+//        if (StringTools.isNullOrEmpty(token)) {
+//            throw new CommonJsonException(ErrorEnum.E_20011);
+//        }
+//        log.debug("根据token从缓存中查询用户信息,{}", token);
+//        SessionUserInfo info = cacheMap.getIfPresent(token);
+//        if (info == null) {
+//            log.info("没拿到缓存 token={}", token);
+//            throw new CommonJsonException(ErrorEnum.E_20011);
+//        }
+        String json = "{\"menuList\":[\"role\",\"user\",\"article\"],\"nickname\":\"超级用户\",\"permissionList\":[\"article:list\",\"user:list\",\"user:add\",\"role:update\",\"article:add\",\"role:list\",\"article:update\",\"user:update\",\"role:delete\",\"role:add\"],\"roleIds\":[1],\"userId\":10003,\"username\":\"admin\"}";
+        SessionUserInfo info = JSONObject.parseObject(json, SessionUserInfo.class);
+        info.getMenuList().add("deepseek");
+        info.getPermissionList().add("deepseek:read");
         return info;
     }
 

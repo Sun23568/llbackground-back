@@ -3,6 +3,7 @@ package com.heeexy.example.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.heeexy.example.config.annotation.RequiresPermissions;
 import com.heeexy.example.service.ArticleService;
+import com.heeexy.example.util.AssertUtils;
 import com.heeexy.example.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +49,15 @@ public class ArticleController {
     public JSONObject updateArticle(@RequestBody JSONObject requestJson) {
         CommonUtil.hasAllRequired(requestJson, "id,content");
         return articleService.updateArticle(requestJson);
+    }
+
+    /**
+     * 根据文章ID获取文章信息
+     */
+    @RequiresPermissions("article:update")
+    @GetMapping("/getArticleById")
+    public JSONObject getArticleById(@RequestParam String articleId, @RequestParam String craft) {
+        AssertUtils.assertNotEmpty(articleId, "文章ID");
+        return articleService.getArticleById(articleId, craft);
     }
 }
