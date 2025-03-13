@@ -38,7 +38,7 @@
     <update id="updateArticle" parameterType="com.alibaba.fastjson.JSONObject">
         UPDATE article
         SET title = #{title}
-        WHERE id = #{id}
+        WHERE id = #{articleId}
     </update>
 
 </mapper>

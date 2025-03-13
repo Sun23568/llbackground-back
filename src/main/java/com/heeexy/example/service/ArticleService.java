@@ -43,6 +43,7 @@ public class ArticleService {
      */
     @Transactional(rollbackFor = Exception.class)
     public JSONObject updateArticle(JSONObject jsonObject) {
+        // 更新标题
         articleDao.updateArticle(jsonObject);
         return CommonUtil.successJson();
     }

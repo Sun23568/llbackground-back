@@ -47,7 +47,7 @@ public class ArticleController {
     @RequiresPermissions("article:update")
     @PostMapping("/updateArticle")
     public JSONObject updateArticle(@RequestBody JSONObject requestJson) {
-        CommonUtil.hasAllRequired(requestJson, "id,content");
+        CommonUtil.hasAllRequired(requestJson, "articleId", "title", "content", "craft");
         return articleService.updateArticle(requestJson);
     }
 
