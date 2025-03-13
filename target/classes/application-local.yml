@@ -1,8 +1,0 @@
-spring:
-  profiles: local
-  datasource:
-      url: jdbc:mysql://120.27.201.34:3306/llback?allowPublicKeyRetrieval=true
-      username: ll
-      password: O(i*U7y6
-logging:
-  config: classpath:logback-local.xml
