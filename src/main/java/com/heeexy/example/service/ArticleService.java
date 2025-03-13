@@ -2,6 +2,8 @@ package com.heeexy.example.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.heeexy.example.dao.ArticleDao;
+import com.heeexy.example.dto.ArticleReq;
+import com.heeexy.example.util.AssertUtils;
 import com.heeexy.example.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,9 +44,16 @@ public class ArticleService {
      * 更新文章
      */
     @Transactional(rollbackFor = Exception.class)
-    public JSONObject updateArticle(JSONObject jsonObject) {
+    public JSONObject updateArticle(ArticleReq articleReq) {
+        AssertUtils.assertNotEmpty(articleReq.getArticleId(), "文章ID");
+        AssertUtils.assertNotEmpty(articleReq.getContent(), "文章内容");
+        AssertUtils.assertNotEmpty(articleReq.getTitle(), "文章标题");
+        AssertUtils.assertNotEmpty(articleReq.getCraft(), "是否草稿");
+
         // 更新标题
-        articleDao.updateArticle(jsonObject);
+        articleDao.updateArticleBaseInfo(articleReq);
+        // 更新内容
+        articleDao.updateArticleContent(articleReq);
         return CommonUtil.successJson();
     }
 

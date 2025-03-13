@@ -2,6 +2,7 @@ package com.heeexy.example.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.heeexy.example.config.annotation.RequiresPermissions;
+import com.heeexy.example.dto.ArticleReq;
 import com.heeexy.example.service.ArticleService;
 import com.heeexy.example.util.AssertUtils;
 import com.heeexy.example.util.CommonUtil;
@@ -46,9 +47,8 @@ public class ArticleController {
      */
     @RequiresPermissions("article:update")
     @PostMapping("/updateArticle")
-    public JSONObject updateArticle(@RequestBody JSONObject requestJson) {
-        CommonUtil.hasAllRequired(requestJson, "articleId", "title", "content", "craft");
-        return articleService.updateArticle(requestJson);
+    public JSONObject updateArticle(@RequestBody ArticleReq articleReq) {
+        return articleService.updateArticle(articleReq);
     }
 
     /**

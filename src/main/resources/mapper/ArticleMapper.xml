@@ -35,10 +35,18 @@
         AND CRAFT = #{craft}
     </select>
 
-    <update id="updateArticle" parameterType="com.alibaba.fastjson.JSONObject">
+    <update id="updateArticleBaseInfo" parameterType="com.alibaba.fastjson.JSONObject">
         UPDATE article
         SET title = #{title}
         WHERE id = #{articleId}
+    </update>
+
+    <!-- 更新文章内容 -->
+    <update id="updateArticleContent">
+        UPDATE article_content
+        SET content = #{content}
+        WHERE ARTICLE_ID = #{articleId}
+        AND CRAFT = #{craft}
     </update>
 
 </mapper>
