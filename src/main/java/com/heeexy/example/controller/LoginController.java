@@ -26,7 +26,7 @@ public class LoginController {
      */
     @PostMapping("/auth")
     public JSONObject authLogin(@RequestBody JSONObject requestJson) {
-        CommonUtil.hasAllRequired(requestJson, "username,password");
+        CommonUtil.hasAllRequired(requestJson, "username", "password");
         return loginService.authLogin(requestJson);
     }
 
