@@ -3,6 +3,7 @@ package com.heeexy.example.service;
 import com.alibaba.fastjson.JSONObject;
 import com.heeexy.example.dao.ArticleDao;
 import com.heeexy.example.dto.ArticleReq;
+import com.heeexy.example.dto.resp.ArticleInfo;
 import com.heeexy.example.util.AssertUtils;
 import com.heeexy.example.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,7 +66,7 @@ public class ArticleService {
      * @return
      */
     public JSONObject getArticleById(String articleId, String craft) {
-        JSONObject articleById = articleDao.getArticleById(articleId, craft);
+        ArticleInfo articleById = articleDao.getArticleById(articleId, craft);
         return CommonUtil.successJson(articleById);
     }
 }

@@ -27,7 +27,7 @@
     </select>
 
     <!-- 根据id查询文章 -->
-    <select id="getArticleById" resultType="com.alibaba.fastjson.JSONObject">
+    <select id="getArticleById" resultType="com.heeexy.example.dto.resp.ArticleInfo">
         SELECT PK_ID, ARTICLE_ID, CONTENT, CRAFT, CREATE_TS, T2.TITLE
         FROM ARTICLE_CONTENT T1
         LEFT JOIN ARTICLE T2 ON T1.ARTICLE_ID = T2.ID

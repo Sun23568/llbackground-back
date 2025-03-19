@@ -3,6 +3,7 @@ package com.heeexy.example.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.heeexy.example.config.annotation.RequiresPermissions;
 import com.heeexy.example.dto.ArticleReq;
+import com.heeexy.example.dto.resp.ArticleInfo;
 import com.heeexy.example.service.ArticleService;
 import com.heeexy.example.util.AssertUtils;
 import com.heeexy.example.util.CommonUtil;

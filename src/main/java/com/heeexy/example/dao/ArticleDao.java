@@ -2,6 +2,7 @@ package com.heeexy.example.dao;
 
 import com.alibaba.fastjson.JSONObject;
 import com.heeexy.example.dto.ArticleReq;
+import com.heeexy.example.dto.resp.ArticleInfo;
 
 import java.util.List;
 
@@ -34,7 +35,7 @@ public interface ArticleDao {
     /**
      * 根据文章id查询文章
      */
-    JSONObject getArticleById(String articleId, String craft);
+    ArticleInfo getArticleById(String articleId, String craft);
 
     void updateArticleContent(ArticleReq articleReq);
 }
