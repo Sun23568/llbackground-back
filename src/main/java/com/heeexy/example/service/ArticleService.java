@@ -6,11 +6,14 @@ import com.heeexy.example.dto.ArticleReq;
 import com.heeexy.example.dto.resp.ArticleInfo;
 import com.heeexy.example.util.AssertUtils;
 import com.heeexy.example.util.CommonUtil;
+import com.heeexy.example.util.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author: heeexy
@@ -21,15 +24,6 @@ public class ArticleService {
 
     @Autowired
     private ArticleDao articleDao;
-
-    /**
-     * 新增文章
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public JSONObject addArticle(JSONObject jsonObject) {
-        articleDao.addArticle(jsonObject);
-        return CommonUtil.successJson();
-    }
 
     /**
      * 文章列表
@@ -46,15 +40,22 @@ public class ArticleService {
      */
     @Transactional(rollbackFor = Exception.class)
     public JSONObject updateArticle(ArticleReq articleReq) {
-        AssertUtils.assertNotEmpty(articleReq.getArticleId(), "文章ID");
         AssertUtils.assertNotEmpty(articleReq.getContent(), "文章内容");
         AssertUtils.assertNotEmpty(articleReq.getTitle(), "文章标题");
         AssertUtils.assertNotEmpty(articleReq.getCraft(), "是否草稿");
 
-        // 更新标题
-        articleDao.updateArticleBaseInfo(articleReq);
-        // 更新内容
-        articleDao.updateArticleContent(articleReq);
+        if (StringUtils.isEmpty(articleReq.getArticleId())) {
+            // 新增文章
+            articleReq.setArticleId(UUIDUtils.getUUID());
+            articleReq.setContentId(UUIDUtils.getUUID());
+            articleDao.addArticle(articleReq);
+            articleDao.addArticleContent(articleReq);
+        } else {
+            // 更新标题
+            articleDao.updateArticleBaseInfo(articleReq);
+            // 更新内容
+            articleDao.updateArticleContent(articleReq);
+        }
         return CommonUtil.successJson();
     }
 

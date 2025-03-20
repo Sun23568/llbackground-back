@@ -15,7 +15,7 @@ public interface ArticleDao {
     /**
      * 新增文章
      */
-    int addArticle(JSONObject jsonObject);
+    int addArticle(ArticleReq articleReq);
 
     /**
      * 统计文章总数
@@ -38,4 +38,12 @@ public interface ArticleDao {
     ArticleInfo getArticleById(String articleId, String craft);
 
     void updateArticleContent(ArticleReq articleReq);
+
+    /**
+     * 新增文章内容
+     *
+     * @author yz.sun
+     * @date 2025/3/20
+     */
+    int addArticleContent(ArticleReq articleReq);
 }

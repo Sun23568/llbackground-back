@@ -16,6 +16,11 @@ public class ArticleReq {
     private String articleId;
 
     /**
+     * 文章内容id
+     */
+    private String contentId;
+
+    /**
      * 文章内容
      */
     private String content;

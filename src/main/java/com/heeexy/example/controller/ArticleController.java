@@ -34,16 +34,6 @@ public class ArticleController {
     }
 
     /**
-     * 新增文章
-     */
-    @RequiresPermissions("article:add")
-    @PostMapping("/addArticle")
-    public JSONObject addArticle(@RequestBody JSONObject requestJson) {
-        CommonUtil.hasAllRequired(requestJson, "content");
-        return articleService.addArticle(requestJson);
-    }
-
-    /**
      * 修改文章
      */
     @RequiresPermissions("article:update")

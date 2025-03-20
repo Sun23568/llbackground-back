@@ -3,10 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.heeexy.example.dao.ArticleDao">
 
-    <insert id="addArticle" parameterType="com.alibaba.fastjson.JSONObject">
-        INSERT INTO article
-            (title)
-        VALUES (#{title})
+    <insert id="addArticle" parameterType="com.heeexy.example.dto.ArticleReq">
+        INSERT INTO article (id, title, create_time, delete_status)
+        VALUES (#{articleId}, #{title}, now(), '1')
+    </insert>
+
+    <insert id="addArticleContent" parameterType="com.heeexy.example.dto.ArticleReq">
+        INSERT INTO article_content (pk_id, article_id, craft, content)
+        VALUES (#{contentId}, #{articleId}, #{craft}, #{content})
     </insert>
 
     <select id="countArticle" resultType="Integer">
@@ -22,17 +26,17 @@
                date_format(w.update_time, '%Y.%m.%d %T') updateTime
         FROM article w
         WHERE w.delete_status = '1'
-        ORDER BY w.id DESC
-        LIMIT #{offSet}, #{pageRow}
+        ORDER BY create_time desc
+            LIMIT #{offSet}, #{pageRow}
     </select>
 
     <!-- 根据id查询文章 -->
     <select id="getArticleById" resultType="com.heeexy.example.dto.resp.ArticleInfo">
         SELECT PK_ID, ARTICLE_ID, CONTENT, CRAFT, CREATE_TS, T2.TITLE
         FROM ARTICLE_CONTENT T1
-        LEFT JOIN ARTICLE T2 ON T1.ARTICLE_ID = T2.ID
+                 LEFT JOIN ARTICLE T2 ON T1.ARTICLE_ID = T2.ID
         WHERE ARTICLE_ID = #{articleId}
-        AND CRAFT = #{craft}
+          AND CRAFT = #{craft}
     </select>
 
     <update id="updateArticleBaseInfo" parameterType="com.alibaba.fastjson.JSONObject">
@@ -46,7 +50,7 @@
         UPDATE article_content
         SET content = #{content}
         WHERE ARTICLE_ID = #{articleId}
-        AND CRAFT = #{craft}
+          AND CRAFT = #{craft}
     </update>
 
 </mapper>
