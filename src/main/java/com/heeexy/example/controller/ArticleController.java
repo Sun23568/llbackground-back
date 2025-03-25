@@ -9,6 +9,7 @@ import com.heeexy.example.util.AssertUtils;
 import com.heeexy.example.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,6 +32,20 @@ public class ArticleController {
     @GetMapping("/listArticle")
     public JSONObject listArticle(HttpServletRequest request) {
         return articleService.listArticle(CommonUtil.request2Json(request));
+    }
+
+    /**
+     * 上传文件
+     *
+     * @author yz.sun
+     * @date 2025/3/25
+     */
+    @PostMapping("/uploadFile")
+    public JSONObject uploadFile(@RequestParam("file") MultipartFile file) {
+        if (file == null){
+            return null;
+        }
+        return articleService.uploadFile(file);
     }
 
     /**

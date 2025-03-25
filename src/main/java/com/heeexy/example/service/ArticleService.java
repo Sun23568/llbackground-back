@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -69,5 +71,22 @@ public class ArticleService {
     public JSONObject getArticleById(String articleId, String craft) {
         ArticleInfo articleById = articleDao.getArticleById(articleId, craft);
         return CommonUtil.successJson(articleById);
+    }
+
+    /**
+     * 文件上传
+     *
+     * @author yz.sun
+     * @date 2025/3/25
+     */
+    public JSONObject uploadFile(MultipartFile file) {
+        try {
+            String filePath = "C:\\tmp\\" + UUIDUtils.getUUID() + file.getOriginalFilename();
+            file.transferTo(new File(filePath));
+            return CommonUtil.successJson(filePath);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
