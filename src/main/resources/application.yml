@@ -13,3 +13,8 @@ comfy-ui:
   url: http://127.0.0.1:8188/api/
   view-url: http://127.0.0.1:8188/api/
   json-path: C:\\Users\\86186\\Desktop\\Comfy-UI.json
+cloud:
+  ip: 120.27.201.34
+  file-path: /root/cloudFile/
+  user: ftpUser
+  password: 1qazxCDE#@

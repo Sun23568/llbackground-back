@@ -6,14 +6,19 @@ import com.heeexy.example.dto.ArticleReq;
 import com.heeexy.example.dto.resp.ArticleInfo;
 import com.heeexy.example.util.AssertUtils;
 import com.heeexy.example.util.CommonUtil;
+import com.heeexy.example.util.FileUtil;
 import com.heeexy.example.util.UUIDUtils;
+import com.heeexy.example.util.constants.ErrorEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -81,12 +86,15 @@ public class ArticleService {
      */
     public JSONObject uploadFile(MultipartFile file) {
         try {
-            String filePath = "C:\\tmp\\" + UUIDUtils.getUUID() + file.getOriginalFilename();
-            file.transferTo(new File(filePath));
-            return CommonUtil.successJson(filePath);
+            String uuid = UUIDUtils.getUUID();
+            String uploadFileName = uuid + file.getOriginalFilename();
+            // ftp上传目录
+            String filePath = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            FileUtil.updateFileFtp(filePath, file.getBytes(), uploadFileName);
+            return CommonUtil.successJson("/api/article/getImg?fileId=" + uuid);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return CommonUtil.errorJson(ErrorEnum.E_400);
     }
 }
