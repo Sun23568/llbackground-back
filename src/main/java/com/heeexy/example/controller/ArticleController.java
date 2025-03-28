@@ -32,7 +32,6 @@ public class ArticleController {
     /**
      * 查询文章列表
      */
-    @RequiresPermissions("article:list")
     @GetMapping("/listArticle")
     public JSONObject listArticle(HttpServletRequest request) {
         return articleService.listArticle(CommonUtil.request2Json(request));
@@ -57,6 +56,17 @@ public class ArticleController {
         return articleService.getArticleById(articleId, craft);
     }
 
+    /**
+     * 删除文章
+     *
+     * @author yz.sun
+     * @date 2025/3/28
+     */
+    @PostMapping("/deleteArticle")
+    public JSONObject deleteArticle(@RequestBody JSONObject requestJson) {
+        CommonUtil.hasAllRequired(requestJson, "articleId");
+        return articleService.deleteArticle(requestJson.getString("articleId"));
+    }
 
     /**
      * 上传文件
@@ -66,7 +76,7 @@ public class ArticleController {
      */
     @PostMapping("/uploadFile")
     public JSONObject uploadFile(@RequestParam("file") MultipartFile file) {
-        if (file == null){
+        if (file == null) {
             return null;
         }
         return articleService.uploadFile(file);
@@ -77,32 +87,6 @@ public class ArticleController {
      */
     @GetMapping("/getImg")
     public byte[] getImgById(@RequestParam String fileId) {
-        try {
-            URL url = new URL("https://pics1.baidu.com/feed/48540923dd54564e3d64f17f8d7f0a8dd0584fa7.jpeg@f_auto?token=698e0d8fc993fac4c2dd62feebcf1465");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setConnectTimeout(5000);
-            connection.setReadTimeout(5000);
-
-            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = connection.getInputStream();
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, len);
-                }
-                byte[] imageBytes = outputStream.toByteArray();
-                inputStream.close();
-                outputStream.close();
-
-                return imageBytes;
-            } else {
-                return null;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
+        return articleService.getImgById(fileId);
     }
 }

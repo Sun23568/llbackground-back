@@ -10,17 +10,14 @@ import com.heeexy.example.util.FileUtil;
 import com.heeexy.example.util.UUIDUtils;
 import com.heeexy.example.util.constants.ErrorEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author: heeexy
@@ -31,6 +28,9 @@ public class ArticleService {
 
     @Autowired
     private ArticleDao articleDao;
+
+    @Autowired
+    private FileUtil fileUtil;
 
     /**
      * 文章列表
@@ -90,11 +90,33 @@ public class ArticleService {
             String uploadFileName = uuid + file.getOriginalFilename();
             // ftp上传目录
             String filePath = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-            FileUtil.updateFileFtp(filePath, file.getBytes(), uploadFileName);
+            fileUtil.uploadFileFtp(filePath, file.getBytes(), uploadFileName);
+            fileUtil.saveFileId(uuid, filePath, filePath.concat("/").concat(uploadFileName), file.getOriginalFilename());
             return CommonUtil.successJson("/api/article/getImg?fileId=" + uuid);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return CommonUtil.errorJson(ErrorEnum.E_400);
+    }
+
+    /**
+     * 根据文件id获取图片
+     *
+     * @author yz.sun
+     * @date 2025/3/27
+     */
+    public byte[] getImgById(String fileId) {
+        return fileUtil.getFileById(fileId);
+    }
+
+    /**
+     * 删除文章
+     *
+     * @author yz.sun
+     * @date 2025/3/28
+     */
+    public JSONObject deleteArticle(String articleId) {
+        articleDao.removeArticle(articleId);
+        return CommonUtil.successJson();
     }
 }

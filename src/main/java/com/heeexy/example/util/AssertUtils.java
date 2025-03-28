@@ -15,4 +15,22 @@ public class AssertUtils {
             throw new RuntimeException(paramName + "不能为空");
         }
     }
+
+    /**
+     * 断言对象是否为空
+     *
+     * @author yz.sun
+     * @date 2025/3/27
+     */
+    public static void assertNotNull(Object object, String errorMsg) {
+        if (object == null) {
+            throw new RuntimeException(errorMsg);
+        }
+    }
+
+    public static void assertTrue(boolean success, String errorMsg) {
+        if (!success) {
+            throw new RuntimeException(errorMsg);
+        }
+    }
 }

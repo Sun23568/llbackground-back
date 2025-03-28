@@ -78,4 +78,15 @@ public class GlobalExceptionHandler {
     public JSONObject unauthenticatedException() {
         return CommonUtil.errorJson(ErrorEnum.E_20011);
     }
+
+    /**
+     * 运行时异常
+     *
+     * @author yz.sun
+     * @date 2025/3/27
+     */
+    @ExceptionHandler(value = RuntimeException.class)
+    public JSONObject runtimeException(RuntimeException e) {
+        return CommonUtil.errorJson(e.getMessage());
+    }
 }

@@ -53,4 +53,11 @@
           AND CRAFT = #{craft}
     </update>
 
+    <!-- 删除文章 -->
+    <update id="removeArticle">
+        UPDATE article
+        SET delete_status = '0'
+        WHERE id = #{articleId}
+    </update>
+
 </mapper>

@@ -46,4 +46,12 @@ public interface ArticleDao {
      * @date 2025/3/20
      */
     int addArticleContent(ArticleReq articleReq);
+
+    /**
+     * 删除文章
+     *
+     * @author yz.sun
+     * @date 2025/3/28
+     */
+    void removeArticle(String articleId);
 }
