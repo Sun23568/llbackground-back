@@ -1,0 +1,7 @@
+spring:
+  profiles:
+    active: dev
+  datasource:
+    hikari:
+      maxLifetime: 60000 # 连接的最大存活时间，单位为毫秒（10分钟）
+#      connection-test-query: SELECT 1 FROM DUAL# 用于测试连接是否有效的SQL查询
