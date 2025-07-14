@@ -83,6 +83,7 @@ public class MapHandlerBus implements HandlerBus {
      */
     private <R, Q> R executeHandler(Q req, HandlerInfo handlerInfo) {
         Handler<R, Q> handler = (Handler<R, Q>) handlerInfo.getHandler();
+//        ReqContext.get
         return handler.execute(req);
     }
 }

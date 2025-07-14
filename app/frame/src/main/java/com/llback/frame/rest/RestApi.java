@@ -31,7 +31,6 @@ public interface RestApi {
      * @return 命令结果
      */
     default <R> RestResult<R> execute(Command cmd) {
-//        return RestResult.ok(AppFrame.handleBus().execute(cmd));
-        return null;
+        return RestResult.ok(AppFrame.handlerBus().execute(cmd));
     }
 }

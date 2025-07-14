@@ -1,5 +1,7 @@
 package com.llback.frame;
 
+import java.lang.annotation.Annotation;
+
 /**
  * 处理器信息
  */
@@ -9,21 +11,47 @@ public class HandlerInfo {
      */
     Class<?> reqType;
 
+    /**
+     * 处理器
+     */
     private Handler<?, ?> handler;
+
+    /**
+     * 是否公开
+     */
+    private boolean pubAcl;
+
+    /**
+     * 权限
+     */
+    private String perm;
+
+    /**
+     * 权限列表
+     */
+    private String[] hasAnyPerm;
 
     private HandlerInfo() {
     }
 
-    public HandlerInfo(Class<?> reqType, Handler<?, ?> handler) {
+    private HandlerInfo(Class<?> reqType, Handler<?, ?> handler) {
         this.reqType = reqType;
         this.handler = handler;
+        PubAcl publicAcl = handler.getClass().getAnnotation(PubAcl.class);
+        if (publicAcl != null) {
+            this.pubAcl = true;
+        } else {
+            HandlerAcl handlerAcl = handler.getClass().getAnnotation(HandlerAcl.class);
+            this.perm = handlerAcl.value();
+            this.hasAnyPerm = handlerAcl.hasAny();
+        }
     }
 
     public static HandlerInfo of(Class<?> reqType, Handler<?, ?> handler) {
         return new HandlerInfo(reqType, handler);
     }
 
-    public Handler<?,?> getHandler() {
+    public Handler<?, ?> getHandler() {
         return this.handler;
     }
 }
