@@ -9,22 +9,38 @@ import lombok.Data;
 @Data
 public class UserPo {
     /**
-     * 主键ID，唯一标识一条用户记录
+     * 主键ID
+     * 使用String类型以适应各种数据库的ID格式
      */
-    private String id;
+    private String pkId;
 
     /**
-     * 用户编号，业务系统中的用户唯一标识
+     * 用户ID
+     * 唯一标识用户，不同于主键ID，可能用于业务逻辑中的用户标识
      */
     private String userId;
 
     /**
-     * 用户名，用于登录和展示使用
+     * 用户名
+     * 存储用户的名称，用于显示或查询
      */
-    private String username;
+    private String userName;
 
     /**
-     * 密码，经过加密处理后存储
+     * 密码
+     * 存储用户的密码，应加密存储以保证安全
      */
     private String password;
+
+    /**
+     * 创建时间
+     * 记录用户信息创建的时间，用于审计和历史追踪
+     */
+    private String createTime;
+
+    /**
+     * 更新时间
+     * 记录最后一次修改用户信息的时间，用于审计和同步
+     */
+    private String updateTime;
 }

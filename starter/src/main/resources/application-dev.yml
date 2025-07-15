@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://120.27.201.34:3306/llback?allowPublicKeyRetrieval=true
+    username: ll
+    password: O(i*U7y6

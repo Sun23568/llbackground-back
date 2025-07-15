@@ -1,5 +1,6 @@
 package com.llback.api.controller;
 
+import com.llback.api.dto.sa.req.GetSessionReq;
 import com.llback.api.dto.sa.req.LoginCmd;
 import com.llback.api.dto.sa.resp.LoginResp;
 import com.llback.frame.rest.RestApi;
@@ -18,8 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sa")
 public class SaApi implements RestApi {
 
+    /**
+     * 登录
+     *
+     * @param cmd
+     * @return
+     */
     @RequestMapping("/login")
     public RestResult<LoginResp> login(@RequestBody LoginCmd cmd) {
         return this.execute(cmd);
+    }
+
+    /**
+     * 获取登录信息
+     * 根据token
+     */
+    @RequestMapping("/session")
+    public RestResult<LoginResp> getInfo() {
+        return this.execute(GetSessionReq.EMPTY);
     }
 }

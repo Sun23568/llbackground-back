@@ -1,7 +1,5 @@
 package com.llback.frame;
 
-import java.lang.annotation.Annotation;
-
 /**
  * 处理器信息
  */
@@ -42,8 +40,10 @@ public class HandlerInfo {
             this.pubAcl = true;
         } else {
             HandlerAcl handlerAcl = handler.getClass().getAnnotation(HandlerAcl.class);
-            this.perm = handlerAcl.value();
-            this.hasAnyPerm = handlerAcl.hasAny();
+            if (handlerAcl != null) {
+                this.perm = handlerAcl.value();
+                this.hasAnyPerm = handlerAcl.hasAny();
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.llback.dal.user.dao;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.llback.dal.sa.po.UserPo;
 
 import java.util.List;
 
@@ -11,6 +12,14 @@ import java.util.List;
  * @date: 2017-11-14 15:08:45
  */
 public interface UserDao {
+    /**
+     * 根据用户Id查询用户信息
+     *
+     * @param userId
+     * @return
+     */
+    UserPo getUserInfo(String userId);
+
     /**
      * 查询用户数量
      */
