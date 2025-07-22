@@ -3,7 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <parent>
         <groupId>com.llback</groupId>
         <artifactId>backend</artifactId>
@@ -11,7 +10,7 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>common</artifactId>
+    <artifactId>infrastructure-common</artifactId>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
@@ -21,8 +20,10 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.4.6</version> <!-- 最新版本可在 Maven 仓库查询 -->
         </dependency>
     </dependencies>
+
 </project>

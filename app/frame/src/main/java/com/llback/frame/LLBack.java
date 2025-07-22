@@ -1,11 +1,8 @@
 package com.llback.frame;
 
-import org.springframework.context.ApplicationContext;
+import com.llback.frame.context.AppRunContext;
 
 public class LLBack implements AppFrame {
-
-    static ApplicationContext runContext;
-
     final HandlerBus handlerBus;
 
     private final BeanContext beanContext;
@@ -13,14 +10,13 @@ public class LLBack implements AppFrame {
     // 静态实例
     static LLBack inst;
 
-    private LLBack(ApplicationContext runContext) {
+    private LLBack(AppRunContext runContext) {
         this.handlerBus = new MapHandlerBus();
         this.beanContext = new BeanContext(runContext);
-        this.runContext = runContext;
 
     }
 
-    static LLBack build(ApplicationContext runContext) {
+    static LLBack build(AppRunContext runContext) {
         inst = new LLBack(runContext);
         return inst;
     }
@@ -28,5 +24,12 @@ public class LLBack implements AppFrame {
     void load() {
         // 加载Handler
         beanContext.scanBean(Handler.class, this.handlerBus::add);
+    }
+
+    /**
+     * 获取运行时上下文
+     */
+    public AppRunContext getRunContext() {
+        return beanContext.getRunContext();
     }
 }

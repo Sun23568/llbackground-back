@@ -1,6 +1,8 @@
 package com.llback.frame;
 
 
+import com.llback.frame.context.AppRunContext;
+import com.llback.frame.context.RestContext;
 import com.llback.frame.dto.Query;
 import com.llback.frame.rest.RestResult;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +16,7 @@ public interface AppFrame {
      *
      * @param runContext 运行上下文
      */
-    static void load(ApplicationContext runContext) {
+    static void load(AppRunContext runContext) {
         if (null == LLBack.inst) {
             synchronized (LLBack.class) {
                 if (null == LLBack.inst) {
@@ -24,7 +26,25 @@ public interface AppFrame {
         }
     }
 
-    static HandlerBus handlerBus(){
+    static HandlerBus handlerBus() {
         return LLBack.inst.handlerBus;
+    }
+
+    /**
+     * 获取当前请求上下文
+     */
+    static AppRunContext runContext(){
+        return LLBack.inst.getRunContext();
+    }
+
+    /**
+     * 获取当前请求上下文
+     */
+    static RestContext currentRestContext() {
+        return runContext().getCurrentRestContext();
+    }
+
+    static <T> T service(Class<T> clazz) {
+        return runContext().getBean(clazz);
     }
 }

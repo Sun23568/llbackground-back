@@ -27,7 +27,7 @@ public final class ErrorCode implements Serializable {
     /**
      * OK
      */
-    public static final ErrorCode OK = registerErrorCode("000000", "ok", 200);
+    public static final ErrorCode OK = registerErrorCode("200", "ok", 200);
 
     /**
      * 一般性业务警告
@@ -42,7 +42,7 @@ public final class ErrorCode implements Serializable {
     /**
      * 用户登录认证失败（验证码等校验失败）
      */
-    public static final ErrorCode LOGIN_USER_VERIFY_FAILED = registerErrorCode("102101", "登录认证失败", 200);
+    public static final ErrorCode LOGIN_USER_VERIFY_FAILED = registerErrorCode("403", "登录认证失败", 200);
 
     /**
      * 用户登录认证失败（密码错误）

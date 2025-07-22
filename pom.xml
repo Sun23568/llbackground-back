@@ -9,13 +9,14 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>starter</module>
         <module>app/api</module>
         <module>app/frame</module>
         <module>domain/core</module>
         <module>domain/common</module>
         <module>infrastructure/dal</module>
         <module>infrastructure/spring</module>
-        <module>starter</module>
+        <module>infrastructure/infrastructure-common</module>
     </modules>
 
     <parent>
@@ -143,6 +144,18 @@
                 <groupId>com.llback</groupId>
                 <artifactId>common</artifactId>
                 <version>${reversion}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.llback</groupId>
+                <artifactId>infrastructure-common</artifactId>
+                <version>${reversion}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>commons-lang3</artifactId>
+                <groupId>org.apache.commons</groupId>
+                <version>3.14.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

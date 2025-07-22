@@ -2,6 +2,7 @@ package com.llback.api.app;
 
 import com.llback.api.dto.sa.req.LoginCmd;
 import com.llback.api.dto.sa.resp.LoginResp;
+import com.llback.common.exception.BizException;
 import com.llback.frame.Handler;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,6 @@ import org.springframework.stereotype.Component;
 public class LoginHandler implements Handler<LoginResp, LoginCmd> {
     @Override
     public LoginResp execute(LoginCmd req) {
-        return null;
+        throw new BizException("请重新登录");
     }
 }

@@ -1,4 +1,4 @@
-package com.llback.spring;
+package com.llback.spring.tx;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +24,7 @@ public class SpringAppConfig {
          */
         @Override
         public void onApplicationEvent(ContextRefreshedEvent event) {
-            AppFrame.load(event.getApplicationContext());
+            AppFrame.load(new SpringRunContext(event.getApplicationContext()));
         }
     }
 }
