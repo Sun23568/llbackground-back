@@ -4,3 +4,7 @@ spring:
     url: jdbc:mysql://120.27.201.34:3306/llback?allowPublicKeyRetrieval=true
     username: ll
     password: O(i*U7y6
+redis:
+  host: 120.27.201.34
+  port: 6379
+  password: zhao082020@

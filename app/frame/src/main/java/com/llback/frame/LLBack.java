@@ -1,6 +1,7 @@
 package com.llback.frame;
 
 import com.llback.frame.context.AppRunContext;
+import com.llback.rt.common.cache.BaseObjectCache;
 
 public class LLBack implements AppFrame {
     final HandlerBus handlerBus;
@@ -24,6 +25,7 @@ public class LLBack implements AppFrame {
     void load() {
         // 加载Handler
         beanContext.scanBean(Handler.class, this.handlerBus::add);
+        beanContext.scanBean(BaseObjectCache.class, BaseObjectCache::registerCache);
     }
 
     /**

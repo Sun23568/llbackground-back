@@ -24,6 +24,11 @@
             <artifactId>jedis</artifactId>
             <version>4.4.6</version> <!-- 最新版本可在 Maven 仓库查询 -->
         </dependency>
+
+        <dependency>
+            <groupId>com.llback</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

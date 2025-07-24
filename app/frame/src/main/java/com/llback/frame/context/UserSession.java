@@ -2,7 +2,7 @@ package com.llback.frame.context;
 
 import com.llback.common.types.UserId;
 import com.llback.common.types.UserName;
-import com.llback.common.vo.OperationId;
+import com.llback.common.types.OperationId;
 
 import java.util.Collections;
 import java.util.Set;
