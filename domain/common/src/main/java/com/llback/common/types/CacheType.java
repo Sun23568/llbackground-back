@@ -4,7 +4,8 @@ package com.llback.common.types;
  * 缓存类型
  */
 public enum CacheType {
-    USER("user", "用户缓存");
+    USER("user", "用户缓存"),
+    TOKEN("token", "Token缓存");
 
     /**
      * 缓存ID

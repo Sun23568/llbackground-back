@@ -27,7 +27,12 @@
 
         <dependency>
             <groupId>com.llback</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
     </dependencies>
 

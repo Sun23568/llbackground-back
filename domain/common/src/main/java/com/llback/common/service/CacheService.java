@@ -2,7 +2,7 @@ package com.llback.common.service;
 
 import com.llback.common.types.CacheType;
 
-public interface CacheService<T> {
+public interface CacheService {
 
     /**
      * 获取缓存类型
@@ -16,7 +16,11 @@ public interface CacheService<T> {
     /**
      * 缓存前缀
      */
-    default String prefix(){return null;};
+    default String prefix() {
+        return null;
+    }
+
+    ;
 
     /**
      * 获取缓存字符串
@@ -34,5 +38,15 @@ public interface CacheService<T> {
      * @param key
      * @return
      */
-    T getCacheObject(CacheType cacheType, String key);
+    <T> T getCacheObject(CacheType cacheType, String key);
+
+    /**
+     * 设置缓存对象
+     *
+     * @param cacheType
+     * @param key
+     * @param value
+     * @return
+     */
+    boolean setCacheObject(CacheType cacheType, String key, Object value);
 }

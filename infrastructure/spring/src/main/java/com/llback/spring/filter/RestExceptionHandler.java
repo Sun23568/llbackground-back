@@ -48,6 +48,7 @@ final class RestExceptionHandler {
      */
     @ExceptionHandler({Exception.class})
     public RestResult<Object> handleException(Exception e, HttpServletRequest request, HttpServletResponse response) {
+        e.printStackTrace();
         return RestResult.failed(GENERIC_BIZ_WARN, "业务异常");
     }
 }
