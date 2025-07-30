@@ -41,11 +41,6 @@ class SessionMapImpl implements SessionMap {
     }
 
     @Override
-    public void setToken(String token) {
-        this.token = TokenId.of(token);
-    }
-
-    @Override
     public boolean isGuest() {
         return this.userId.isGuest();
     }
@@ -94,7 +89,12 @@ class SessionMapImpl implements SessionMap {
     }
 
     @Override
-    public String getToken() {
-        return this.token.toString();
+    public TokenId getToken() {
+        return this.token;
+    }
+
+    @Override
+    public void setToken(TokenId token) {
+        this.token = token;
     }
 }

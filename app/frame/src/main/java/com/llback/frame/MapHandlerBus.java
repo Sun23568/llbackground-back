@@ -2,7 +2,6 @@ package com.llback.frame;
 
 import com.llback.common.util.AssertUtil;
 import com.llback.frame.context.ReqContext;
-import com.llback.frame.context.ReqContextHolder;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -78,8 +77,9 @@ public class MapHandlerBus implements HandlerBus {
      * @return
      */
     private <R, Q> R executeHandler(Q req, HandlerInfo handlerInfo) {
-        try (ReqContext current = ReqContext.getCurrent()) {
+        try (ReqContext reqContext = ReqContext.getCurrent()) {
             Handler<R, Q> handler = (Handler<R, Q>) handlerInfo.getHandler();
+            HandlerPermUtil.checkPermission(handlerInfo, reqContext);
             return handler.execute(req);
         }
     }

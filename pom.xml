@@ -5,7 +5,7 @@
 
     <groupId>com.llback</groupId>
     <artifactId>backend</artifactId>
-    <version>${reversion}</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -31,7 +31,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <llback.version>2.0.0</llback.version>
-        <reversion>${llback.version}-SNAPSHOT</reversion>
+        <llback.reversion>${llback.version}-SNAPSHOT</llback.reversion>
     </properties>
 
     <dependencies>
@@ -113,43 +113,43 @@
             <dependency>
                 <groupId>com.llback</groupId>
                 <artifactId>dal</artifactId>
-                <version>${reversion}</version>
+                <version>2.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>com.llback</groupId>
                 <artifactId>core</artifactId>
-                <version>${reversion}</version>
+                <version>2.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>com.llback</groupId>
                 <artifactId>spring</artifactId>
-                <version>${reversion}</version>
+                <version>2.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>com.llback</groupId>
                 <artifactId>api</artifactId>
-                <version>${reversion}</version>
+                <version>2.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>com.llback</groupId>
                 <artifactId>frame</artifactId>
-                <version>${reversion}</version>
+                <version>2.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>com.llback</groupId>
                 <artifactId>common</artifactId>
-                <version>${reversion}</version>
+                <version>2.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>com.llback</groupId>
                 <artifactId>infrastructure-common</artifactId>
-                <version>${reversion}</version>
+                <version>2.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>

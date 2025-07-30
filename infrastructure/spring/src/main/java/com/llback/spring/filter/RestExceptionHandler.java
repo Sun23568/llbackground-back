@@ -1,6 +1,7 @@
 package com.llback.spring.filter;
 
 import com.llback.common.exception.BizException;
+import com.llback.common.exception.NotLoginException;
 import com.llback.frame.rest.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -12,8 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static com.llback.common.exception.ErrorCode.GENERIC_BIZ_WARN;
-import static com.llback.common.exception.ErrorCode.LOGIN_USER_VERIFY_FAILED;
+import static com.llback.common.exception.ErrorCode.*;
 
 /**
  * css @2024
@@ -36,6 +36,20 @@ final class RestExceptionHandler {
     @ExceptionHandler({BizException.class})
     public RestResult<Object> handleBizException(BizException e, HttpServletRequest request, HttpServletResponse response) {
         return RestResult.failed(GENERIC_BIZ_WARN, "业务异常");
+    }
+
+    /**
+     * handleNot
+     *
+     * @param e
+     * @param request
+     * @param response
+     * @return
+     */
+    @ExceptionHandler({NotLoginException.class})
+    public RestResult<Object> handleNotLoginException(Exception e, HttpServletRequest request, HttpServletResponse response) {
+        e.printStackTrace();
+        return RestResult.failed(NOT_LOGIN, NOT_LOGIN.getMessage());
     }
 
     /**

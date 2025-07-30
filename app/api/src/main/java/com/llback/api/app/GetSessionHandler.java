@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 /**
  * 获取用户会话信息
  */
-@Primary
 @Component
 public class GetSessionHandler implements Handler<UserSessionResp, GetSessionReq> {
     @Override

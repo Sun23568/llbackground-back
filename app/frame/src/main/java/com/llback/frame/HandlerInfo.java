@@ -1,8 +1,11 @@
 package com.llback.frame;
 
+import lombok.Getter;
+
 /**
  * 处理器信息
  */
+@Getter
 public class HandlerInfo {
     /**
      * 请求类类型
@@ -44,6 +47,7 @@ public class HandlerInfo {
                 this.perm = handlerAcl.value();
                 this.hasAnyPerm = handlerAcl.hasAny();
             }
+            this.pubAcl = false;
         }
     }
 

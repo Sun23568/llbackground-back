@@ -1,7 +1,9 @@
 package com.llback.frame.context;
 
 import com.alibaba.fastjson.JSON;
+import com.llback.common.exception.SysException;
 import com.llback.common.types.UserId;
+import com.llback.common.util.AssertUtil;
 import com.llback.frame.AppFrame;
 import lombok.extern.slf4j.Slf4j;
 
@@ -44,8 +46,7 @@ public class ReqContextHolder implements ReqContext {
         this.restContext = restContext;
         this.sessionMgr = sessionMgr;
         // 获取会话信息
-        SessionMap sessionMap = restContext.getSessionMap(sessionMgr);
-
+        this.sessionMap = restContext.getSessionMap(sessionMgr);
     }
 
     @Override
@@ -55,7 +56,7 @@ public class ReqContextHolder implements ReqContext {
 
     @Override
     public RestContext getRestContext() {
-        return null;
+        return this.restContext;
     }
 
     @Override
@@ -77,7 +78,7 @@ public class ReqContextHolder implements ReqContext {
             ReqContextHolder.CONTEXT.set(holder);
         }
         log.info("获取当前线程中的ReqContextHolder：{}", JSON.toJSONString(holder.sessionMap));
-//        holder.checkSession();
+        holder.checkSession();
         return holder;
     }
 
@@ -99,6 +100,23 @@ public class ReqContextHolder implements ReqContext {
     @Override
     public void updateSession(SessionMap sessionMap) {
 
+    }
+
+    /**
+     * 验证当前会话是否有效
+     */
+    void checkSession() {
+        AssertUtil.assertTrue(null == this.userSession || this.isValidSession(), () -> {
+            throw new SysException("会话信息无效");
+        });
+    }
+
+    /**
+     * 是否有效Session
+     */
+    private boolean isValidSession() {
+        return null != this.userSession && null != sessionMap && null != this.userSession.getUserId() &&
+                this.userSession.getUserId().equals(sessionMap.getUserId());
     }
 
     /**

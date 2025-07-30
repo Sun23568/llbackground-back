@@ -42,12 +42,12 @@ public interface SessionMap {
     /**
      * 获取令牌
      */
-    String getToken();
+    TokenId getToken();
 
     /**
      * 设置令牌
      */
-    void setToken(String token);
+    void setToken(TokenId token);
 
     /**
      * 设置令牌过期时间戳

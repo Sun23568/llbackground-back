@@ -11,4 +11,11 @@ public interface RestContext {
      * @return
      */
     SessionMap getSessionMap(SessionMgr sessionMgr);
+
+    /**
+     * 检查登录状态
+     *
+     * @param autoRenew 自动续期
+     */
+    void checkLogin(boolean autoRenew);
 }
