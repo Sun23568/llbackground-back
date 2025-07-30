@@ -40,7 +40,7 @@ public class SpringRestContext implements RestContext {
     private boolean checkToken() {
         // token是否有效
         if (!StpUtil.isLogin()){
-            StpUtil.login("snutest");
+            StpUtil.login("snutes111t");
             return false;
         }
         Object loginId = StpUtil.getLoginId();

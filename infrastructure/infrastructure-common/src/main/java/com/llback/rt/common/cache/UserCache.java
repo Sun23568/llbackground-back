@@ -5,7 +5,7 @@ import com.llback.common.types.CacheType;
 import com.llback.core.sa.eo.UserEo;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class UserCache extends BaseObjectCache<UserEo> {
     @Override
     public CacheType getCacheType() {

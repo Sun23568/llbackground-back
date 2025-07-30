@@ -15,14 +15,13 @@ public class CacheUtils implements ApplicationContextAware {
     /**
      * 缓存服务
      */
-    @Autowired
     private static CacheService cacheService;
 
     /**
      * 获取用户信息
      */
     public static UserEo getUser(String userId) {
-        return cacheService.getCacheObject(CacheType.USER, userId);
+        return (UserEo) cacheService.getCacheObject(CacheType.USER, userId);
     }
 
     /**

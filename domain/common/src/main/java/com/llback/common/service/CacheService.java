@@ -20,8 +20,6 @@ public interface CacheService {
         return null;
     }
 
-    ;
-
     /**
      * 获取缓存字符串
      *
@@ -38,7 +36,7 @@ public interface CacheService {
      * @param key
      * @return
      */
-    <T> T getCacheObject(CacheType cacheType, String key);
+    Object getCacheObject(CacheType cacheType, String key);
 
     /**
      * 设置缓存对象

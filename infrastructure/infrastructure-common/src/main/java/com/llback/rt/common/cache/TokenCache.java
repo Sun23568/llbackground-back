@@ -5,7 +5,7 @@ import com.llback.common.types.CacheType;
 import com.llback.core.sa.eo.TokenEo;
 import org.springframework.stereotype.Component;
 
-@Component
+//@Component
 public class TokenCache extends BaseObjectCache<TokenEo> {
     @Override
     public com.llback.common.types.CacheType getCacheType() {

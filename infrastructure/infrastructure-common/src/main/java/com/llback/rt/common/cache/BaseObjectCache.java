@@ -6,10 +6,10 @@ import com.llback.common.types.CacheType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @Slf4j
 @Primary
-@Service
+@Component
 public class BaseObjectCache<T> implements CacheService {
     /**
      * 缓存类型存储
@@ -68,29 +68,27 @@ public class BaseObjectCache<T> implements CacheService {
     /**
      * 获取缓存对象
      *
-     * @param <T>
      * @param cacheType
      * @param key
      * @return
      */
     @Override
-    public <T> T getCacheObject(CacheType cacheType, String key) {
+    public Object getCacheObject(CacheType cacheType, String key) {
         // 获取实例
         BaseObjectCache cacheInst = getCacheInst(cacheType);
-        return (T) cacheInst.getCacheObject(key);
+        return cacheInst.getCacheObject(key);
     }
 
     /**
      * 获取缓存对象
      *
      * @param key
-     * @param <T>
      * @return
      */
-    public <T> T getCacheObject(String key) {
+    public T getCacheObject(String key) {
         // 查询redis
         String json = (String) redisTemplate.opsForValue().get(getCacheKey(key));
-        return (T) toObj(json);
+        return toObj(json);
     }
 
     /**
