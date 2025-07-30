@@ -1,6 +1,8 @@
 package com.llback.frame;
 
 import com.llback.common.util.AssertUtil;
+import com.llback.frame.context.ReqContext;
+import com.llback.frame.context.ReqContextHolder;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -46,19 +48,13 @@ public class MapHandlerBus implements HandlerBus {
      * @return Class
      */
     private static Class<?> getGenericParamType(Type genType, final Class<?> clazz, int index) {
-        AssertUtil.assertTrue(genType instanceof ParameterizedType,
-                String.format("Warn: %s's superclass not " +
-                        "ParameterizedType", clazz));
+        AssertUtil.assertTrue(genType instanceof ParameterizedType, String.format("Warn: %s's superclass not " + "ParameterizedType", clazz));
 
         Type[] params = ((ParameterizedType) genType).getActualTypeArguments();
 
-        AssertUtil.assertTrue(index < params.length && index >= 0,
-                String.format("Warn: Index: %s, Size of %s's Parameterized Type: %s .",
-                        index, clazz, params.length));
+        AssertUtil.assertTrue(index < params.length && index >= 0, String.format("Warn: Index: %s, Size of %s's Parameterized Type: %s .", index, clazz, params.length));
 
-        AssertUtil.assertTrue(params[index] instanceof Class,
-                String.format("Warn: %s not set the actual class on superclass" +
-                        " generic parameter", clazz));
+        AssertUtil.assertTrue(params[index] instanceof Class, String.format("Warn: %s not set the actual class on superclass" + " generic parameter", clazz));
 
         return (Class<?>) params[index];
     }
@@ -82,7 +78,9 @@ public class MapHandlerBus implements HandlerBus {
      * @return
      */
     private <R, Q> R executeHandler(Q req, HandlerInfo handlerInfo) {
-        Handler<R, Q> handler = (Handler<R, Q>) handlerInfo.getHandler();
-        return handler.execute(req);
+        try (ReqContext current = ReqContext.getCurrent()) {
+            Handler<R, Q> handler = (Handler<R, Q>) handlerInfo.getHandler();
+            return handler.execute(req);
+        }
     }
 }

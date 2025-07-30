@@ -1,8 +1,11 @@
 package com.llback.frame.context;
 
 import com.alibaba.fastjson.JSON;
+import com.llback.common.types.UserId;
 import com.llback.frame.AppFrame;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.Map;
 
 /**
  * 上下文处理器
@@ -11,11 +14,11 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2025/7/14
  */
 @Slf4j
-public class ReqContextHolder {
+public class ReqContextHolder implements ReqContext {
     /**
      * 线程Map存取请求上下文
      */
-    private static final InheritableThreadLocal<ReqContextHolder> CONTEXT = new InheritableThreadLocal<>();
+    static final InheritableThreadLocal<ReqContextHolder> CONTEXT = new InheritableThreadLocal<>();
 
     /**
      * 当前用户会话信息
@@ -27,8 +30,37 @@ public class ReqContextHolder {
      */
     private SessionMap sessionMap;
 
-    public ReqContextHolder(RestContext restContext, SessionMgr sessionMgr) {
+    /**
+     * 当前请求上下文
+     */
+    private RestContext restContext;
 
+    /**
+     * 会话管理器
+     */
+    private SessionMgr sessionMgr;
+
+    public ReqContextHolder(RestContext restContext, SessionMgr sessionMgr) {
+        this.restContext = restContext;
+        this.sessionMgr = sessionMgr;
+        // 获取会话信息
+        SessionMap sessionMap = restContext.getSessionMap(sessionMgr);
+
+    }
+
+    @Override
+    public UserSession getUserSession() {
+        return null;
+    }
+
+    @Override
+    public RestContext getRestContext() {
+        return null;
+    }
+
+    @Override
+    public SessionMap getSessionMap() {
+        return null;
     }
 
     /**
@@ -37,9 +69,9 @@ public class ReqContextHolder {
      *
      * @return ReqContext
      */
-    static ReqContextHolder getCurrent() {
+    public static ReqContextHolder getCurrent() {
         ReqContextHolder holder = ReqContextHolder.CONTEXT.get();
-        if (null == holder || null==holder.sessionMap) {
+        if (null == holder || null == holder.sessionMap) {
             log.info("获取当前线程中的ReqContextHolder为空，进行初始化");
             holder = new ReqContextHolder(AppFrame.currentRestContext(), AppFrame.service(SessionMgr.class));
             ReqContextHolder.CONTEXT.set(holder);
@@ -47,5 +79,32 @@ public class ReqContextHolder {
         log.info("获取当前线程中的ReqContextHolder：{}", JSON.toJSONString(holder.sessionMap));
 //        holder.checkSession();
         return holder;
+    }
+
+    @Override
+    public UserSession createSession(UserId userId, Map<String, Object> extData) {
+        return null;
+    }
+
+    @Override
+    public SessionMap createGuestSession(Map<String, Object> extData) {
+        return null;
+    }
+
+    @Override
+    public void updateSession() {
+
+    }
+
+    @Override
+    public void updateSession(SessionMap sessionMap) {
+
+    }
+
+    /**
+     * 移除当前线程中的 ReqContext
+     */
+    static void removeContext() {
+        ReqContextHolder.CONTEXT.remove();
     }
 }

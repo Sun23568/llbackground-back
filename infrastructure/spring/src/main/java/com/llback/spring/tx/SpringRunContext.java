@@ -64,7 +64,7 @@ class SpringRunContext implements AppRunContext {
         ServletRequestAttributes reqAttrs = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = reqAttrs.getRequest();
         SpringRestContext springRestContext = (SpringRestContext) request.getAttribute(ATTR_REST_CONTEXT_KEY);
-        if (springRestContext != null) {
+        if (springRestContext == null) {
             log.info("未获取到restContext");
             HttpServletResponse response = reqAttrs.getResponse();
             springRestContext = new SpringRestContext(request, response);

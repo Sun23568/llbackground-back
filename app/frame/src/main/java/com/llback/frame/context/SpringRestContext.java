@@ -1,5 +1,6 @@
 package com.llback.frame.context;
 
+import cn.dev33.satoken.stp.StpUtil;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,5 +21,29 @@ public class SpringRestContext implements RestContext {
     public SpringRestContext(HttpServletRequest request, HttpServletResponse response) {
         this.request = request;
         this.response = response;
+    }
+
+    /**
+     * 获取sessionMap
+     *
+     * @param sessionMgr
+     * @return
+     */
+    @Override
+    public SessionMap getSessionMap(SessionMgr sessionMgr) {
+        if (checkToken()){
+
+        }
+        return null;
+    }
+
+    private boolean checkToken() {
+        // token是否有效
+        if (!StpUtil.isLogin()){
+            StpUtil.login("snutest");
+            return false;
+        }
+        Object loginId = StpUtil.getLoginId();
+        return true;
     }
 }
