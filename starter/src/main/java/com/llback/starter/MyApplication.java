@@ -14,7 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.llback"})
-@MapperScan("com.llback.dal")
+@MapperScan("com.llback.dal.**.dao")
 public class MyApplication extends SpringBootServletInitializer {
 
     public static void main(String[] args) {

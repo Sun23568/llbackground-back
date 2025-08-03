@@ -2,11 +2,12 @@ package com.llback.rt.common.cache;
 
 import com.alibaba.fastjson.JSONObject;
 import com.llback.common.types.CacheType;
-import com.llback.core.sa.eo.UserEo;
+import com.llback.core.user.eo.UserEo;
+import com.llback.core.user.vo.UserCacheItemVo;
 import org.springframework.stereotype.Component;
 
-//@Component
-public class UserCache extends BaseObjectCache<UserEo> {
+@Component
+public class UserCache extends BaseObjectCache<UserCacheItemVo> {
     @Override
     public CacheType getCacheType() {
         return CacheType.USER;
@@ -20,15 +21,12 @@ public class UserCache extends BaseObjectCache<UserEo> {
     /**
      * 缓存用户
      *
-     * @param userEo
+     * @param userCacheItemVo
      * @return
      */
     @Override
-    public String toJSON(UserEo userEo){
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("userId", userEo.getUserId().toString());
-        jsonObject.put("userName", userEo.getUserName().toString());
-        return jsonObject.toJSONString();
+    public String toJSON(UserCacheItemVo userCacheItemVo){
+        return JSONObject.toJSONString(userCacheItemVo);
     }
 
     /**
@@ -38,8 +36,9 @@ public class UserCache extends BaseObjectCache<UserEo> {
      * @return
      */
     @Override
-    public UserEo toObj(String json) {
+    public UserCacheItemVo toObj(String json) {
         JSONObject jsonObject = JSONObject.parseObject(json);
-        return UserEo.of(jsonObject.getString("userId"), jsonObject.getString("userName"));
+        return null;
+//        return UserEo.of(jsonObject.getString("userId"), jsonObject.getString("userName"));
     }
 }

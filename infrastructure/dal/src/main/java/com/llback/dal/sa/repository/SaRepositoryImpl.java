@@ -1,9 +1,9 @@
 package com.llback.dal.sa.repository;
 
 import com.llback.common.util.AssertUtil;
-import com.llback.core.sa.eo.UserEo;
 import com.llback.core.sa.repository.SaRepository;
 import com.llback.dal.sa.po.UserPo;
+import com.llback.dal.user.assembler.UserAssembler;
 import com.llback.dal.user.dao.UserDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,6 +27,6 @@ public class SaRepositoryImpl implements SaRepository {
     public UserEo findUser(String userId) {
         AssertUtil.notEmpty(userId, "用户ID不能为空");
         UserPo userInfo = userDao.getUserInfo(userId);
-        return null;
+        return UserAssembler.poToEo(userInfo);
     }
 }

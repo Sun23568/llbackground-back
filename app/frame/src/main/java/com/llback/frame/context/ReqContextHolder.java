@@ -84,7 +84,11 @@ public class ReqContextHolder implements ReqContext {
 
     @Override
     public UserSession createSession(UserId userId, Map<String, Object> extData) {
-        return null;
+        AssertUtil.assertTrue(null != userId && !userId.isNullId(), "用户ID不能为空");
+        this.sessionMap = SessionMap.of(userId, extData);
+        this.updateSession(sessionMap);
+        this.userSession = this.sessionMgr.getUserSession(sessionMap);
+        return this.userSession;
     }
 
     @Override

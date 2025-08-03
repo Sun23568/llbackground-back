@@ -18,6 +18,12 @@
             <groupId>com.llback</groupId>
             <artifactId>frame</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>1.78.1</version>
+        </dependency>
     </dependencies>
 
     <properties>

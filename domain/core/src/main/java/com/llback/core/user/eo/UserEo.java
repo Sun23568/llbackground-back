@@ -1,4 +1,4 @@
-package com.llback.core.sa.eo;
+package com.llback.core.user.eo;
 
 import com.llback.common.exception.BizException;
 import com.llback.common.types.*;
@@ -89,5 +89,15 @@ public class UserEo implements Serializable {
                     , () -> new BizException("密码不能为用户名的倒序"));
         }
         this.password = encryptedNewPwd;
+    }
+
+    /**
+     * 验证密码
+     *
+     * @param password
+     * @return
+     */
+    public boolean checkPassword(String password) {
+        return this.password.toString().equals(password);
     }
 }

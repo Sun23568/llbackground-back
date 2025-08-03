@@ -1,8 +1,10 @@
 package com.llback.api.controller;
 
+import com.llback.api.dto.sa.req.GetPublicKeyReq;
 import com.llback.api.dto.sa.req.GetSessionReq;
 import com.llback.api.dto.sa.req.LoginCmd;
 import com.llback.api.dto.sa.resp.LoginResp;
+import com.llback.api.dto.sa.resp.PublicKeyResp;
 import com.llback.frame.rest.RestApi;
 import com.llback.frame.rest.RestResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,5 +39,10 @@ public class SaApi implements RestApi {
     @RequestMapping("/session")
     public RestResult<LoginResp> getInfo() {
         return this.execute(GetSessionReq.EMPTY);
+    }
+
+    @RequestMapping("/publicKey")
+    public RestResult<PublicKeyResp> getPublicKey() {
+        return this.execute(GetPublicKeyReq.EMPTY);
     }
 }

@@ -1,7 +1,8 @@
 package com.llback.frame.context;
 
 import com.llback.common.util.AssertUtil;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.llback.core.user.vo.UserCacheItemVo;
+import com.llback.core.util.CacheUtils;
 import org.springframework.stereotype.Component;
 
 /**
@@ -14,7 +15,15 @@ import org.springframework.stereotype.Component;
 public class SessionMgrImpl implements SessionMgr {
     @Override
     public UserSession getUserSession(SessionMap sessionMap) {
-        return null;
+        UserCacheItemVo userCacheItemVo = CacheUtils.getUser(sessionMap.getUserId());
+        AssertUtil.notNull(userCacheItemVo, "系统未找到用户信息!");
+        // 如果token重新创建，则重新加载用户信息
+        if (sessionMap.getTokenCrtTimestamp() != 0 &&
+                userCacheItemVo.getCrtTimestamp() < sessionMap.getTokenCrtTimestamp()) {
+            // 更新缓存
+            userCacheItemVo = userCache.reload(sessionMap.getUserId().toString());
+        }
+        return new UserSessionImpl(sessionMap, userCacheItemVo, saConfigService.getUserActivationCfg());
     }
 
     @Override
