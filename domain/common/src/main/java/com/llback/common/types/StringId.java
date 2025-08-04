@@ -1,7 +1,7 @@
 package com.llback.common.types;
 
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.function.Consumer;

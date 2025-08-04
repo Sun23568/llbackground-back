@@ -1,7 +1,7 @@
 package com.llback.dal.user.dao;
 
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.llback.dal.sa.po.UserPo;
 
 import java.util.List;

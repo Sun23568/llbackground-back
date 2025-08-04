@@ -1,6 +1,6 @@
 package com.llback.api.app;
 
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONObject;
 import com.llback.api.dto.sa.req.GetSessionReq;
 import com.llback.api.dto.sa.resp.UserSessionResp;
 import com.llback.common.types.EncryptedPassword;

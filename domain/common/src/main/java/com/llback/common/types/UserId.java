@@ -1,6 +1,9 @@
 package com.llback.common.types;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -51,6 +54,7 @@ public final class UserId extends StringId implements Serializable {
      *
      * @return true/false
      */
+    @JsonIgnore
     public boolean isNullId() {
         return this.equalsIgnoreCase(NULL_UID);
     }
@@ -60,6 +64,7 @@ public final class UserId extends StringId implements Serializable {
      *
      * @return true/false
      */
+    @JsonIgnore
     public boolean isGuest() {
         return this.equalsIgnoreCase(GUEST_UID);
     }
@@ -86,6 +91,7 @@ public final class UserId extends StringId implements Serializable {
      * @param text 文本内容
      * @return true:是用户Id; false:不是用户Id
      */
+    @JsonIgnore
     public static boolean isUserId(CharSequence text) {
         return PATTERN.matcher(text).matches();
     }
@@ -96,6 +102,7 @@ public final class UserId extends StringId implements Serializable {
      * @author yz.sun
      * @date 2024/5/29
      */
+    @JsonIgnore
     public static boolean isGuest(CharSequence text) {
         return GUEST_UID.equalsIgnoreCase(text);
     }

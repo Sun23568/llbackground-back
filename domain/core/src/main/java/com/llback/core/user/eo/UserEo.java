@@ -101,12 +101,4 @@ public class UserEo implements Serializable {
     public boolean checkPassword(String password) {
         return this.password.toString().equals(password);
     }
-
-    /**
-     * 转为JSON
-     */
-    @JsonValue
-    public String getValue(){
-        return "123";
-    }
 }

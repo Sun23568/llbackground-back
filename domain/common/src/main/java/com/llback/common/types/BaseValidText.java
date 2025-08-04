@@ -1,5 +1,7 @@
 package com.llback.common.types;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.llback.common.util.AssertUtil;
 import org.apache.commons.lang3.StringUtils;
 
@@ -128,6 +130,7 @@ public abstract class BaseValidText implements Serializable, Comparable<Object>,
      *
      * @return 如果文本内容为空，则返回true，否则返回false
      */
+    @JsonIgnore
     public boolean isEmpty() {
         return this.toString().isEmpty();
     }
@@ -254,6 +257,11 @@ public abstract class BaseValidText implements Serializable, Comparable<Object>,
     @Override
     public String toString() {
         return this.text;
+    }
+
+    @JsonValue
+    public String getValue(){
+        return toString();
     }
 }
 

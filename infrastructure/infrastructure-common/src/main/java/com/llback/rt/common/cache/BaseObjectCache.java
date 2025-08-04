@@ -1,17 +1,9 @@
 package com.llback.rt.common.cache;
 
-import com.alibaba.fastjson.JSON;
-import com.llback.common.service.CacheService;
 import com.llback.common.types.CacheType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PostConstruct;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * 缓存对象基类
