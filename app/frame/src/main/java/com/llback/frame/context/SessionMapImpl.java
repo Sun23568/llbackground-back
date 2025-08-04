@@ -84,8 +84,8 @@ class SessionMapImpl implements SessionMap {
     }
 
     @Override
-    public String getUserId() {
-        return this.userId.toString();
+    public UserId getUserId() {
+        return this.userId;
     }
 
     @Override

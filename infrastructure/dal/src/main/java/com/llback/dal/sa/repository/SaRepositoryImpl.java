@@ -2,6 +2,7 @@ package com.llback.dal.sa.repository;
 
 import com.llback.common.util.AssertUtil;
 import com.llback.core.sa.repository.SaRepository;
+import com.llback.core.user.eo.UserEo;
 import com.llback.dal.sa.po.UserPo;
 import com.llback.dal.user.assembler.UserAssembler;
 import com.llback.dal.user.dao.UserDao;

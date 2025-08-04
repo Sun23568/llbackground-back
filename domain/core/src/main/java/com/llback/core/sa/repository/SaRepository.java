@@ -1,5 +1,7 @@
 package com.llback.core.sa.repository;
 
+import com.llback.core.user.eo.UserEo;
+
 /**
  * 鉴权仓储
  */

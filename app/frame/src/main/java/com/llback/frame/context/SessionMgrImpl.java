@@ -21,9 +21,10 @@ public class SessionMgrImpl implements SessionMgr {
         if (sessionMap.getTokenCrtTimestamp() != 0 &&
                 userCacheItemVo.getCrtTimestamp() < sessionMap.getTokenCrtTimestamp()) {
             // 更新缓存
-            userCacheItemVo = userCache.reload(sessionMap.getUserId().toString());
+            userCacheItemVo = CacheUtils.reloadUser(sessionMap.getUserId());
         }
-        return new UserSessionImpl(sessionMap, userCacheItemVo, saConfigService.getUserActivationCfg());
+        return null;
+//        return new UserSessionImpl(sessionMap, userCacheItemVo, saConfigService.getUserActivationCfg());
     }
 
     @Override

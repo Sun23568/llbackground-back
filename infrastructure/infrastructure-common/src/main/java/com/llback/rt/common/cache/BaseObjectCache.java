@@ -17,139 +17,63 @@ import java.util.Map;
  * 缓存对象基类
  */
 @Slf4j
-@Primary
 @Component
-public class BaseObjectCache<T> implements CacheService {
+public abstract class BaseObjectCache<T> {
     /**
-     * 缓存类型存储
+     * redis工具
      */
-    private final static Map<CacheType, BaseObjectCache> cacheMap = new HashMap<>();
+    @Autowired
+    private RedisCacheUtil redisCacheUtil;
 
     // 连接符
     private static final String CONNECTOR = ":";
 
     /**
-     * 缓存模板
+     * 获取缓存类型
      */
-    @Autowired
-    RedisTemplate<String, Object> redisTemplate;
+    protected abstract CacheType getCacheType();
 
+    /**
+     * 获取缓存前缀
+     */
+    protected abstract String prefix();
 
-    public static void registerCache(BaseObjectCache cacheInst) {
-        CacheType cacheType = cacheInst.getCacheType();
-        if (cacheMap.containsKey(cacheType)) {
-            log.warn("缓存类型{}已存在", cacheType);
-            return;
-        }
-        cacheMap.put(cacheInst.getCacheType(), cacheInst);
-    }
+    /**
+     * 重新加载缓存
+     */
+    protected abstract T onReload(String key);
 
     /**
      * 获取缓存的key
-     *
-     * @param key
-     * @return
      */
     String getCacheKey(String key) {
         return prefix().concat(CONNECTOR).concat(key);
     }
 
     /**
-     * 获取缓存
-     *
-     * @return
-     */
-    @Override
-    public String getCacheStr(CacheType cacheType, String key) {
-        String cacheKey = getCacheKey(key);
-        return "test";
-    }
-
-    /**
      * 获取缓存对象
-     *
-     * @param cacheType
-     * @param key
-     * @return
-     */
-    @Override
-    public Object getCacheObject(CacheType cacheType, String key) {
-        // 获取实例
-        BaseObjectCache cacheInst = getCacheInst(cacheType);
-        return cacheInst.getCacheObject(key);
-    }
-
-    /**
-     * 获取缓存对象
-     *
-     * @param key
-     * @return
      */
     public T getCacheObject(String key) {
         // 查询redis
-        String json = (String) redisTemplate.opsForValue().get(getCacheKey(key));
-        return toObj(json);
-    }
-
-    /**
-     * 获取缓存实例
-     *
-     * @param cacheType
-     * @return
-     */
-    private BaseObjectCache getCacheInst(CacheType cacheType) {
-        if (!cacheMap.containsKey(cacheType)) {
-            log.warn("缓存类型{}不存在", cacheType);
-            return null;
-        }
-        return cacheMap.get(cacheType);
+        return (T) redisCacheUtil.get(getCacheKey(key));
     }
 
     /**
      * 设置缓存对象
-     *
-     * @param cacheType
-     * @param key
-     * @param value
-     * @return
-     */
-    @Override
-    public boolean setCacheObject(CacheType cacheType, String key, Object value) {
-        BaseObjectCache cacheInst = getCacheInst(cacheType);
-        return cacheInst.setCacheObject(key, value);
-    }
-
-    /**
-     * 设置缓存对象
-     *
-     * @param key
-     * @param value
-     * @return
      */
     public boolean setCacheObject(String key, T value) {
-        String json = toJSON(value);
-        String cacheKey = getCacheKey(key);
-        redisTemplate.opsForValue().set(cacheKey, json);
+        redisCacheUtil.set(getCacheKey(key), value);
         return true;
     }
 
     /**
-     * 转为json
+     * 重新加载缓存
      *
-     * @param obj
+     * @param key
      * @return
      */
-    public String toJSON(T obj) {
-        return JSON.toJSONString(obj);
-    }
-
-    /**
-     * 转为对象
-     *
-     * @param json
-     * @return
-     */
-    public T toObj(String json) {
-        return (T) JSON.parseObject(json);
+    public T reloadCache(String key) {
+        // 删除redis缓存
+        return onReload(key);
     }
 }

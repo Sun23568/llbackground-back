@@ -37,7 +37,7 @@ public interface SessionMap {
     /**
      * 获取用户
      */
-    String getUserId();
+    UserId getUserId();
 
     /**
      * 获取令牌

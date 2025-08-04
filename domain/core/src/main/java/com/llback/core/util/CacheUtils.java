@@ -2,6 +2,7 @@ package com.llback.core.util;
 
 import com.llback.common.service.CacheService;
 import com.llback.common.types.CacheType;
+import com.llback.common.types.UserId;
 import com.llback.core.user.vo.UserCacheItemVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
@@ -19,8 +20,8 @@ public class CacheUtils implements ApplicationContextAware {
     /**
      * 获取用户信息
      */
-    public static UserCacheItemVo getUser(String userId) {
-        return (UserCacheItemVo) cacheService.getCacheObject(CacheType.USER, userId);
+    public static UserCacheItemVo getUser(UserId userId) {
+        return (UserCacheItemVo) cacheService.getCacheObject(CacheType.USER, userId.toString());
     }
 
     /**
@@ -31,6 +32,16 @@ public class CacheUtils implements ApplicationContextAware {
             return false;
         }
         return cacheService.setCacheObject(CacheType.USER, userCache.getUser().getUserId().toString(), userCache);
+    }
+
+    /**
+     * 重新缓存用户信息
+     *
+     * @param userId
+     * @return
+     */
+    public static UserCacheItemVo reloadUser(UserId userId) {
+        return (UserCacheItemVo) cacheService.reloadCache(CacheType.USER, userId.toString());
     }
 
     @Override

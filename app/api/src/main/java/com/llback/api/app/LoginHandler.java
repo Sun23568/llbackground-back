@@ -4,6 +4,7 @@ import com.llback.api.dto.sa.req.LoginCmd;
 import com.llback.api.dto.sa.resp.LoginResp;
 import com.llback.common.util.AssertUtil;
 import com.llback.core.sa.repository.SaRepository;
+import com.llback.core.user.eo.UserEo;
 import com.llback.frame.Handler;
 import com.llback.frame.PubAcl;
 import com.llback.frame.context.ReqContext;
@@ -40,7 +41,6 @@ public class LoginHandler implements Handler<LoginResp, LoginCmd> {
         // 登录
         ReqContext context = ReqContext.getCurrent();
         context.createSession(user.getUserId());
-        user.login();
         return null;
     }
 }

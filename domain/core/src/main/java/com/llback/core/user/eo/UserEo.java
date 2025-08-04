@@ -1,5 +1,6 @@
 package com.llback.core.user.eo;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.llback.common.exception.BizException;
 import com.llback.common.types.*;
 import com.llback.common.util.AssertUtil;
@@ -99,5 +100,13 @@ public class UserEo implements Serializable {
      */
     public boolean checkPassword(String password) {
         return this.password.toString().equals(password);
+    }
+
+    /**
+     * 转为JSON
+     */
+    @JsonValue
+    public String getValue(){
+        return "123";
     }
 }

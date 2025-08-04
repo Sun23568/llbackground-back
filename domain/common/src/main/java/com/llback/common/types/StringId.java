@@ -1,5 +1,8 @@
 package com.llback.common.types;
 
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
@@ -11,7 +14,7 @@ import java.util.regex.Pattern;
  * @author hex
  * @date 2023/11/9 18:31
  */
-public class StringId extends BaseValidText {
+public class StringId extends BaseValidText implements Serializable {
 
     /**
      * 正则表达式，用于验证字符串ID的规则。

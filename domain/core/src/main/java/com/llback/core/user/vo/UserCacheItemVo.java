@@ -30,6 +30,11 @@ public class UserCacheItemVo {
      */
     private final Set<String> perms;
 
+    /**
+     * 创建时间
+     */
+    private final long crtTimestamp;
+
     public boolean validCache() {
         return user != null && menuList != null && perms != null;
     }
