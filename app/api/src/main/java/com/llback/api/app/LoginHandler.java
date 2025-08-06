@@ -2,8 +2,9 @@ package com.llback.api.app;
 
 import com.llback.api.dto.sa.req.LoginCmd;
 import com.llback.api.dto.sa.resp.LoginResp;
+import com.llback.common.types.UserId;
 import com.llback.common.util.AssertUtil;
-import com.llback.core.sa.repository.SaRepository;
+import com.llback.core.user.repository.UserRepository;
 import com.llback.core.user.eo.UserEo;
 import com.llback.frame.Handler;
 import com.llback.frame.PubAcl;
@@ -26,7 +27,7 @@ public class LoginHandler implements Handler<LoginResp, LoginCmd> {
     private String privateKey;
 
     @Autowired
-    private SaRepository saRepository;
+    private UserRepository userRepository;
 
     @Override
     public LoginResp execute(LoginCmd req) {
@@ -34,7 +35,7 @@ public class LoginHandler implements Handler<LoginResp, LoginCmd> {
         AssertUtil.notEmpty(req.getUserId(), "用户ID不能为空");
         AssertUtil.notEmpty(req.getPassword(), "密码不能为空");
         // 根据用户获取用户信息
-        UserEo user = saRepository.findUser(req.getUserId());
+        UserEo user = userRepository.findUser(UserId.of(req.getUserId()));
         // 验证密码
         AssertUtil.assertTrue(user != null, "密码或用户名错误错误");
         AssertUtil.assertTrue(user.checkPassword(req.getPassword()), "密码或用户名错误错误");

@@ -39,7 +39,7 @@ public class GetSessionHandler implements Handler<UserSessionResp, GetSessionReq
                 .build();
 
         String jsonString = JSONObject.toJSONString(build);
-//        CacheUtils.cacheUser(build);
+        UserCacheItemVo user = CacheUtils.getUser(UserId.of("123"));
         return null;
     }
 }

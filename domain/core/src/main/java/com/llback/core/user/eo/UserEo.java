@@ -32,7 +32,7 @@ public class UserEo implements Serializable {
     /**
      * 密码
      */
-    private EncryptedPassword password;
+    private transient EncryptedPassword password;
 
     /**
      * 手机号

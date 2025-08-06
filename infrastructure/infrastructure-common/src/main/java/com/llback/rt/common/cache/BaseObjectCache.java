@@ -1,5 +1,6 @@
 package com.llback.rt.common.cache;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.llback.common.types.CacheType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,18 @@ public abstract class BaseObjectCache<T> {
      */
     public T getCacheObject(String key) {
         // 查询redis
-        return (T) redisCacheUtil.get(getCacheKey(key));
+        Object obj = redisCacheUtil.get(getCacheKey(key));
+        if (obj == null){
+            return null;
+        }
+        T result = toObj(JSONObject.from(obj));
+        return result;
     }
+
+    /**
+     * 将json对象转为对象
+     */
+    protected abstract T toObj(JSONObject from);
 
     /**
      * 设置缓存对象

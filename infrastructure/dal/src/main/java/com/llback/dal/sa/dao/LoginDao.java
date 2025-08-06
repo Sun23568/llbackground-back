@@ -18,7 +18,10 @@ public interface LoginDao {
      */
     UserPo checkUser(String username, String password);
 
-    UserPo getUserInfo(String username);
+    /**
+     * 根据用户id查询用户信息
+     */
+    UserPo getUserInfo(String userId);
 
     List<MenuPo> getAllMenu();
 
