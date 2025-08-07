@@ -1,7 +1,9 @@
 package com.llback.frame.context;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson2.JSON;
 import com.llback.common.exception.SysException;
+import com.llback.common.types.TokenId;
 import com.llback.common.types.UserId;
 import com.llback.common.util.AssertUtil;
 import com.llback.frame.AppFrame;
@@ -47,11 +49,16 @@ public class ReqContextHolder implements ReqContext {
         this.sessionMgr = sessionMgr;
         // 获取会话信息
         this.sessionMap = restContext.getSessionMap(sessionMgr);
+        if (null == this.sessionMap){
+            this.sessionMap = SessionMap.of(UserId.GUEST_UID);
+            return;
+        }
+        this.userSession = sessionMgr.getUserSession(sessionMap);
     }
 
     @Override
     public UserSession getUserSession() {
-        return null;
+        return this.userSession;
     }
 
     @Override
@@ -87,6 +94,8 @@ public class ReqContextHolder implements ReqContext {
         AssertUtil.assertTrue(null != userId && !userId.isNullId(), "用户ID不能为空");
         this.sessionMap = SessionMap.of(userId, extData);
         this.updateSession(sessionMap);
+        String tokenValue = StpUtil.getTokenValue();
+        this.sessionMap.setToken(TokenId.of(tokenValue));
         this.userSession = this.sessionMgr.getUserSession(sessionMap);
         return this.userSession;
     }
@@ -103,7 +112,7 @@ public class ReqContextHolder implements ReqContext {
 
     @Override
     public void updateSession(SessionMap sessionMap) {
-
+        StpUtil.login(sessionMap.getUserId().toString());
     }
 
     /**

@@ -56,6 +56,7 @@ public class UserCache extends BaseObjectCache<UserCacheItemVo> {
         UserId userId = UserId.of(key);
         // 获取用户信息
         UserEo userEo = userRepository.findUser(userId);
+        userEo.clearPassword();
         // 获取菜单
         Collection<MenuEo> menuList = new ArrayList<>();
         // 获取权限
@@ -66,6 +67,7 @@ public class UserCache extends BaseObjectCache<UserCacheItemVo> {
                 .user(userEo)
                 .menuList(menuList)
                 .perms(perms)
+                .crtTimestamp(System.currentTimeMillis())
                 .build();
     }
 

@@ -101,4 +101,11 @@ public class UserEo implements Serializable {
     public boolean checkPassword(String password) {
         return this.password.toString().equals(password);
     }
+
+    /**
+     * 清空密码
+     */
+    public void clearPassword() {
+        this.password = null;
+    }
 }
