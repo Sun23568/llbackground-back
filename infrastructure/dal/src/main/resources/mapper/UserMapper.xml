@@ -4,9 +4,9 @@
 <mapper namespace="com.llback.dal.user.dao.UserDao">
     <!-- 获取用户信息 -->
     <select id="getUserInfo" parameterType="string" resultType="com.llback.dal.sa.po.UserPo">
-        SELECT pk_id, user_id, user_name, password, create_time, update_time
-        FROM sys_user
-        WHERE user_id = #{userId}
+        SELECT PK_ID, USER_ID, USER_NAME, PASSWORD, CREATE_TIME, UPDATE_TIME
+        FROM SYS_USER
+        WHERE USER_ID = #{userId}
     </select>
 
     <select id="countUser" resultType="Integer">

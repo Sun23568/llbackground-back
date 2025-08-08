@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 public class SessionMgrImpl implements SessionMgr {
     @Override
     public UserSession getUserSession(SessionMap sessionMap) {
-        UserCacheItemVo userCacheItemVo = CacheUtils.getUser(sessionMap.getUserId());
+        UserCacheItemVo userCacheItemVo = CacheUtils.reloadUser(sessionMap.getUserId());
         AssertUtil.notNull(userCacheItemVo, "系统未找到用户信息!");
         // 如果token重新创建，则重新加载用户信息
         if (sessionMap.getTokenCrtTimestamp() != 0 &&
@@ -23,8 +23,7 @@ public class SessionMgrImpl implements SessionMgr {
             // 更新缓存
             userCacheItemVo = CacheUtils.reloadUser(sessionMap.getUserId());
         }
-        return null;
-//        return new UserSessionImpl(sessionMap, userCacheItemVo, saConfigService.getUserActivationCfg());
+        return new UserSessionImpl(sessionMap, userCacheItemVo);
     }
 
     @Override

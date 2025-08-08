@@ -9,6 +9,8 @@ import com.llback.core.user.eo.UserEo;
 import com.llback.frame.Handler;
 import com.llback.frame.PubAcl;
 import com.llback.frame.context.ReqContext;
+import com.llback.frame.context.UserSession;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Component;
  * @author yz.sun
  * @date 2025/7/14
  */
+@Slf4j
 @PubAcl
 @Component
 public class LoginHandler implements Handler<LoginResp, LoginCmd> {
@@ -41,7 +44,8 @@ public class LoginHandler implements Handler<LoginResp, LoginCmd> {
         AssertUtil.assertTrue(user.checkPassword(req.getPassword()), "密码或用户名错误错误");
         // 登录
         ReqContext context = ReqContext.getCurrent();
-        context.createSession(user.getUserId());
-        return null;
+        UserSession session = context.createSession(user.getUserId());
+        log.info("创建Session成功，用户ID：{}", user.getUserId().toString());
+        return LoginResp.builder().userSession(session).build();
     }
 }

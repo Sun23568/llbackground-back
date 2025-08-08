@@ -41,7 +41,7 @@ public class SpringRestContext implements RestContext {
     @Override
     public SessionMap getSessionMap(SessionMgr sessionMgr) {
         if (!checkToken()) {
-            return SessionMap.of(UserId.GUEST_UID);
+            return null;
         }
         String loginId = StpUtil.getLoginIdAsString();
         String tokenValue = StpUtil.getTokenValue();
