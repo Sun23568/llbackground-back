@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.util.Map;
+
 import static com.llback.common.exception.ErrorCode.*;
 
 /**
@@ -24,7 +26,13 @@ import static com.llback.common.exception.ErrorCode.*;
  */
 @Slf4j
 @RestControllerAdvice
-final class RestExceptionHandler {
+final class RestExceptionHandler implements ApplicationContextAware{
+
+    /**
+     * webErrorHandler
+     */
+    private RestApiExceptionHandler webErrorHandler;
+
     /**
      * handleBizException
      *
@@ -35,7 +43,7 @@ final class RestExceptionHandler {
      */
     @ExceptionHandler({BizException.class})
     public RestResult<Object> handleBizException(BizException e, HttpServletRequest request, HttpServletResponse response) {
-        return RestResult.failed(GENERIC_BIZ_WARN, "业务异常");
+        return this.webErrorHandler.handleBizException(e, request, response);
     }
 
     /**
@@ -64,5 +72,16 @@ final class RestExceptionHandler {
     public RestResult<Object> handleException(Exception e, HttpServletRequest request, HttpServletResponse response) {
         e.printStackTrace();
         return RestResult.failed(GENERIC_BIZ_WARN, "业务异常");
+    }
+
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        Map<String, RestApiExceptionHandler> beansOfType =
+                applicationContext.getBeansOfType(RestApiExceptionHandler.class);
+        if (beansOfType.isEmpty()) {
+            this.webErrorHandler = new DefaultRestErrorHandler();
+        } else {
+            this.webErrorHandler = beansOfType.values().iterator().next();
+        }
     }
 }

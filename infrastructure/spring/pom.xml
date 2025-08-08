@@ -29,5 +29,10 @@
             <groupId>com.llback</groupId>
             <artifactId>frame</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.llback</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
     </dependencies>
 </project>

@@ -1,7 +1,10 @@
 package com.llback.common.util;
 
+import com.llback.common.exception.BizException;
+import com.llback.common.exception.ErrorCode;
 import lombok.experimental.UtilityClass;
 
+import javax.security.auth.login.LoginException;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.function.Supplier;
@@ -98,7 +101,7 @@ public class AssertUtil {
      */
     public static void assertTrue(boolean condition, String message) throws IllegalArgumentException {
         if (!condition) {
-            throw new IllegalArgumentException(message);
+            throw new BizException(ErrorCode.LOGIN_USER_VERIFY_FAILED);
         }
     }
 
