@@ -44,9 +44,9 @@ public class Email extends BaseValidText {
     /**
      * 构造函数
      *
-     * @param text    文本内容
-     * @param maxLen  最大长度
-     * @param tag 错误消息
+     * @param text   文本内容
+     * @param maxLen 最大长度
+     * @param tag    错误消息
      */
     protected Email(CharSequence text, int maxLen, String tag) {
         super(text, EMAIL_PATTERN, maxLen, tag);

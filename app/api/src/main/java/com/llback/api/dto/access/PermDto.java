@@ -1,19 +1,19 @@
-package com.llback.dal.perm.po;
+package com.llback.api.dto.access;
 
 import lombok.Data;
 
 /**
- * 权限持久化对象
+ * 权限DTO
  */
 @Data
-public class PermissionPo {
+public class PermDto {
     /**
      * 权限ID
      */
     private String permId;
 
     /**
-     * 权限代码
+     * 权限码
      */
     private String permCode;
 
@@ -24,7 +24,6 @@ public class PermissionPo {
 
     /**
      * 权限类型
-     * 作为分组依据
      */
     private String type;
 }

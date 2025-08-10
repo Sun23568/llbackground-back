@@ -2,6 +2,7 @@ package com.llback.common.types;
 
 import com.llback.common.util.AssertUtil;
 import lombok.Getter;
+
 import java.io.Serializable;
 
 /**

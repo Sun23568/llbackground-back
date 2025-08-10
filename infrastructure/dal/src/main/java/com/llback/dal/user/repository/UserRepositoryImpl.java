@@ -2,11 +2,11 @@ package com.llback.dal.user.repository;
 
 import com.llback.common.types.UserId;
 import com.llback.common.util.AssertUtil;
-import com.llback.core.user.repository.UserRepository;
 import com.llback.core.user.eo.UserEo;
-import com.llback.dal.user.po.UserPo;
+import com.llback.core.user.repository.UserRepository;
 import com.llback.dal.user.assembler.UserAssembler;
 import com.llback.dal.user.dao.UserDao;
+import com.llback.dal.user.po.UserPo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

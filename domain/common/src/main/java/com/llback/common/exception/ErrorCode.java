@@ -104,7 +104,7 @@ public final class ErrorCode implements Serializable {
     /**
      * 用户已绑定微信公众号
      */
-    public static final ErrorCode BINDED_WEI_XIN=registerErrorCode("102404", "该用户已绑定微信公众号", 200);
+    public static final ErrorCode BINDED_WEI_XIN = registerErrorCode("102404", "该用户已绑定微信公众号", 200);
 
 
     /**

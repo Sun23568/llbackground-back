@@ -9,9 +9,9 @@
     </insert>
 
     <!-- 根据文件id获取文件信息 -->
-<!--    <select id="getFileById" resultType="com.heeexy.example.dto.resp.FileInfo">-->
-<!--        SELECT PK_ID, FTP_PATH, FULL_PATH, FILE_NAME-->
-<!--        FROM FILE_INFO-->
-<!--        WHERE PK_ID = #{fileId}-->
-<!--    </select>-->
+    <!--    <select id="getFileById" resultType="com.heeexy.example.dto.resp.FileInfo">-->
+    <!--        SELECT PK_ID, FTP_PATH, FULL_PATH, FILE_NAME-->
+    <!--        FROM FILE_INFO-->
+    <!--        WHERE PK_ID = #{fileId}-->
+    <!--    </select>-->
 </mapper>

@@ -4,16 +4,25 @@
 <mapper namespace="com.llback.dal.perm.dao.PermDao">
     <!-- 获取用户权限列表 -->
     <select id="queryUserPerms" parameterType="string" resultType="com.llback.dal.perm.po.PermissionPo">
-        SELECT
-            T2.PERM_ID,
-            T2.PERM_CODE,
-            T2.PERM_NAME,
-            T2.TYPE
-        FROM
-            USER_PERMISSION T1
-        LEFT JOIN SYS_PERMISSION T2 ON
-            T1.PERM_CODE = T2.PERM_CODE
+        SELECT T2.PERM_ID,
+               T2.PERM_CODE,
+               T2.PERM_NAME,
+               T2.TYPE
+        FROM USER_PERMISSION T1
+                 LEFT JOIN SYS_PERMISSION T2 ON
+            T1.PERM_ID = T2.PERM_ID
         WHERE T1.USER_ID = #{userId}
           AND T2.PERM_ID IS NOT NULL
+    </select>
+
+    <!-- 获取所有权限列表 -->
+    <select id="queryAllPermmission" resultType="com.llback.dal.perm.po.PermissionPo">
+        SELECT
+            PERM_ID,
+            PERM_CODE,
+            PERM_NAME,
+            `TYPE`
+        FROM
+            SYS_PERMISSION
     </select>
 </mapper>

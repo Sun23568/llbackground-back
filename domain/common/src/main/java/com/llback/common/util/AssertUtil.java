@@ -4,7 +4,6 @@ import com.llback.common.exception.BizException;
 import com.llback.common.exception.ErrorCode;
 import lombok.experimental.UtilityClass;
 
-import javax.security.auth.login.LoginException;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.function.Supplier;

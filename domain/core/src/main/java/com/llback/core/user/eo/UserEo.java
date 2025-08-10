@@ -1,6 +1,5 @@
 package com.llback.core.user.eo;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.llback.common.exception.BizException;
 import com.llback.common.types.*;
 import com.llback.common.util.AssertUtil;
@@ -77,7 +76,7 @@ public class UserEo implements Serializable {
         AssertUtil.assertTrue(encryptedNewPwd.toString().equals(encryptedConfirmPwd.toString())
                 , () -> new BizException("两次输入密码不一致"));
         AssertUtil.assertFalse(encryptedNewPwd.equals(encryptedPassword), () -> new BizException("新密码不能与旧密码相同"));
-        if (pattern){
+        if (pattern) {
             AssertUtil.assertTrue(needPasswordControl || newPwd.verityComplexity()
                     , () -> new BizException("新密码必须6-16位，包含字母数字特殊符号三种类型"));
         } else {

@@ -7,12 +7,11 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 缓存工具类
  */
-public class AssembleUtil {
+public class PoEoAssembleUtil {
     /*
      * po转为eo
      */
@@ -64,7 +63,7 @@ public class AssembleUtil {
      */
     public static <T> List<T> poList2EoList(List poObj, Class<T> eoClassType) {
         List<T> eoList = new ArrayList<>();
-        if (CollectionUtils.isEmpty(poObj)){
+        if (CollectionUtils.isEmpty(poObj)) {
             return eoList;
         }
         for (Object o : poObj) {

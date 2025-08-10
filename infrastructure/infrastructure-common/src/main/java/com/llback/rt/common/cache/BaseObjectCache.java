@@ -49,7 +49,7 @@ public abstract class BaseObjectCache<T> {
     public T getCacheObject(String key) {
         // 查询redis
         Object obj = redisCacheUtil.get(getCacheKey(key));
-        if (obj == null){
+        if (obj == null) {
             return reloadCache(key);
         }
         T result = toObj(JSONObject.from(obj));

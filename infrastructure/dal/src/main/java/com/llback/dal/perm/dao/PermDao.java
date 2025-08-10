@@ -12,4 +12,10 @@ public interface PermDao {
      * 查询用户权限
      */
     List<PermissionPo> queryUserPerms(String userId);
+
+    /**
+     * 查询所有权限
+     */
+    List<PermissionPo> queryAllPermmission();
+
 }

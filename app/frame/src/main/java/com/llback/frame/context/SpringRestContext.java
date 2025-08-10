@@ -1,7 +1,6 @@
 package com.llback.frame.context;
 
 import cn.dev33.satoken.SaManager;
-import cn.dev33.satoken.jwt.SaJwtTemplate;
 import cn.dev33.satoken.jwt.SaJwtUtil;
 import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
@@ -13,7 +12,6 @@ import com.llback.common.types.UserId;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
 
 /**
  * Spring rest上下文

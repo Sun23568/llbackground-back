@@ -23,9 +23,6 @@ public class SaApi implements RestApi {
 
     /**
      * 登录
-     *
-     * @param cmd
-     * @return
      */
     @RequestMapping("/login")
     public RestResult<LoginResp> login(@RequestBody LoginCmd cmd) {
@@ -41,6 +38,9 @@ public class SaApi implements RestApi {
         return this.execute(GetSessionReq.EMPTY);
     }
 
+    /**
+     * 获取公钥
+     */
     @RequestMapping("/publicKey")
     public RestResult<PublicKeyResp> getPublicKey() {
         return this.execute(GetPublicKeyReq.EMPTY);

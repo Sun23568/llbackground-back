@@ -3,7 +3,7 @@ package com.llback.rt.common.cache;
 /**
  * 缓存类型
  */
-public enum CacheType{
+public enum CacheType {
     USER("user", "用户缓存");
 
     /**

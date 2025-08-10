@@ -4,15 +4,23 @@
 <mapper namespace="com.llback.dal.menu.dao.MenuDao">
     <!-- 获取用户菜单列表 -->
     <select id="queryUserMenus" parameterType="string" resultType="com.llback.dal.menu.po.MenuPo">
-        SELECT
-            T2.MENU_ID ,
-            T2.MENU_CODE ,
-            T2.MENU_NAME
-        FROM
-            USER_MENU T1
-                LEFT JOIN SYS_MENU T2 ON
-                T1.MENU_CODE = T2.MENU_CODE
+        SELECT T2.MENU_ID,
+               T2.MENU_CODE,
+               T2.MENU_NAME
+        FROM USER_MENU T1
+                 LEFT JOIN SYS_MENU T2 ON
+            T1.MENU_ID = T2.MENU_ID
         WHERE T1.USER_ID = #{userId}
           AND T2.MENU_ID IS NOT NULL
+    </select>
+
+    <!-- 获取所有菜单列表 -->
+    <select id="queryAllMenus" resultType="com.llback.dal.menu.po.MenuPo">
+        SELECT
+            MENU_ID,
+            MENU_CODE,
+            MENU_NAME
+        FROM
+            SYS_MENU
     </select>
 </mapper>

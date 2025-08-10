@@ -3,7 +3,6 @@ package com.llback.spring.filter;
 import com.llback.common.exception.BizError;
 import com.llback.common.exception.BizException;
 import com.llback.common.exception.ErrorCode;
-import com.llback.common.exception.SysException;
 import com.llback.frame.context.ReqContext;
 import com.llback.frame.rest.RestResult;
 import org.slf4j.Logger;

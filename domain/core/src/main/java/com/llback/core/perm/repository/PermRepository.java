@@ -13,4 +13,9 @@ public interface PermRepository {
      * 查询用户权限
      */
     List<FuncPermEo> queryUserPerms(UserId userId);
+
+    /**
+     * 查询所有权限
+     */
+    List<FuncPermEo> getAllPermission();
 }

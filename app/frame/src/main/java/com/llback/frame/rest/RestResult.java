@@ -38,6 +38,7 @@ public interface RestResult<T> {
 
     /**
      * 判断操作是否成功
+     *
      * @return boolean
      */
     default boolean ok() {

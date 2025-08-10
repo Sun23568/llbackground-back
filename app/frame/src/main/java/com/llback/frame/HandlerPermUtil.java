@@ -1,10 +1,12 @@
 package com.llback.frame;
 
+import com.llback.common.exception.ForbidException;
 import com.llback.common.exception.NotLoginException;
 import com.llback.common.util.AssertUtil;
 import com.llback.frame.context.ReqContext;
 import com.llback.frame.context.UserSession;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * HandlerPermUtil
@@ -36,31 +38,16 @@ public final class HandlerPermUtil {
         UserSession userSession = reqContext.getUserSession();
 
         AssertUtil.notNull(userSession, NotLoginException::new);
-//
-//        // 激活权限校验
-//        AssertUtil.assertFalse(handlerInfo.activationRequired && !userSession.isActivatedUser(), userSession::noActiveUserException);
-//
-//        String permCode = handlerInfo.getPermCode();
-//        Set<String> perms = handlerInfo.getAnyPerms();
-//        if (StringId.isEmpty(permCode) && perms.isEmpty()) {
-//            return;
-//        }
-//
-//        boolean checkPerm = false;
-//        String funcName;
-//        if (!StringId.isEmpty(permCode)) {
-//            FuncItem funcItem = FuncItem.getItem(permCode);
-//            if (funcItem != null && funcItem.getFuncName() != null) {
-//                funcName = funcItem.getFuncName().toString();
-//            } else {
-//                funcName = permCode;
-//            }
-//            checkPerm = userSession.hasPerm(permCode);
-//        } else {
-//            funcName = "";
-//        }
 
-//        AssertUtil.assertTrue(checkPerm || (!perms.isEmpty() && userSession.hasAnyPerm(perms)),
-//                () -> funcName.isEmpty() ? new ForbidException() : new ForbidException(funcName));
+        // 激活权限校验
+
+        String needPerm = handlerInfo.getPerm();
+        if (StringUtils.isEmpty(needPerm)) {
+            return;
+        }
+
+        boolean checkResult = userSession.hasPerm(needPerm);
+
+        AssertUtil.assertTrue(checkResult, () -> new ForbidException(needPerm));
     }
 }

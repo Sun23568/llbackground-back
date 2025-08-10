@@ -1,7 +1,5 @@
 package com.llback.common.types;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -66,7 +64,7 @@ public class StringId extends BaseValidText implements Serializable {
     /**
      * 构造函数，用于创建一个StringId对象。
      *
-     * @param id      字符串ID值
+     * @param id  字符串ID值
      * @param tag 错误消息
      * @throws IllegalArgumentException 如果id为null或不符合ID的规则，则抛出异常
      */
@@ -90,7 +88,7 @@ public class StringId extends BaseValidText implements Serializable {
      *
      * @param id      字符串ID值
      * @param pattern 正则表达式，用于验证字符串ID的规则
-     * @param tag 错误消息
+     * @param tag     错误消息
      * @throws IllegalArgumentException 如果id为null或不符合ID的规则，则抛出异常
      */
     protected StringId(CharSequence id, Pattern pattern, String tag) {
@@ -104,7 +102,7 @@ public class StringId extends BaseValidText implements Serializable {
      * @param id      字符串ID值
      * @param pattern 正则表达式，用于验证字符串ID的规则
      * @param maxLen  最大长度,如maxLen<=0则不验证长度
-     * @param tag 错误消息
+     * @param tag     错误消息
      * @throws IllegalArgumentException 如果id为null或不符合ID的规则，则抛出异常
      */
     protected StringId(CharSequence id, Pattern pattern, int maxLen, String tag) {
@@ -136,7 +134,7 @@ public class StringId extends BaseValidText implements Serializable {
     /**
      * 静态工厂方法，用于创建一个StringId对象。
      *
-     * @param id      字符串ID值
+     * @param id  字符串ID值
      * @param tag 错误消息
      * @return 一个StringId对象
      * @throws IllegalArgumentException 如果id为null或不符合ID的规则，则抛出异常

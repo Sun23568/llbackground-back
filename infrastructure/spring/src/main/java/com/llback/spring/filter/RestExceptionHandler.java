@@ -1,7 +1,6 @@
 package com.llback.spring.filter;
 
 import com.llback.common.exception.BizException;
-import com.llback.common.exception.NotLoginException;
 import com.llback.frame.rest.RestResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -12,10 +11,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.util.Map;
 
-import static com.llback.common.exception.ErrorCode.*;
+import static com.llback.common.exception.ErrorCode.GENERIC_BIZ_WARN;
 
 /**
  * css @2024
@@ -26,7 +24,7 @@ import static com.llback.common.exception.ErrorCode.*;
  */
 @Slf4j
 @RestControllerAdvice
-final class RestExceptionHandler implements ApplicationContextAware{
+final class RestExceptionHandler implements ApplicationContextAware {
 
     /**
      * webErrorHandler

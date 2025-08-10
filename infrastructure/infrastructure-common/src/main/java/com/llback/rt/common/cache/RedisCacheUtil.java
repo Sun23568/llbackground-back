@@ -11,14 +11,14 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class RedisCacheUtil {
-    
+
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
-    
+
     /**
      * 设置缓存数据
-     * 
-     * @param key 缓存键
+     *
+     * @param key   缓存键
      * @param value 缓存值
      * @return 是否设置成功
      */
@@ -31,12 +31,12 @@ public class RedisCacheUtil {
             return false;
         }
     }
-    
+
     /**
      * 设置缓存数据并指定过期时间
-     * 
-     * @param key 缓存键
-     * @param value 缓存值
+     *
+     * @param key     缓存键
+     * @param value   缓存值
      * @param timeout 过期时间（秒）
      * @return 是否设置成功
      */
@@ -49,10 +49,10 @@ public class RedisCacheUtil {
             return false;
         }
     }
-    
+
     /**
      * 获取缓存数据
-     * 
+     *
      * @param key 缓存键
      * @return 缓存值
      */
@@ -64,10 +64,10 @@ public class RedisCacheUtil {
             return null;
         }
     }
-    
+
     /**
      * 删除缓存数据
-     * 
+     *
      * @param key 缓存键
      * @return 是否删除成功
      */
@@ -79,10 +79,10 @@ public class RedisCacheUtil {
             return false;
         }
     }
-    
+
     /**
      * 判断缓存是否存在
-     * 
+     *
      * @param key 缓存键
      * @return 是否存在
      */
@@ -94,11 +94,11 @@ public class RedisCacheUtil {
             return false;
         }
     }
-    
+
     /**
      * 设置过期时间
-     * 
-     * @param key 缓存键
+     *
+     * @param key     缓存键
      * @param timeout 过期时间（秒）
      * @return 是否设置成功
      */
@@ -110,10 +110,10 @@ public class RedisCacheUtil {
             return false;
         }
     }
-    
+
     /**
      * 获取过期时间
-     * 
+     *
      * @param key 缓存键
      * @return 剩余过期时间（秒）
      */

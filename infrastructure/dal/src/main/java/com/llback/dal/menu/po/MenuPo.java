@@ -1,4 +1,3 @@
-
 package com.llback.dal.menu.po;
 
 import lombok.Data;

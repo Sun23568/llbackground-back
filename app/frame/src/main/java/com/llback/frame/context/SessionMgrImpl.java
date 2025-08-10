@@ -1,6 +1,5 @@
 package com.llback.frame.context;
 
-import com.llback.common.exception.NotLoginException;
 import com.llback.common.util.AssertUtil;
 import com.llback.core.user.vo.UserCacheItemVo;
 import com.llback.core.util.CacheUtils;

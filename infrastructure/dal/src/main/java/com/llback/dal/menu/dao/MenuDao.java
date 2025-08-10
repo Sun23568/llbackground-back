@@ -12,4 +12,9 @@ public interface MenuDao {
      * 查询用户菜单
      */
     List<MenuPo> queryUserMenus(String userId);
+
+    /**
+     * 查询所有菜单
+     */
+    List<MenuPo> queryAllMenus();
 }

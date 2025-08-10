@@ -42,7 +42,7 @@ public class TokenId extends StringId {
      * 构造函数
      *
      * @param tokenId tokenId
-     * @param tag 错误信息
+     * @param tag     错误信息
      */
     protected TokenId(CharSequence tokenId, int maxLen, String tag) {
         super(tokenId, PATTERN, maxLen, tag);
@@ -63,7 +63,7 @@ public class TokenId extends StringId {
      * 构造函数
      *
      * @param tokenId tokenId
-     * @param tag 错误信息
+     * @param tag     错误信息
      * @return TokenId
      */
     public static TokenId of(CharSequence tokenId, int maxLen, String tag) {

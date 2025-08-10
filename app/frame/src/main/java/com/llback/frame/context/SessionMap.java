@@ -2,9 +2,6 @@ package com.llback.frame.context;
 
 import com.llback.common.types.TokenId;
 import com.llback.common.types.UserId;
-import jdk.nashorn.internal.parser.Token;
-import org.apache.catalina.User;
-import org.apache.tomcat.util.buf.StringUtils;
 
 import java.util.Collections;
 import java.util.Map;

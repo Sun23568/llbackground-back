@@ -3,9 +3,6 @@ package com.llback.frame;
 
 import com.llback.frame.context.AppRunContext;
 import com.llback.frame.context.RestContext;
-import com.llback.frame.dto.Query;
-import com.llback.frame.rest.RestResult;
-import org.springframework.context.ApplicationContext;
 
 /**
  * 框架接口
@@ -33,7 +30,7 @@ public interface AppFrame {
     /**
      * 获取当前请求上下文
      */
-    static AppRunContext runContext(){
+    static AppRunContext runContext() {
         return LLBack.inst.getRunContext();
     }
 
