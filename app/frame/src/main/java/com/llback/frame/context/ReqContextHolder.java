@@ -49,7 +49,7 @@ public class ReqContextHolder implements ReqContext {
         this.sessionMgr = sessionMgr;
         // 获取会话信息
         this.sessionMap = restContext.getSessionMap(sessionMgr);
-        if (null == this.sessionMap){
+        if (null == this.sessionMap) {
             this.sessionMap = SessionMap.of(UserId.GUEST_UID);
             return;
         }
@@ -110,9 +110,15 @@ public class ReqContextHolder implements ReqContext {
 
     }
 
+    /**
+     * 更新Session
+     */
     @Override
     public void updateSession(SessionMap sessionMap) {
-        StpUtil.login(sessionMap.getUserId().toString());
+        if (!sessionMap.isGuest()) {
+            StpUtil.logout(sessionMap.getUserId());
+        }
+        restContext.createSession(sessionMap);
     }
 
     /**

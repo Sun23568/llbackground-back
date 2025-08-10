@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.llback.dal.menu.dao.MenuDao">
+    <!-- 获取用户菜单列表 -->
+    <select id="queryUserMenus" parameterType="string" resultType="com.llback.dal.menu.po.MenuPo">
+        SELECT
+            T2.MENU_ID ,
+            T2.MENU_CODE ,
+            T2.MENU_NAME
+        FROM
+            USER_MENU T1
+                LEFT JOIN SYS_MENU T2 ON
+                T1.MENU_CODE = T2.MENU_CODE
+        WHERE T1.USER_ID = #{userId}
+          AND T2.MENU_ID IS NOT NULL
+    </select>
+</mapper>

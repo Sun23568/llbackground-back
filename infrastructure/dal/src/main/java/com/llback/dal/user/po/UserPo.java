@@ -1,4 +1,4 @@
-package com.llback.dal.sa.po;
+package com.llback.dal.user.po;
 
 import lombok.Data;
 

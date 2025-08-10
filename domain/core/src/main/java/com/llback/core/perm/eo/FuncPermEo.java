@@ -1,5 +1,6 @@
-package com.llback.core.user.eo;
+package com.llback.core.perm.eo;
 
+import com.llback.common.types.FuncCode;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -12,16 +13,21 @@ public class FuncPermEo {
     /**
      * 功能权限ID
      */
-    private String id;
+    private String permId;
 
     /**
      * 功能权限编码
      */
-    private String permissionCode;
+    private FuncCode permCode;
 
     /**
      * 功能权限名称
      */
-    private String permissionName;
+    private String permName;
+
+    /**
+     * 功能权限类型
+     */
+    private String type;
 
 }

@@ -265,11 +265,5 @@ public abstract class BaseValidText implements Serializable, Comparable<Object>,
     public String getValue(){
         return toString();
     }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject(); // 反序列化所有非transient字段
-        String test = (String) in.readObject(); // 手动反序列化敏感数据字段
-        System.out.println();
-    }
 }
 

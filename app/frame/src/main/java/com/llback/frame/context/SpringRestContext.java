@@ -2,9 +2,11 @@ package com.llback.frame.context;
 
 import cn.dev33.satoken.SaManager;
 import cn.dev33.satoken.jwt.SaJwtTemplate;
+import cn.dev33.satoken.jwt.SaJwtUtil;
 import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
+import cn.hutool.json.JSONObject;
 import com.llback.common.exception.NotLoginException;
 import com.llback.common.types.TokenId;
 import com.llback.common.types.UserId;
@@ -45,7 +47,8 @@ public class SpringRestContext implements RestContext {
         }
         String loginId = StpUtil.getLoginIdAsString();
         String tokenValue = StpUtil.getTokenValue();
-        SessionMap sessionMap = SessionMap.of(UserId.of(loginId), TokenId.of(tokenValue), new HashMap<>());
+        JSONObject extMap = SaJwtUtil.getPayloadsNotCheck(tokenValue, StpUtil.getLoginType(), SaManager.getConfig().getJwtSecretKey());
+        SessionMap sessionMap = SessionMap.of(UserId.of(loginId), TokenId.of(tokenValue), extMap);
         // Token失效时间小于会话时长 1/4 , 就自动续期
         if (!UserId.isGuest(loginId) && StpUtil.getTokenTimeout() <= SaManager.getConfig().getTimeout() / 4) {
             createSession(sessionMap);
@@ -67,9 +70,10 @@ public class SpringRestContext implements RestContext {
     }
 
 
-    private void createSession(SessionMap sessionMap) {
-        // 每次生成token的时候，移除掉过期时间
-        sessionMap.remove(SaJwtTemplate.EFF);
+    /**
+     * 创建session\
+     */
+    public void createSession(SessionMap sessionMap) {
         // 生成token
         SaLoginParameter saLoginParameter = SaLoginConfig.setExtraData(sessionMap.getExtData()).setTimeout(SaManager.getConfig().getTimeout());
         StpUtil.login(sessionMap.getUserId(), saLoginParameter);

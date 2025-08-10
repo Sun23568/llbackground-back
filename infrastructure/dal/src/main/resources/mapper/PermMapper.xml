@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.llback.dal.perm.dao.PermDao">
+    <!-- 获取用户权限列表 -->
+    <select id="queryUserPerms" parameterType="string" resultType="com.llback.dal.perm.po.PermissionPo">
+        SELECT
+            T2.PERM_ID,
+            T2.PERM_CODE,
+            T2.PERM_NAME,
+            T2.TYPE
+        FROM
+            USER_PERMISSION T1
+        LEFT JOIN SYS_PERMISSION T2 ON
+            T1.PERM_CODE = T2.PERM_CODE
+        WHERE T1.USER_ID = #{userId}
+          AND T2.PERM_ID IS NOT NULL
+    </select>
+</mapper>

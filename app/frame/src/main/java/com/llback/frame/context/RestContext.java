@@ -6,16 +6,16 @@ package com.llback.frame.context;
 public interface RestContext {
     /**
      * 获取sessionMap
-     *
-     * @param sessionMgr
-     * @return
      */
     SessionMap getSessionMap(SessionMgr sessionMgr);
 
     /**
      * 检查登录状态
-     *
-     * @param autoRenew 自动续期
      */
     void checkLogin(boolean autoRenew);
+
+    /**
+     * 创建session
+     */
+    void createSession(SessionMap sessionMap);
 }

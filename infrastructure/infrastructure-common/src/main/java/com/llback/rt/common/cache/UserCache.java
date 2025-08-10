@@ -1,20 +1,19 @@
 package com.llback.rt.common.cache;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.llback.common.types.*;
 import com.llback.common.types.CacheType;
-import com.llback.common.types.UserId;
-import com.llback.common.types.UserName;
 import com.llback.common.util.AssertUtil;
 import com.llback.core.menu.eo.MenuEo;
-import com.llback.core.user.eo.FuncPermEo;
-import com.llback.core.user.repository.PermRepository;
+import com.llback.core.menu.repository.MenuRepository;
+import com.llback.core.perm.eo.FuncPermEo;
+import com.llback.core.perm.repository.PermRepository;
 import com.llback.core.user.repository.UserRepository;
 import com.llback.core.user.eo.UserEo;
 import com.llback.core.user.vo.UserCacheItemVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -37,6 +36,12 @@ public class UserCache extends BaseObjectCache<UserCacheItemVo> {
     @Autowired
     private PermRepository permRepository;
 
+    /**
+     * 菜单仓储
+     */
+    @Autowired
+    private MenuRepository menuRepository;
+
     @Override
     public CacheType getCacheType() {
         return CacheType.USER;
@@ -58,14 +63,16 @@ public class UserCache extends BaseObjectCache<UserCacheItemVo> {
         UserEo userEo = userRepository.findUser(userId);
         userEo.clearPassword();
         // 获取菜单
-        Collection<MenuEo> menuList = new ArrayList<>();
+        Collection<MenuEo> menuList = menuRepository.queryUserMenus(userId);
+        Set<String> menus = menuList.stream().map(MenuEo::getMenuCode).map(MenuCode::toString).collect(Collectors.toSet());
+
         // 获取权限
         List<FuncPermEo> funcPermEos = permRepository.queryUserPerms(UserId.of(userId));
-        Set<String> perms = funcPermEos.stream().map(FuncPermEo::getPermissionCode).collect(Collectors.toSet());
+        Set<String> perms = funcPermEos.stream().map(FuncPermEo::getPermCode).map(FuncCode::toString).collect(Collectors.toSet());
 
         return UserCacheItemVo.builder()
                 .user(userEo)
-                .menuList(menuList)
+                .menus(menus)
                 .perms(perms)
                 .crtTimestamp(System.currentTimeMillis())
                 .build();
@@ -83,7 +90,7 @@ public class UserCache extends BaseObjectCache<UserCacheItemVo> {
                 .build();
         return UserCacheItemVo.builder()
                 .user(userEo)
-                .menuList(from.getObject("menuList", Collection.class))
+                .menus(from.getObject("menus", Set.class))
                 .perms(from.getObject("perms", Set.class))
                 .crtTimestamp(from.getLong("crtTimestamp"))
                 .build();

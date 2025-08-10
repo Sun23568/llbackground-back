@@ -1,11 +1,9 @@
 package com.llback.core.user.vo;
 
-import com.llback.core.menu.eo.MenuEo;
 import com.llback.core.user.eo.UserEo;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.Collection;
 import java.util.Set;
 
 /**
@@ -23,7 +21,7 @@ public class UserCacheItemVo {
     /**
      * 菜单列表
      */
-    private Collection<MenuEo> menuList;
+    private Set<String> menus;
 
     /**
      * 权限列表
@@ -36,6 +34,6 @@ public class UserCacheItemVo {
     private final long crtTimestamp;
 
     public boolean validCache() {
-        return user != null && menuList != null && perms != null;
+        return user != null && menus != null && perms != null;
     }
 }

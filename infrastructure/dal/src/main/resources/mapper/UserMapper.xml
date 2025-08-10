@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.llback.dal.user.dao.UserDao">
     <!-- 获取用户信息 -->
-    <select id="getUserInfo" parameterType="string" resultType="com.llback.dal.sa.po.UserPo">
+    <select id="getUserInfo" parameterType="string" resultType="com.llback.dal.user.po.UserPo">
         SELECT PK_ID, USER_ID, USER_NAME, PASSWORD, CREATE_TIME, UPDATE_TIME
         FROM SYS_USER
         WHERE USER_ID = #{userId}
@@ -15,7 +15,7 @@
         WHERE u.delete_status = '1'
     </select>
 
-<!--    <resultMap id="userMap" type="com.llback.dal.sa.po.UserPo">-->
+<!--    <resultMap id="userMap" type="com.llback.dal.user.po.UserPo">-->
 <!--        <id column="userId" property="userId"/>-->
 <!--        <result column="username" property="username"/>-->
 <!--        <result column="nickname" property="nickname"/>-->

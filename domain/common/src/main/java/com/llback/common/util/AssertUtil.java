@@ -75,7 +75,7 @@ public class AssertUtil {
      */
     public static <T> T notNull(T input, String message) {
         if (null == input) {
-            throw new IllegalArgumentException(message);
+            throw new BizException(message);
         }
         return input;
     }

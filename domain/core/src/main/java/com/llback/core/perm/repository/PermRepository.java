@@ -1,7 +1,7 @@
-package com.llback.core.user.repository;
+package com.llback.core.perm.repository;
 
 import com.llback.common.types.UserId;
-import com.llback.core.user.eo.FuncPermEo;
+import com.llback.core.perm.eo.FuncPermEo;
 
 import java.util.List;
 

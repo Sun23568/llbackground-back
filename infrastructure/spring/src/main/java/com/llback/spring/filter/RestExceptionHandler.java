@@ -47,20 +47,6 @@ final class RestExceptionHandler implements ApplicationContextAware{
     }
 
     /**
-     * handleNot
-     *
-     * @param e
-     * @param request
-     * @param response
-     * @return
-     */
-    @ExceptionHandler({NotLoginException.class})
-    public RestResult<Object> handleNotLoginException(Exception e, HttpServletRequest request, HttpServletResponse response) {
-        e.printStackTrace();
-        return RestResult.failed(NOT_LOGIN, NOT_LOGIN.getMessage());
-    }
-
-    /**
      * handleBizException
      *
      * @param e        e

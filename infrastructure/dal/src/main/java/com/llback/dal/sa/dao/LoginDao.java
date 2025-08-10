@@ -1,11 +1,9 @@
 package com.llback.dal.sa.dao;
 
-import com.llback.dal.sa.po.MenuPo;
-import com.llback.dal.sa.po.PermissionPo;
-import com.llback.dal.sa.po.UserPo;
+import com.llback.dal.menu.po.MenuPo;
+import com.llback.dal.perm.po.PermissionPo;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author: heeexy
@@ -13,16 +11,6 @@ import java.util.Set;
  * @date: 2017/10/24 11:02
  */
 public interface LoginDao {
-    /**
-     * 根据用户名和密码查询对应的用户
-     */
-    UserPo checkUser(String username, String password);
-
-    /**
-     * 根据用户id查询用户信息
-     */
-    UserPo getUserInfo(String userId);
-
     List<MenuPo> getAllMenu();
 
     List<PermissionPo> getAllPermissionCode();
