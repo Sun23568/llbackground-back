@@ -2,6 +2,8 @@ package com.llback.dal.user.dao;
 
 
 import com.alibaba.fastjson2.JSONObject;
+import com.llback.dal.user.po.UserMenuPo;
+import com.llback.dal.user.po.UserPermPo;
 import com.llback.dal.user.po.UserPo;
 
 import java.util.List;
@@ -110,4 +112,14 @@ public interface UserDao {
      * 删除本角色全部权限
      */
     int removeRoleAllPermission(String roleId);
+
+    /**
+     * 查询所有用户权限
+     */
+    List<UserPermPo> queryAllUserPerms();
+
+    /**
+     * 查询所有用户菜单
+     */
+    List<UserMenuPo> queryAllUserMenus();
 }

@@ -34,6 +34,27 @@ public class MapHandlerBus implements HandlerBus {
             }
         }
 
+        // 如果直接接口中没有找到，尝试从父类中查找
+        Class<?> clazz = handler.getClass();
+        while (clazz != null && clazz != Object.class) {
+            Type superClass = clazz.getGenericSuperclass();
+            Type[] genericInterfaces1 = ((Class) superClass).getGenericInterfaces();
+            for (Type genericInterface : genericInterfaces1) {
+                if (!(genericInterface instanceof ParameterizedType)) {
+                    continue;
+                }
+                ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
+                Type rawType = parameterizedType.getRawType();
+
+                if (Handler.class.equals(rawType) || Handler.class.isAssignableFrom((Class<?>) rawType)) {
+                    Class<?> genericParamType = getGenericParamType(genericInterface, handler.getClass(), 1);
+                    handlerMap.put(genericParamType, HandlerInfo.of(genericParamType, handler));
+                    return;
+                }
+            }
+            clazz = clazz.getSuperclass();
+        }
+
         throw new IllegalArgumentException("not found generic interface: from " + handler);
     }
 

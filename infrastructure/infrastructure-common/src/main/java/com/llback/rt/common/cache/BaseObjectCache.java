@@ -79,7 +79,7 @@ public abstract class BaseObjectCache<T> {
         // 删除redis缓存
         T obj = onReload(key);
         redisCacheUtil.delete(getCacheKey(key));
-        redisCacheUtil.set(getCacheKey(key), obj);
+        redisCacheUtil.set(getCacheKey(key), obj, 1800);
         return obj;
     }
 }

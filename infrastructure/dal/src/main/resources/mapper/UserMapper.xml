@@ -15,18 +15,63 @@
         WHERE u.delete_status = '1'
     </select>
 
-    <!--    <resultMap id="userMap" type="com.llback.dal.user.po.UserPo">-->
-    <!--        <id column="userId" property="userId"/>-->
-    <!--        <result column="username" property="username"/>-->
-    <!--        <result column="nickname" property="nickname"/>-->
-    <!--        <result column="createTime" property="createTime"/>-->
-    <!--        <result column="updateTime" property="updateTime"/>-->
-    <!--        <result column="deleteStatus" property="deleteStatus"/>-->
-    <!--        <collection property="roles" ofType="com.alibaba.fastjson.JSONObject">-->
-    <!--            <id column="roleId" property="roleId"/>-->
-    <!--            <result column="roleName" property="roleName"/>-->
-    <!--        </collection>-->
-    <!--    </resultMap>-->
+    <resultMap id="userPermMap" type="com.llback.dal.user.po.UserPermPo">
+        <id column="USER_ID" property="userId"/>
+        <result column="USER_NAME" property="userName"/>
+        <collection property="permTypes" ofType="com.llback.dal.perm.po.PermissionTypePo">
+            <id column="TYPE" property="type"/>
+            <collection property="perms" ofType="com.llback.dal.perm.po.PermissionPo">
+                <id column="PERM_ID" property="permId"/>
+                <result column="PERM_CODE" property="permCode"/>
+                <result column="PERM_NAME" property="permName"/>
+                <result column="TYPE" property="type"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <resultMap id="userMenuMap" type="com.llback.dal.user.po.UserMenuPo">
+        <id column="USER_ID" property="userId"/>
+        <result column="USER_NAME" property="userName"/>
+        <collection property="menus" ofType="com.llback.dal.menu.po.MenuPo">
+            <id column="MENU_ID" property="menuId"/>
+            <result column="MENU_CODE" property="menuCode"/>
+            <result column="MENU_NAME" property="menuName"/>
+        </collection>
+    </resultMap>
+
+    <!-- 获取所有用户权限信息 -->
+    <select id="queryAllUserPerms" resultMap="userPermMap">
+        SELECT
+            T1.USER_ID ,
+            T1.USER_NAME ,
+            T3.PERM_ID ,
+            T3.PERM_CODE ,
+            T3.PERM_NAME ,
+            T3.`TYPE`
+        FROM
+            SYS_USER T1
+        LEFT JOIN USER_PERMISSION T2 ON
+            T1.USER_ID = T2.USER_ID
+        LEFT JOIN SYS_PERMISSION T3 ON
+            T2.PERM_ID = T3.PERM_ID
+    </select>
+
+    <!-- 获取所有用户菜单信息 -->
+    <select id="queryAllUserMenus" resultMap="userMenuMap">
+        SELECT
+            T1.USER_ID ,
+            T1.USER_NAME ,
+            T3.MENU_ID ,
+            T3.MENU_CODE ,
+            T3.MENU_NAME
+        FROM
+            SYS_USER T1
+        LEFT JOIN USER_MENU T2 ON
+            T1.USER_ID = T2.USER_ID
+        LEFT JOIN SYS_MENU T3 ON
+            T2.MENU_ID = T3.MENU_ID
+    </select>
+
     <!--    <select id="listUser" resultMap="userMap">-->
     <!--        SELECT u.*,-->
     <!--               r.id        roleId,-->

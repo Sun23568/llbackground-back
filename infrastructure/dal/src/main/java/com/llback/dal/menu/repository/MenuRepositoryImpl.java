@@ -5,7 +5,7 @@ import com.llback.core.menu.eo.MenuEo;
 import com.llback.core.menu.repository.MenuRepository;
 import com.llback.dal.menu.dao.MenuDao;
 import com.llback.dal.menu.po.MenuPo;
-import com.llback.rt.common.cache.PoEoAssembleUtil;
+import com.llback.rt.common.cache.PoAssembleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +32,7 @@ public class MenuRepositoryImpl implements MenuRepository {
             return Collections.emptyList();
         }
         List<MenuPo> menuPoList = menuDao.queryUserMenus(userId.toString());
-        return PoEoAssembleUtil.poList2EoList(menuPoList, MenuEo.class);
+        return PoAssembleUtil.poList2EoList(menuPoList, MenuEo.class);
     }
 
     /**
@@ -41,6 +41,6 @@ public class MenuRepositoryImpl implements MenuRepository {
     @Override
     public List<MenuEo> getAllMenus() {
         List<MenuPo> menuPoList = menuDao.queryAllMenus();
-        return PoEoAssembleUtil.poList2EoList(menuPoList, MenuEo.class);
+        return PoAssembleUtil.poList2EoList(menuPoList, MenuEo.class);
     }
 }
