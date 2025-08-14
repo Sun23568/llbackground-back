@@ -37,4 +37,36 @@ public class AccessFetchImpl implements AccessFetch {
         List<UserMenuPo> userMenuPos = userDao.queryAllUserMenus();
         return AccessAssembler.userMenuPoToDto(userMenuPos);
     }
+
+    /**
+     * 删除所有用户权限
+     */
+    @Override
+    public void removeUserPerms(String userId) {
+        userDao.removeUserPerms(userId);
+    }
+
+    /**
+     * 删除用户菜单
+     */
+    @Override
+    public void removeUserMenus(String userId) {
+        userDao.removeUserMenus(userId);
+    }
+
+    /**
+     * 添加用户权限
+     */
+    @Override
+    public void addUserPerms(String userId, List<String> permissions) {
+        userDao.addUserPerms(userId, permissions);
+    }
+
+    /**
+     * 添加用户菜单
+     */
+    @Override
+    public void addUserMenus(String userId, List<String> menuIds) {
+        userDao.addUserMenus(userId, menuIds);
+    }
 }

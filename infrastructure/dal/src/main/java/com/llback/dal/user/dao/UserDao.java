@@ -122,4 +122,24 @@ public interface UserDao {
      * 查询所有用户菜单
      */
     List<UserMenuPo> queryAllUserMenus();
+
+    /**
+     * 删除用户权限
+     */
+    void removeUserPerms(String userId);
+
+    /**
+     * 删除用户菜单
+     */
+    void removeUserMenus(String userId);
+
+    /**
+     * 添加用户权限
+     */
+    void addUserPerms(String userId, List<String> permissions);
+
+    /**
+     * 添加用户菜单
+     */
+    void addUserMenus(String userId, List<String> menuIds);
 }

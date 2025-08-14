@@ -50,7 +50,7 @@ public class AssertUtil {
      */
     public static void notEmptyList(Collection<?> list, String message) {
         if (null == list || list.isEmpty()) {
-            throw new IllegalArgumentException(message);
+            throw new BizException(message);
         }
     }
 
@@ -100,7 +100,7 @@ public class AssertUtil {
      */
     public static void assertTrue(boolean condition, String message) throws IllegalArgumentException {
         if (!condition) {
-            throw new BizException(ErrorCode.LOGIN_USER_VERIFY_FAILED);
+            throw new BizException(message);
         }
     }
 
@@ -124,7 +124,7 @@ public class AssertUtil {
      */
     public static void assertFalse(boolean condition, String message) {
         if (condition) {
-            throw new IllegalArgumentException(message);
+            throw new BizException(message);
         }
     }
 

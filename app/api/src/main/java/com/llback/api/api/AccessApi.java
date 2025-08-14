@@ -35,6 +35,7 @@ public class AccessApi implements RestApi {
      */
     @PostMapping("/update-user")
     public RestResult<AccessAllPermResp> updateUserAccess(@RequestBody UpdateUserAccessCmd updateUserAccessCmd) {
-        return this.execute(updateUserAccessCmd);
+        this.execute(updateUserAccessCmd);
+        return RestResult.ok(null);
     }
 }

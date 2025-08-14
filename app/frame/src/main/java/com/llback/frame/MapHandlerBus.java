@@ -2,6 +2,7 @@ package com.llback.frame;
 
 import com.llback.common.util.AssertUtil;
 import com.llback.frame.context.ReqContext;
+import org.springframework.aop.support.AopUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -19,7 +20,14 @@ public class MapHandlerBus implements HandlerBus {
 
     @Override
     public void add(Handler<?, ?> handler) {
-        Type[] genericInterfaces = handler.getClass().getGenericInterfaces();
+        Class<?> aClass;
+        // 若是代理类，则获取目标类
+        if(AopUtils.isAopProxy(handler)){
+            aClass = AopUtils.getTargetClass(handler);
+        }else {
+            aClass = handler.getClass();
+        }
+        Type[] genericInterfaces = aClass.getGenericInterfaces();
         for (Type genericInterface : genericInterfaces) {
             if (!(genericInterface instanceof ParameterizedType)) {
                 continue;
@@ -32,27 +40,6 @@ public class MapHandlerBus implements HandlerBus {
                 handlerMap.put(genericParamType, HandlerInfo.of(genericParamType, handler));
                 return;
             }
-        }
-
-        // 如果直接接口中没有找到，尝试从父类中查找
-        Class<?> clazz = handler.getClass();
-        while (clazz != null && clazz != Object.class) {
-            Type superClass = clazz.getGenericSuperclass();
-            Type[] genericInterfaces1 = ((Class) superClass).getGenericInterfaces();
-            for (Type genericInterface : genericInterfaces1) {
-                if (!(genericInterface instanceof ParameterizedType)) {
-                    continue;
-                }
-                ParameterizedType parameterizedType = (ParameterizedType) genericInterface;
-                Type rawType = parameterizedType.getRawType();
-
-                if (Handler.class.equals(rawType) || Handler.class.isAssignableFrom((Class<?>) rawType)) {
-                    Class<?> genericParamType = getGenericParamType(genericInterface, handler.getClass(), 1);
-                    handlerMap.put(genericParamType, HandlerInfo.of(genericParamType, handler));
-                    return;
-                }
-            }
-            clazz = clazz.getSuperclass();
         }
 
         throw new IllegalArgumentException("not found generic interface: from " + handler);

@@ -2,6 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.llback.dal.user.dao.UserDao">
+    <!-- 添加用户权限 -->
+    <insert id="addUserPerms">
+        INSERT INTO USER_PERMISSION (USER_ID, PERM_ID, CRT_TIME)
+        VALUES
+        <foreach collection="permissions" item="i" separator=",">
+            (#{userId},#{i},now())
+        </foreach>
+    </insert>
+
+    <!-- 添加用户菜单 -->
+    <insert id="addUserMenus">
+        INSERT INTO USER_MENU (USER_ID, MENU_ID, CRT_TIME)
+        VALUES
+        <foreach collection="menuIds" item="i" separator=",">
+            (#{userId},#{i},now())
+        </foreach>
+    </insert>
+
+    <!-- 删除用户下 -->
+    <delete id="removeUserPerms">
+        DELETE FROM USER_PERMISSION
+        WHERE USER_ID = #{userId}
+    </delete>
+
+    <!-- 删除用户下菜单 -->
+    <delete id="removeUserMenus">
+        DELETE FROM USER_MENU
+        WHERE USER_ID = #{userId}
+    </delete>
     <!-- 获取用户信息 -->
     <select id="getUserInfo" parameterType="string" resultType="com.llback.dal.user.po.UserPo">
         SELECT PK_ID, USER_ID, USER_NAME, PASSWORD, CREATE_TIME, UPDATE_TIME
