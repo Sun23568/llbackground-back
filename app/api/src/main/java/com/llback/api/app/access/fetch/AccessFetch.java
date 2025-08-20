@@ -43,4 +43,14 @@ public interface AccessFetch {
      * 添加用户菜单
      */
     void addUserMenus(String userId, List<String> menuIds);
+
+    /**
+     * 查询权限编码数量
+     */
+    int getPermCodeCount(String permCode);
+
+    /**
+     * 查询菜单编码数量
+     */
+    int getMenuCodeCount(String menuCode);
 }

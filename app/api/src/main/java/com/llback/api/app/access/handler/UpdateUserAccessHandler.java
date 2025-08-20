@@ -36,6 +36,6 @@ public class UpdateUserAccessHandler implements Handler<Void, UpdateUserAccessCm
         accessFetch.addUserPerms(req.getUserId(), req.getPermissions());
         // 新增用户菜单
         accessFetch.addUserMenus(req.getUserId(), req.getMenuIds());
-        return null;
+        return Void.TYPE.cast(null);
     }
 }

@@ -17,4 +17,14 @@ public interface MenuDao {
      * 查询所有菜单
      */
     List<MenuPo> queryAllMenus();
+
+    /**
+     * 获取菜单编码数量
+     */
+    int getMenuCodeCount(String menuCode);
+
+    /**
+     * 添加菜单
+     */
+    void addMenu(MenuPo menuPo);
 }

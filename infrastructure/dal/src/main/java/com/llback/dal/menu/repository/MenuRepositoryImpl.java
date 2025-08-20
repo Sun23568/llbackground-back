@@ -43,4 +43,13 @@ public class MenuRepositoryImpl implements MenuRepository {
         List<MenuPo> menuPoList = menuDao.queryAllMenus();
         return PoAssembleUtil.poList2EoList(menuPoList, MenuEo.class);
     }
+
+    /**
+     * 添加菜单
+     */
+    @Override
+    public void addMenu(MenuEo menuEo) {
+        MenuPo menuPo = PoAssembleUtil.eo2Po(menuEo, MenuPo.class);
+        menuDao.addMenu(menuPo);
+    }
 }

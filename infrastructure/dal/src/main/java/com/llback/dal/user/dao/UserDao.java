@@ -32,7 +32,7 @@ public interface UserDao {
     /**
      * 查询用户列表
      */
-    List<JSONObject> listUser(JSONObject jsonObject);
+    List<UserPo> listUser();
 
     /**
      * 查询所有的角色
@@ -48,12 +48,12 @@ public interface UserDao {
     /**
      * 新增用户
      */
-    int addUser(JSONObject jsonObject);
+    int addUser(UserPo userPo);
 
     /**
      * 修改用户
      */
-    int updateUser(JSONObject jsonObject);
+    int updateUser(UserPo userPo);
 
     int batchAddUserRole(JSONObject jsonObject);
 

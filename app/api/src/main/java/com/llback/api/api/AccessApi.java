@@ -1,8 +1,6 @@
 package com.llback.api.api;
 
-import com.llback.api.app.access.dto.req.AccessAllPermReq;
-import com.llback.api.app.access.dto.req.AccessListReq;
-import com.llback.api.app.access.dto.req.UpdateUserAccessCmd;
+import com.llback.api.app.access.dto.req.*;
 import com.llback.api.app.access.dto.resp.AccessAllPermResp;
 import com.llback.frame.rest.RestApi;
 import com.llback.frame.rest.RestResult;
@@ -34,8 +32,23 @@ public class AccessApi implements RestApi {
      * 更新用户权限
      */
     @PostMapping("/update-user")
-    public RestResult<AccessAllPermResp> updateUserAccess(@RequestBody UpdateUserAccessCmd updateUserAccessCmd) {
+    public RestResult updateUserAccess(@RequestBody UpdateUserAccessCmd updateUserAccessCmd) {
         this.execute(updateUserAccessCmd);
+        return RestResult.ok(null);
+    }
+
+    /**
+     * 新增权限
+     */
+    @PostMapping("/add-perm")
+    public RestResult addPerm(@RequestBody AddPermCmd addPermCmd) {
+        this.execute(addPermCmd);
+        return RestResult.ok(null);
+    }
+
+    @PostMapping("/add-menu")
+    public RestResult addMenu(@RequestBody AddMenuCmd addMenuCmd) {
+        this.execute(addMenuCmd);
         return RestResult.ok(null);
     }
 }

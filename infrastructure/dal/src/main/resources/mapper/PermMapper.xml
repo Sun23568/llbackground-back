@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.llback.dal.perm.dao.PermDao">
+    <!-- 添加权限 -->
+    <insert id="addPermission">
+        INSERT INTO SYS_PERMISSION (PERM_ID, PERM_CODE, PERM_NAME, TYPE)
+        VALUES (UUID32(), #{permCode}, #{permName}, #{type})
+    </insert>
+
     <!-- 获取用户权限列表 -->
     <select id="queryUserPerms" parameterType="string" resultType="com.llback.dal.perm.po.PermissionPo">
         SELECT T2.PERM_ID,
@@ -24,5 +30,15 @@
             `TYPE`
         FROM
             SYS_PERMISSION
+    </select>
+
+    <!-- 获取权限数量 -->
+    <select id="getPermCodeCount" resultType="java.lang.Integer">
+        SELECT
+            count(0)
+        FROM
+            SYS_PERMISSION
+        WHERE
+            PERM_CODE = #{permCode}
     </select>
 </mapper>

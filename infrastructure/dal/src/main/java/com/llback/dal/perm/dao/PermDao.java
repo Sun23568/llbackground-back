@@ -18,4 +18,13 @@ public interface PermDao {
      */
     List<PermissionPo> queryAllPermmission();
 
+    /**
+     * 查询权限编码数量
+     */
+    int getPermCodeCount(String permCode);
+
+    /**
+     * 添加权限
+     */
+    void addPermission(PermissionPo permissionPo);
 }

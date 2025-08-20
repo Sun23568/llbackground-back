@@ -18,4 +18,9 @@ public interface PermRepository {
      * 查询所有权限
      */
     List<FuncPermEo> getAllPermission();
+
+    /**
+     * 添加权限 permEo
+     */
+    void addPerm(FuncPermEo permEo);
 }

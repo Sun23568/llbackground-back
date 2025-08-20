@@ -1,6 +1,9 @@
 package com.llback.api.util;
 
+import com.github.pagehelper.PageInfo;
+import com.llback.common.types.SafeText;
 import com.llback.common.types.StringId;
+import com.llback.frame.dto.PageResult;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -31,7 +34,7 @@ public class DtoEoAssemblerUtil {
                 // 获取源字段的值
                 sourceField.setAccessible(true);
                 Object value;
-                if (StringId.class.isAssignableFrom(sourceField.getType())) {
+                if ((StringId.class.isAssignableFrom(sourceField.getType()) || SafeText.class.isAssignableFrom(sourceField.getType()))) {
                     value = sourceField.get(source).toString();
                 } else {
                     value = sourceField.get(source);
@@ -82,7 +85,7 @@ public class DtoEoAssemblerUtil {
         }
 
         // 处理值类型转String
-        if (StringId.class.isAssignableFrom(sourceType) && String.class.isAssignableFrom(targetType)) {
+        if ((StringId.class.isAssignableFrom(sourceType) || SafeText.class.isAssignableFrom(sourceType)) && String.class.isAssignableFrom(targetType)) {
             return true;
         }
 
@@ -145,5 +148,12 @@ public class DtoEoAssemblerUtil {
      */
     public static <T> List<T> eoList2DtoList(List source, Class<T> targetClass) {
         return (List<T>) source.stream().map(item -> eo2Dto(item, targetClass)).collect(Collectors.toList());
+    }
+
+    /**
+     * poPage 转为 eoPage
+     */
+    public static <T> PageResult<T> eoPageToDtoResult(PageInfo eoPage, Class<T> dtoClassType) {
+        return PageResult.ofByPageIndex(eoList2DtoList(eoPage.getList(), dtoClassType), eoPage.getPageSize(), eoPage.getPageNum(), (int) eoPage.getTotal());
     }
 }

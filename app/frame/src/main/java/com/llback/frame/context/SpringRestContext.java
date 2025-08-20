@@ -73,6 +73,7 @@ public class SpringRestContext implements RestContext {
      */
     public void createSession(SessionMap sessionMap) {
         // 生成token
+        sessionMap.setTokenCrtTimestamp(System.currentTimeMillis());
         SaLoginParameter saLoginParameter = SaLoginConfig.setExtraData(sessionMap.getExtData()).setTimeout(SaManager.getConfig().getTimeout());
         StpUtil.login(sessionMap.getUserId(), saLoginParameter);
         String tokenValue = StpUtil.getTokenValue();

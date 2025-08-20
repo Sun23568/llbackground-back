@@ -18,4 +18,9 @@ public interface MenuRepository {
      * 查询所有菜单
      */
     List<MenuEo> getAllMenus();
+
+    /**
+     * 添加菜单
+     */
+    void addMenu(MenuEo menuEo);
 }

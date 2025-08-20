@@ -1,17 +1,63 @@
 package com.llback.rt.common.cache;
 
+import com.github.pagehelper.PageInfo;
+import com.llback.common.types.SafeText;
 import com.llback.common.types.StringId;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * 缓存工具类
  */
+@Slf4j
 public class PoAssembleUtil {
+    /**
+     * eo转为po
+     *
+     * @param eoObj
+     * @param poClassType
+     * @return
+     * @param <T>
+     */
+    public static <T> T eo2Po(Object eoObj, Class<T> poClassType){
+        try {
+            // po实例化
+            T poObj = poClassType.getDeclaredConstructor().newInstance();
+            // 取出eo对象的所有字段
+            Field[] fields = eoObj.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                field.setAccessible(true);
+                Object value = field.get(eoObj);
+                if (value != null) {
+                    // 获取po对象中同名字段
+                    Field poField;
+                    try {
+                        poField = poClassType.getDeclaredField(field.getName());
+                    }catch (NoSuchFieldException ignored){
+                        continue;
+                    }
+                    poField.setAccessible(true);
+                    // 设置po对象中同名字段的值
+                    if (poField.getType().equals(field.getType())) {
+                        poField.set(poObj, value);
+                    } else if ((StringId.class.isAssignableFrom(field.getType()) || SafeText.class.isAssignableFrom(field.getType())) && poField.getType().equals(String.class)) {
+                        poField.set(poObj, value.toString());
+                    }
+                }
+            }
+            return poObj;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create instance", e);
+        }
+    }
+
     /*
      * po转为eo
      */
@@ -33,6 +79,10 @@ public class PoAssembleUtil {
                 try {
                     poField.setAccessible(true);
                     Object value = poField.get(poObj);
+                    // value判空
+                    if (isEmpty(value)){
+                        continue;
+                    }
 
                     // 通过build方式进行复制
                     Class<?> builderFieldType = builderClass.getDeclaredField(poField.getName()).getType();
@@ -40,11 +90,12 @@ public class PoAssembleUtil {
                     Method declaredMethod = builderClass.getDeclaredMethod(poField.getName(), builderFieldType);
                     if (builderFieldType.isAssignableFrom(poFieldType)) {
                         declaredMethod.invoke(builder, value);
-                    } else if (StringId.class.isAssignableFrom(builderFieldType) && poFieldType.equals(String.class)) {
-                        declaredMethod.invoke(builder, builderFieldType.getDeclaredMethod("of", String.class).invoke(builderFieldType, value));
+                    } else if ((StringId.class.isAssignableFrom(builderFieldType) || SafeText.class.isAssignableFrom(builderFieldType)) && poFieldType.equals(String.class)) {
+                        declaredMethod.invoke(builder, builderFieldType.getDeclaredMethod("of", CharSequence.class).invoke(builderFieldType, value));
                     }
                 } catch (Exception e) {
                     // 忽略无法复制的属性
+                    log.error("Failed to create instance using @Builder {}", poField);
                 }
             }
 
@@ -71,5 +122,24 @@ public class PoAssembleUtil {
             eoList.add(t);
         }
         return eoList;
+    }
+
+    public static <T> PageInfo poPage2EoPage(PageInfo poPageObj, Class<T> eoClassType) {
+        PageInfo<T> tPageInfo = PageInfo.of(poList2EoList(poPageObj.getList(), eoClassType));
+        tPageInfo.setTotal(poPageObj.getTotal());
+        return tPageInfo;
+    }
+
+    private static boolean isEmpty(Object obj) {
+        if (obj == null) {
+            return true;
+        }
+        if (obj instanceof String) {
+            return StringUtils.isEmpty((String) obj);
+        }
+        if (obj instanceof Collection) {
+            return ((Collection) obj).isEmpty();
+        }
+        return false;
     }
 }

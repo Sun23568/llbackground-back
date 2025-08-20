@@ -39,8 +39,8 @@ public class FuncCode extends StringId implements Serializable {
      *
      * @param code 功能码ID
      */
-    public static FuncCode of(String code) {
-        return new FuncCode(cleanInput(code));
+    public static FuncCode of(CharSequence code) {
+        return new FuncCode(cleanInput(code.toString()));
     }
 
     /**

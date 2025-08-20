@@ -2,6 +2,8 @@ package com.llback.dal.user.repository;
 
 import com.llback.api.app.access.dto.UserAccessDto;
 import com.llback.api.app.access.fetch.AccessFetch;
+import com.llback.dal.menu.dao.MenuDao;
+import com.llback.dal.perm.dao.PermDao;
 import com.llback.dal.user.assembler.AccessAssembler;
 import com.llback.dal.user.dao.UserDao;
 import com.llback.dal.user.po.UserMenuPo;
@@ -19,6 +21,18 @@ public class AccessFetchImpl implements AccessFetch {
      */
     @Autowired
     private UserDao userDao;
+
+    /**
+     * 权限Dao
+     */
+    @Autowired
+    private PermDao permDao;
+
+    /**
+     * 菜单Dao
+     */
+    @Autowired
+    private MenuDao menuDao;
 
     /**
      * 查询所有用户权限
@@ -68,5 +82,21 @@ public class AccessFetchImpl implements AccessFetch {
     @Override
     public void addUserMenus(String userId, List<String> menuIds) {
         userDao.addUserMenus(userId, menuIds);
+    }
+
+    /**
+     * 查询权限码数量
+     */
+    @Override
+    public int getPermCodeCount(String permCode) {
+        return permDao.getPermCodeCount(permCode);
+    }
+
+    /**
+     * 查询菜单码数量
+     */
+    @Override
+    public int getMenuCodeCount(String menuCode) {
+        return menuDao.getMenuCodeCount(menuCode);
     }
 }

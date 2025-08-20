@@ -6,11 +6,10 @@ import com.llback.common.util.AssertUtil;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 用户实体
@@ -19,7 +18,11 @@ import java.io.Serializable;
 @Builder
 @ToString
 public class UserEo implements Serializable {
-    private static final Logger log = LoggerFactory.getLogger(UserEo.class);
+    /**
+     * 主键ID
+     */
+    private StringId pkId;
+
     /**
      * 用户ID
      */
@@ -47,6 +50,16 @@ public class UserEo implements Serializable {
      */
     @Value("${sa.pattern}")
     protected boolean pattern;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 修改时间
+     */
+    private LocalDateTime updateTime;
 
     /**
      * 创建用户

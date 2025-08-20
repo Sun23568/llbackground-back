@@ -1,35 +1,39 @@
 package com.llback.frame.dto;
 
-public interface PageQuery extends Query {
+/**
+ * 分页查询参数
+ */
+public abstract class PageQuery implements Query {
+    /**
+     * 分页信息
+     */
+    public PageQueryDto pageQueryDto;
 
     /**
      * 每页记录数
      *
      * @return int
      */
-    int getPageSize();
+    public int getPageSize(){
+        return this.pageQueryDto.getPageSize();
+    }
 
     /**
      * 当前页，从0开始
      */
-    int getPageIndex();
+    public int getPageIndex(){
+        return this.pageQueryDto.getPageIndex();
+    }
 
     /**
      * 当前页，从1开始
      */
-    default int pageNo() {
+    public int pageNo() {
         return this.getPageIndex() + 1;
     }
 
-
-    /**
-     * 构建分页查询条件
-     *
-     * @param pageIndex 页码（从0开始）
-     * @param pageSize  每页大小
-     * @return PageQueryVo
-     */
-    static PageQuery of(int pageIndex, int pageSize) {
-        return new PageQueryDto(pageIndex, pageSize);
+    public PageQuery setPageQueryDto(int pageIndex, int pageSize) {
+        this.pageQueryDto = new PageQueryDto(pageIndex, pageSize);
+        return this;
     }
 }

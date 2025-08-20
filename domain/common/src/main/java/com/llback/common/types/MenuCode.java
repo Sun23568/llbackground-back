@@ -37,7 +37,7 @@ public class MenuCode extends StringId implements Serializable {
      *
      * @param code 菜单码ID
      */
-    public static MenuCode of(String code) {
+    public static MenuCode of(CharSequence code) {
         return new MenuCode(cleanInput(code));
     }
 
@@ -47,9 +47,9 @@ public class MenuCode extends StringId implements Serializable {
      * @param code 菜单码
      * @return 去除空格后的菜单码ID
      */
-    public static String cleanInput(String code) {
+    public static String cleanInput(CharSequence code) {
         AssertUtil.notNull(code, "菜单码不能为空");
-        return code.trim();
+        return code.toString().trim();
     }
 }
 

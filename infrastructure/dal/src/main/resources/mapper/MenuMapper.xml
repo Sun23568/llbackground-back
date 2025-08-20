@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.llback.dal.menu.dao.MenuDao">
+    <!-- 添加菜单 -->
+    <insert id="addMenu">
+        INSERT INTO SYS_MENU(MENU_ID, MENU_CODE, MENU_NAME)
+        VALUES (UUID32(), #{menuCode}, #{menuName})
+    </insert>
+
     <!-- 获取用户菜单列表 -->
     <select id="queryUserMenus" parameterType="string" resultType="com.llback.dal.menu.po.MenuPo">
         SELECT T2.MENU_ID,
@@ -22,5 +28,12 @@
             MENU_NAME
         FROM
             SYS_MENU
+    </select>
+
+    <!-- 获取菜单编码数量 -->
+    <select id="getMenuCodeCount" resultType="java.lang.Integer">
+        SELECT COUNT(1)
+        FROM SYS_MENU
+        WHERE MENU_CODE = #{menuCode}
     </select>
 </mapper>

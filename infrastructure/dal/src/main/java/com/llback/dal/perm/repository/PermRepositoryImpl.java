@@ -39,4 +39,13 @@ public class PermRepositoryImpl implements PermRepository {
         List<PermissionPo> permissionPos = permDao.queryAllPermmission();
         return PoAssembleUtil.poList2EoList(permissionPos, FuncPermEo.class);
     }
+
+    /**
+     * 添加权限
+     */
+    @Override
+    public void addPerm(FuncPermEo permEo) {
+        PermissionPo permissionPo = PoAssembleUtil.eo2Po(permEo, PermissionPo.class);
+        permDao.addPermission(permissionPo);
+    }
 }

@@ -4,7 +4,7 @@ import com.llback.common.util.AssertUtil;
 import lombok.Getter;
 
 @Getter
-class PageQueryDto implements PageQuery {
+public class PageQueryDto {
 
     /**
      * 页码（从0开始）
@@ -22,7 +22,7 @@ class PageQueryDto implements PageQuery {
      * @param pageIndex 页码（从0开始）
      * @param pageSize  每页大小
      */
-    protected PageQueryDto(int pageIndex, int pageSize) {
+    public PageQueryDto(int pageIndex, int pageSize) {
         AssertUtil.assertTrue(pageIndex >= 0, "pageIndex must be greater than or equal to 0");
         AssertUtil.assertTrue(pageSize > 0 && pageSize < 10000, "pageSize must be greater than 0 and less than 10000");
         this.pageIndex = pageIndex;
