@@ -1,13 +1,10 @@
 package com.llback.api.api;
 
-import com.llback.api.app.article.dto.req.ArticleQuery;
-import com.llback.api.app.article.dto.resp.ArticleResp;
+import com.llback.api.app.article.dto.req.QueryArticleContentReq;
+import com.llback.api.app.article.dto.req.QueryArticleReq;
 import com.llback.frame.rest.RestApi;
 import com.llback.frame.rest.RestResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author: llback
@@ -20,8 +17,19 @@ public class ArticleApi implements RestApi {
     /**
      * 查询文章列表
      */
-    @PostMapping("/list")
-    public RestResult<ArticleResp> listArticle(@RequestBody ArticleQuery articleQuery) {
-        return this.execute(articleQuery);
+    @GetMapping("/list")
+    public RestResult listArticle(int pageNum, int pageRow) {
+        return this.execute(QueryArticleReq.of(pageNum, pageRow));
+    }
+
+    /**
+     * 查询文章内容
+     *
+     * @author yz.sun
+     * @date 2025/8/22
+     */
+    @PostMapping("/query/content")
+    public RestResult queryArticleContent(@RequestBody QueryArticleContentReq req) {
+        return this.execute(req);
     }
 }

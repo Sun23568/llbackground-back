@@ -1,16 +1,19 @@
-package com.llback.dal.article.po;
+package com.llback.api.app.article.dto;
 
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 /**
- * 文章Po
+ * 文章DTO
+ *
+ * @author yz.sun
+ * @date 2025/8/22
  */
 @Data
-public class ArticlePo {
+public class ArticleDto {
     /**
-     * 主键id
+     * 文章ID
      */
     private String pkId;
 

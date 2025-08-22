@@ -1,12 +1,15 @@
 package com.llback.dal.article.dao;
 
+import com.llback.dal.article.po.ArticleContentPo;
 import com.llback.dal.article.po.ArticlePo;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
 /**
  * 文章Dao
  */
+@Mapper
 public interface ArticleDao {
     /**
      * 新增文章
@@ -21,7 +24,7 @@ public interface ArticleDao {
     /**
      * 文章列表
      */
-    List<ArticlePo> listArticle(ArticlePo articlePo);
+    List<ArticlePo> listArticle();
 
     /**
      * 更新文章
@@ -31,7 +34,7 @@ public interface ArticleDao {
     /**
      * 根据文章id查询文章
      */
-    ArticlePo getArticleById(String articleId, String craft);
+    ArticleContentPo getArticleById(String articleId, String craft);
 
     /**
      * 更新文章内容

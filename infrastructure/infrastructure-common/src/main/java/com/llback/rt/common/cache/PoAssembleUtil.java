@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.llback.common.types.SafeText;
 import com.llback.common.types.StringId;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
@@ -19,14 +20,30 @@ import java.util.List;
 @Slf4j
 public class PoAssembleUtil {
     /**
+     * po转为dto
+     *
+     * @author yz.sun
+     * @date 2025/8/22
+     */
+    public static <T> T poToDto(Object poObj, Class<T> dtoClass) {
+        try {
+            T dtoObj = dtoClass.newInstance();
+            BeanUtils.copyProperties(poObj, dtoObj);
+            return dtoObj;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * eo转为po
      *
      * @param eoObj
      * @param poClassType
-     * @return
      * @param <T>
+     * @return
      */
-    public static <T> T eo2Po(Object eoObj, Class<T> poClassType){
+    public static <T> T eo2Po(Object eoObj, Class<T> poClassType) {
         try {
             // po实例化
             T poObj = poClassType.getDeclaredConstructor().newInstance();
@@ -40,7 +57,7 @@ public class PoAssembleUtil {
                     Field poField;
                     try {
                         poField = poClassType.getDeclaredField(field.getName());
-                    }catch (NoSuchFieldException ignored){
+                    } catch (NoSuchFieldException ignored) {
                         continue;
                     }
                     poField.setAccessible(true);
@@ -80,7 +97,7 @@ public class PoAssembleUtil {
                     poField.setAccessible(true);
                     Object value = poField.get(poObj);
                     // value判空
-                    if (isEmpty(value)){
+                    if (isEmpty(value)) {
                         continue;
                     }
 

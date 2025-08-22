@@ -19,24 +19,31 @@
         WHERE w.delete_status = '1'
     </select>
 
+    <!-- 查询文章列表 -->
     <select id="listArticle" resultType="com.llback.dal.article.po.ArticlePo">
-        SELECT w.id,
-               w.title,
-               date_format(w.create_time, '%Y.%m.%d %T') createTime,
-               date_format(w.update_time, '%Y.%m.%d %T') updateTime
-        FROM article w
-        WHERE w.delete_status = '1'
-        ORDER BY create_time desc
-            LIMIT #{offSet}, #{pageRow}
+        SELECT
+            PK_ID,
+            TITLE,
+            CREATE_TIME,
+            UPDATE_TIME
+        FROM
+            ARTICLE
+        WHERE
+            IS_DEL = '0'
+        ORDER BY CREATE_TIME DESC
     </select>
 
     <!-- 根据id查询文章 -->
-    <select id="getArticleById" resultType="com.llback.dal.article.po.ArticlePo">
-        SELECT PK_ID, ARTICLE_ID, CONTENT, CRAFT, CREATE_TS, T2.TITLE
-        FROM ARTICLE_CONTENT T1
-                 LEFT JOIN ARTICLE T2 ON T1.ARTICLE_ID = T2.ID
-        WHERE ARTICLE_ID = #{articleId}
-          AND CRAFT = #{craft}
+    <select id="getArticleById" resultType="com.llback.dal.article.po.ArticleContentPo">
+        SELECT
+            T2.PK_ID ,
+            T1.TITLE ,
+            T2.CONTENT
+        FROM
+            ARTICLE T1
+        LEFT JOIN ARTICLE_CONTENT T2 ON T1.PK_ID = T2.ARTICLE_ID
+        WHERE T1.PK_ID = #{articleId}
+          AND T2.CRAFT = #{craft}
     </select>
 
     <update id="updateArticleBaseInfo" parameterType="com.llback.dal.article.po.ArticlePo">
