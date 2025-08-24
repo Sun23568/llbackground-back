@@ -35,6 +35,11 @@ public class UserPo {
     private String password;
 
     /**
+     * 头像
+     */
+    private String avatar;
+
+    /**
      * 创建时间
      * 记录用户信息创建的时间，用于审计和历史追踪
      */

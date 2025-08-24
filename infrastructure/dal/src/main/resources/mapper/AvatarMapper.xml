@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.llback.dal.user.dao.AvatarDao">
+    <!-- 添加头像 -->
+    <insert id="addAvatar">
+        INSERT INTO AVATAR(AVATAR_ID, AVATAR_BASE64)
+        VALUES (#{avatarId}, #{avatarBase64})
+    </insert>
+
+    <!-- 获取头像 -->
+    <select id="getAvatar" resultType="java.lang.String">
+        SELECT AVATAR_BASE64
+        FROM AVATAR
+        WHERE AVATAR_ID = #{avatarId}
+    </select>
+</mapper>

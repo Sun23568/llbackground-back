@@ -86,6 +86,7 @@ public class UserCache extends BaseObjectCache<UserCacheItemVo> {
         JSONObject user = from.getJSONObject("user");
         UserEo userEo = UserEo.builder()
                 .userId(UserId.of(user.getString("userId")))
+                .avatar(StringId.of(user.getString("avatar")))
                 .userName(UserName.of(user.getString("userName")))
                 .build();
         return UserCacheItemVo.builder()

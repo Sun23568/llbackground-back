@@ -1,7 +1,6 @@
 package com.llback.common.util;
 
 import com.llback.common.exception.BizException;
-import com.llback.common.exception.ErrorCode;
 import lombok.experimental.UtilityClass;
 
 import java.math.BigDecimal;
@@ -26,7 +25,7 @@ public class AssertUtil {
      */
     public static void notEmpty(CharSequence input, String message) {
         if (null == input || input.length() == 0) {
-            throw new IllegalArgumentException(message);
+            throw new BizException(message);
         }
     }
 

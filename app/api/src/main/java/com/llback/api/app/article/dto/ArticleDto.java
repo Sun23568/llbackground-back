@@ -1,6 +1,9 @@
 package com.llback.api.app.article.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -11,6 +14,9 @@ import java.time.LocalDateTime;
  * @date 2025/8/22
  */
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ArticleDto {
     /**
      * 文章ID
@@ -21,6 +27,11 @@ public class ArticleDto {
      * 标题
      */
     private String title;
+
+    /**
+     * 作者
+     */
+    private String author;
 
     /**
      * 创建时间

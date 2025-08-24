@@ -42,7 +42,7 @@ public final class UserId extends StringId implements Serializable {
      * @param id 用户账号
      */
     private UserId(CharSequence id) {
-        super(id, PATTERN, 16, "用户ID");
+        super(id, PATTERN, 32, "用户ID");
     }
 
     /**

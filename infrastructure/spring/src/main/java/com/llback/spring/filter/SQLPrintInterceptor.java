@@ -37,7 +37,7 @@ public class SQLPrintInterceptor implements Interceptor {
 
         // 格式化SQL，将参数替换进去
         String formattedSql = formatSql(sql, parameterObject, parameterMappings);
-        
+
         log.info("======= 执行SQL开始 =======");
         log.info("完整SQL: \n{}", formattedSql);
         log.info("======= 执行SQL结束 =======");
@@ -48,8 +48,8 @@ public class SQLPrintInterceptor implements Interceptor {
     /**
      * 格式化SQL，将参数值替换到SQL中
      *
-     * @param sql              原始SQL
-     * @param parameterObject  参数对象
+     * @param sql               原始SQL
+     * @param parameterObject   参数对象
      * @param parameterMappings 参数映射列表
      * @return 格式化后的SQL
      */
@@ -63,13 +63,16 @@ public class SQLPrintInterceptor implements Interceptor {
             for (ParameterMapping parameterMapping : parameterMappings) {
                 Object value = null;
                 String propertyName = parameterMapping.getProperty();
-                
+
                 if (parameterObject == null) {
                     continue;
                 } else if (parameterObject instanceof java.util.Map) {
                     // 处理Map类型的参数
                     java.util.Map<?, ?> map = (java.util.Map<?, ?>) parameterObject;
                     value = map.get(propertyName);
+                }
+                if (parameterObject instanceof String) {
+                    value = parameterObject;
                 } else {
                     // 处理普通对象的参数
                     Field field = getField(parameterObject.getClass(), propertyName);
@@ -78,7 +81,7 @@ public class SQLPrintInterceptor implements Interceptor {
                         value = field.get(parameterObject);
                     }
                 }
-                
+
                 // 替换参数值
                 formattedSql = formattedSql.replaceFirst("\\?", formatValue(value));
             }
@@ -86,14 +89,14 @@ public class SQLPrintInterceptor implements Interceptor {
             log.warn("SQL参数格式化失败: {}", e.getMessage());
             return sql;
         }
-        
+
         return formattedSql;
     }
 
     /**
      * 获取类中的字段（包括父类）
      *
-     * @param clazz 类
+     * @param clazz     类
      * @param fieldName 字段名
      * @return 字段对象
      */
@@ -118,7 +121,7 @@ public class SQLPrintInterceptor implements Interceptor {
         if (value == null) {
             return "NULL";
         }
-        
+
         if (value instanceof String) {
             return "'" + value.toString().replace("'", "''") + "'";
         } else if (value instanceof Date) {

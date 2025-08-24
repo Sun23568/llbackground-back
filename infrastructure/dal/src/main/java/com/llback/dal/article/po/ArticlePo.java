@@ -20,6 +20,16 @@ public class ArticlePo {
     private String title;
 
     /**
+     * 作者
+     */
+    private String author;
+
+    /**
+     * 公开标识
+     */
+    private String publicFlag;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

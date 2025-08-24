@@ -19,5 +19,5 @@ public class QueryArticleContentReq implements Query {
     /**
      * 是否草稿
      */
-    private String craft;
+    private String draft;
 }

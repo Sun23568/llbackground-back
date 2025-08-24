@@ -2,16 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.llback.dal.article.dao.ArticleDao">
-
+    <!-- 添加文章 -->
     <insert id="addArticle" parameterType="com.llback.dal.article.po.ArticlePo">
-        INSERT INTO article (id, title, create_time, delete_status)
-        VALUES (#{articleId}, #{title}, now(), '1')
+        INSERT INTO ARTICLE
+            (PK_ID, TITLE, AUTHOR, PUBLIC_FLAG, CREATE_TIME, UPDATE_TIME, IS_DEL)
+        VALUES (#{pkId}, #{title}, #{author}, #{publicFlag}, #{createTime}, #{updateTime}, '0')
     </insert>
 
-    <insert id="addArticleContent" parameterType="com.llback.dal.article.po.ArticlePo">
-        INSERT INTO article_content (pk_id, article_id, craft, content)
-        VALUES (#{contentId}, #{articleId}, #{craft}, #{content})
+    <!-- 添加文章内容 -->
+    <insert id="addArticleContent" parameterType="com.llback.dal.article.po.ArticleContentPo">
+        INSERT INTO ARTICLE_CONTENT
+            (PK_ID, ARTICLE_ID, DRAFT, CONTENT, CREATE_TIME)
+        VALUES (#{pkId}, #{articleId}, #{draft}, #{content}, #{createTime});
     </insert>
+
+    <!-- 删除文章草稿 -->
+    <delete id="deleteDraft">
+        DELETE FROM ARTICLE_CONTENT
+        WHERE ARTICLE_ID = #{articleId}
+        <if test="justRemoveDraft">
+            AND DRAFT = '1'
+        </if>
+    </delete>
 
     <select id="countArticle" resultType="Integer">
         SELECT count(0)
@@ -22,49 +34,74 @@
     <!-- 查询文章列表 -->
     <select id="listArticle" resultType="com.llback.dal.article.po.ArticlePo">
         SELECT
-            PK_ID,
-            TITLE,
-            CREATE_TIME,
-            UPDATE_TIME
+        PK_ID,
+        TITLE,
+        AUTHOR,
+        CREATE_TIME,
+        UPDATE_TIME
         FROM
-            ARTICLE
+        ARTICLE
         WHERE
-            IS_DEL = '0'
+        IS_DEL = '0'
+        <if test="!queryAll">
+            AND (PUBLIC_FLAG = '1' OR AUTHOR = #{userId})
+        </if>
         ORDER BY CREATE_TIME DESC
     </select>
 
     <!-- 根据id查询文章 -->
-    <select id="getArticleById" resultType="com.llback.dal.article.po.ArticleContentPo">
-        SELECT
-            T2.PK_ID ,
-            T1.TITLE ,
-            T2.CONTENT
-        FROM
-            ARTICLE T1
-        LEFT JOIN ARTICLE_CONTENT T2 ON T1.PK_ID = T2.ARTICLE_ID
+    <select id="getArticleContentById" resultType="com.llback.dal.article.po.ArticleContentPo">
+        SELECT T2.PK_ID,
+               T1.TITLE,
+               T2.CONTENT
+        FROM ARTICLE T1
+                 LEFT JOIN ARTICLE_CONTENT T2 ON T1.PK_ID = T2.ARTICLE_ID
         WHERE T1.PK_ID = #{articleId}
-          AND T2.CRAFT = #{craft}
+          AND T2.DRAFT = #{draft}
     </select>
 
+    <!-- 判断文章是否存在（非草稿） -->
+    <select id="hasInst" resultType="java.lang.Integer">
+        SELECT count(0)
+        FROM ARTICLE_CONTENT
+        WHERE PK_ID = #{articleId}
+          AND DRAFT = '0'
+    </select>
+
+    <!-- 根据id查询文章基础信息 -->
+    <select id="getArticleBaseInfo" resultType="com.llback.dal.article.po.ArticlePo">
+        SELECT PK_ID,
+               TITLE,
+               AUTHOR,
+               PUBLIC_FLAG,
+               CREATE_TIME,
+               UPDATE_TIME
+        FROM ARTICLE
+        WHERE PK_ID = #{articleId}
+    </select>
+
+    <!-- 更新文章基础信息 -->
     <update id="updateArticleBaseInfo" parameterType="com.llback.dal.article.po.ArticlePo">
-        UPDATE article
-        SET title = #{title}
-        WHERE id = #{articleId}
+        UPDATE ARTICLE
+        SET TITLE       = #{title},
+            UPDATE_TIME = #{updateTime},
+            PUBLIC_FLAG = #{publicFlag}
+        WHERE PK_ID = #{pkId}
     </update>
 
     <!-- 更新文章内容 -->
     <update id="updateArticleContent" parameterType="com.llback.dal.article.po.ArticlePo">
-        UPDATE article_content
+        UPDATE ARTICLE_CONTENT
         SET content = #{content}
         WHERE ARTICLE_ID = #{articleId}
-          AND CRAFT = #{craft}
+          AND DRAFT = #{draft}
     </update>
 
     <!-- 删除文章 -->
     <update id="removeArticle">
-        UPDATE article
-        SET delete_status = '0'
-        WHERE id = #{articleId}
+        UPDATE ARTICLE
+        SET IS_DEL = '1'
+        WHERE PK_ID = #{articleId}
     </update>
 
 </mapper>

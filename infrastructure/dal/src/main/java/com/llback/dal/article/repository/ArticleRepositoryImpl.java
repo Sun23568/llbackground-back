@@ -5,6 +5,8 @@ import com.github.pagehelper.PageInfo;
 import com.llback.api.app.article.dto.resp.ArticleContentResp;
 import com.llback.api.app.article.fetch.ArticleFetch;
 import com.llback.common.types.StringId;
+import com.llback.common.types.UserId;
+import com.llback.core.article.eo.ArticleContentEo;
 import com.llback.core.article.eo.ArticleEo;
 import com.llback.core.article.repository.ArticleRepository;
 import com.llback.dal.article.dao.ArticleDao;
@@ -35,10 +37,25 @@ public class ArticleRepositoryImpl implements ArticleRepository, ArticleFetch {
      * @date 2025/8/22
      */
     @Override
-    public PageInfo<ArticleEo> listArticle(int pageIndex, int pageSize) {
+    public PageInfo<ArticleEo> listArticle(int pageIndex, int pageSize, UserId userId, boolean queryAll) {
         PageHelper.startPage(pageIndex, pageSize);
-        PageInfo<ArticlePo> poPageInfo = new PageInfo<>(articleDao.listArticle());
+        PageInfo<ArticlePo> poPageInfo = new PageInfo<>(articleDao.listArticle(userId.toString(), queryAll));
         return PoAssembleUtil.poPage2EoPage(poPageInfo, ArticleEo.class);
+    }
+
+    /**
+     * 添加文章
+     */
+    @Override
+    public int addArticle(ArticleEo eo) {
+        ArticlePo articlePo = PoAssembleUtil.eo2Po(eo, ArticlePo.class);
+        return articleDao.addArticle(articlePo);
+    }
+
+    @Override
+    public int updateArticle(ArticleEo eo) {
+        ArticlePo articlePo = PoAssembleUtil.eo2Po(eo, ArticlePo.class);
+        return articleDao.updateArticleBaseInfo(articlePo);
     }
 
     /**
@@ -48,8 +65,47 @@ public class ArticleRepositoryImpl implements ArticleRepository, ArticleFetch {
      * @date 2025/8/22
      */
     @Override
-    public ArticleContentResp queryArticleContent(StringId articleId, String craft) {
-        ArticleContentPo articleContentPo = articleDao.getArticleById(articleId.toString(), craft);
+    public ArticleContentResp queryArticleContent(StringId articleId, String draft) {
+        ArticleContentPo articleContentPo = articleDao.getArticleContentById(articleId.toString(), draft);
         return PoAssembleUtil.poToDto(articleContentPo, ArticleContentResp.class);
+    }
+
+    /**
+     * 删除文章草稿
+     */
+    @Override
+    public void removeContent(StringId articleId, boolean justRemoveDraft) {
+        articleDao.deleteDraft(articleId.toString(), justRemoveDraft);
+    }
+
+    /**
+     * 判断文章是否存在（非草稿）
+     */
+    @Override
+    public boolean hasInst(StringId articleId) {
+        return articleDao.hasInst(articleId.toString()) > 0;
+    }
+
+    @Override
+    public int addContent(ArticleContentEo articleContentEo) {
+        ArticleContentPo articleContentPo = PoAssembleUtil.eo2Po(articleContentEo, ArticleContentPo.class);
+        return articleDao.addArticleContent(articleContentPo);
+    }
+
+    /**
+     * 获取文章基本信息
+     */
+    @Override
+    public ArticleEo getArticleBaseInfo(StringId articleId) {
+        ArticlePo articleBaseInfo = articleDao.getArticleBaseInfo(articleId.toString());
+        return PoAssembleUtil.po2Eo(articleBaseInfo, ArticleEo.class);
+    }
+
+    /**
+     * 删除文章
+     */
+    @Override
+    public int removeArticle(String articleId) {
+        return articleDao.removeArticle(articleId);
     }
 }

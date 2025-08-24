@@ -22,37 +22,40 @@
 
     <!-- 添加用户 -->
     <insert id="addUser">
-        INSERT INTO SYS_USER (PK_ID, USER_ID, USER_NAME, PASSWORD, CREATE_TIME, UPDATE_TIME, IS_DEL)
-        VALUES (UUID32(), #{userId}, #{userName}, #{password}, now(), now(), '0')
+        INSERT INTO SYS_USER (PK_ID, USER_ID, USER_NAME, PASSWORD, AVATAR, CREATE_TIME, UPDATE_TIME, IS_DEL)
+        VALUES (UUID32(), #{userId}, #{userName}, #{password}, 'default', now(), now(), '0')
     </insert>
 
     <!-- 修改用户信息 -->
     <update id="updateUser">
         UPDATE SYS_USER
-        SET USER_NAME = #{userName},
-        PASSWORD = #{password},
-        UPDATE_TIME = now()
+        SET USER_NAME   = #{userName},
+            PASSWORD    = #{password},
+            AVATAR      = #{avatar},
+            UPDATE_TIME = now()
         WHERE USER_ID = #{userId}
-        AND IS_DEL = '0'
+          AND IS_DEL = '0'
     </update>
 
     <!-- 删除用户下 -->
     <delete id="removeUserPerms">
-        DELETE FROM USER_PERMISSION
+        DELETE
+        FROM USER_PERMISSION
         WHERE USER_ID = #{userId}
     </delete>
 
     <!-- 删除用户下菜单 -->
     <delete id="removeUserMenus">
-        DELETE FROM USER_MENU
+        DELETE
+        FROM USER_MENU
         WHERE USER_ID = #{userId}
     </delete>
     <!-- 获取用户信息 -->
     <select id="getUserInfo" parameterType="string" resultType="com.llback.dal.user.po.UserPo">
-        SELECT PK_ID, USER_ID, USER_NAME, PASSWORD, CREATE_TIME, UPDATE_TIME
+        SELECT PK_ID, USER_ID, USER_NAME, PASSWORD, AVATAR, CREATE_TIME, UPDATE_TIME
         FROM SYS_USER
         WHERE USER_ID = #{userId}
-        AND IS_DEL = '0'
+          AND IS_DEL = '0'
     </select>
 
     <resultMap id="userPermMap" type="com.llback.dal.user.po.UserPermPo">
@@ -81,51 +84,44 @@
 
     <!-- 获取所有用户权限信息 -->
     <select id="queryAllUserPerms" resultMap="userPermMap">
-        SELECT
-            T1.USER_ID ,
-            T1.USER_NAME ,
-            T3.PERM_ID ,
-            T3.PERM_CODE ,
-            T3.PERM_NAME ,
-            T3.`TYPE`
-        FROM
-            SYS_USER T1
-        LEFT JOIN USER_PERMISSION T2 ON
+        SELECT T1.USER_ID,
+               T1.USER_NAME,
+               T3.PERM_ID,
+               T3.PERM_CODE,
+               T3.PERM_NAME,
+               T3.`TYPE`
+        FROM SYS_USER T1
+                 LEFT JOIN USER_PERMISSION T2 ON
             T1.USER_ID = T2.USER_ID
-        LEFT JOIN SYS_PERMISSION T3 ON
+                 LEFT JOIN SYS_PERMISSION T3 ON
             T2.PERM_ID = T3.PERM_ID
         WHERE T1.IS_DEL = '0'
     </select>
 
     <!-- 获取所有用户菜单信息 -->
     <select id="queryAllUserMenus" resultMap="userMenuMap">
-        SELECT
-            T1.USER_ID ,
-            T1.USER_NAME ,
-            T3.MENU_ID ,
-            T3.MENU_CODE ,
-            T3.MENU_NAME
-        FROM
-            SYS_USER T1
-        LEFT JOIN USER_MENU T2 ON
+        SELECT T1.USER_ID,
+               T1.USER_NAME,
+               T3.MENU_ID,
+               T3.MENU_CODE,
+               T3.MENU_NAME
+        FROM SYS_USER T1
+                 LEFT JOIN USER_MENU T2 ON
             T1.USER_ID = T2.USER_ID
-        LEFT JOIN SYS_MENU T3 ON
+                 LEFT JOIN SYS_MENU T3 ON
             T2.MENU_ID = T3.MENU_ID
         WHERE T1.IS_DEL = '0'
     </select>
 
     <!-- 获取用户列表 -->
     <select id="listUser" resultType="com.llback.dal.user.po.UserPo">
-        SELECT
-            PK_ID,
-            USER_ID,
-            USER_NAME,
-            CREATE_TIME,
-            UPDATE_TIME
-        FROM
-            SYS_USER
-        WHERE
-            IS_DEL = '0'
+        SELECT PK_ID,
+               USER_ID,
+               USER_NAME,
+               CREATE_TIME,
+               UPDATE_TIME
+        FROM SYS_USER
+        WHERE IS_DEL = '0'
         ORDER BY PK_ID
     </select>
 </mapper>

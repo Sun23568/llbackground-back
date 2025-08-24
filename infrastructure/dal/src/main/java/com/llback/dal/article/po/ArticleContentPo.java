@@ -2,6 +2,8 @@ package com.llback.dal.article.po;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 文章内容Po
  *
@@ -16,6 +18,11 @@ public class ArticleContentPo {
     private String pkId;
 
     /**
+     * 文章id
+     */
+    private String articleId;
+
+    /**
      * 文章标题
      */
     private String title;
@@ -24,4 +31,14 @@ public class ArticleContentPo {
      * 文章内容
      */
     private String content;
+
+    /**
+     * 草稿
+     */
+    private String draft;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
 }

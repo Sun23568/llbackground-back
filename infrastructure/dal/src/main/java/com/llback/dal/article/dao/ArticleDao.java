@@ -24,7 +24,7 @@ public interface ArticleDao {
     /**
      * 文章列表
      */
-    List<ArticlePo> listArticle();
+    List<ArticlePo> listArticle(String userId, boolean queryAll);
 
     /**
      * 更新文章
@@ -34,7 +34,7 @@ public interface ArticleDao {
     /**
      * 根据文章id查询文章
      */
-    ArticleContentPo getArticleById(String articleId, String craft);
+    ArticleContentPo getArticleContentById(String articleId, String draft);
 
     /**
      * 更新文章内容
@@ -49,7 +49,7 @@ public interface ArticleDao {
      * @author yz.sun
      * @date 2025/3/20
      */
-    int addArticleContent(ArticlePo articlePo);
+    int addArticleContent(ArticleContentPo articleContentPo);
 
     /**
      * 删除文章
@@ -57,5 +57,17 @@ public interface ArticleDao {
      * @author yz.sun
      * @date 2025/3/28
      */
-    void removeArticle(String articleId);
+    int removeArticle(String articleId);
+
+    /**
+     * 删除文章草稿
+     */
+    void deleteDraft(String articleId, boolean justRemoveDraft);
+
+    /**
+     * 判断文章是否存在(非草稿)
+     */
+    int hasInst(String string);
+
+    ArticlePo getArticleBaseInfo(String string);
 }

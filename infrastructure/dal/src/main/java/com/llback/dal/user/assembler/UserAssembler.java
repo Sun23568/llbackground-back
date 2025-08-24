@@ -1,6 +1,7 @@
 package com.llback.dal.user.assembler;
 
 import com.llback.common.types.EncryptedPassword;
+import com.llback.common.types.StringId;
 import com.llback.common.types.UserId;
 import com.llback.common.types.UserName;
 import com.llback.core.user.eo.UserEo;
@@ -18,6 +19,7 @@ public class UserAssembler {
                 .userId(UserId.of(po.getUserId()))
                 .userName(UserName.of(po.getUserName()))
                 .password(EncryptedPassword.of(po.getPassword()))
+                .avatar(StringId.of(po.getAvatar()))
                 .build();
     }
 }

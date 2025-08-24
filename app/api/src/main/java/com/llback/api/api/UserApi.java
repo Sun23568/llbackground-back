@@ -2,6 +2,7 @@ package com.llback.api.api;
 
 import com.llback.api.app.user.dto.req.AddUserCmd;
 import com.llback.api.app.user.dto.req.QueryUserListReq;
+import com.llback.api.app.user.dto.req.UpdateCurUserCmd;
 import com.llback.api.app.user.dto.req.UpdateUserCmd;
 import com.llback.frame.rest.RestApi;
 import com.llback.frame.rest.RestResult;
@@ -36,6 +37,14 @@ public class UserApi implements RestApi {
      */
     @RequestMapping("/update")
     public RestResult updateUser(@RequestBody UpdateUserCmd cmd) {
+        return this.execute(cmd);
+    }
+
+    /**
+     * 修改当前用户
+     */
+    @RequestMapping("/update/cur")
+    public RestResult updateCurUser(@RequestBody UpdateCurUserCmd cmd) {
         return this.execute(cmd);
     }
 }

@@ -1,5 +1,6 @@
 package com.llback.api.api;
 
+import com.llback.api.app.sa.dto.req.GetAvatarReq;
 import com.llback.api.app.sa.dto.req.GetPublicKeyReq;
 import com.llback.api.app.sa.dto.req.GetSessionReq;
 import com.llback.api.app.sa.dto.req.LoginCmd;
@@ -9,6 +10,7 @@ import com.llback.frame.rest.RestApi;
 import com.llback.frame.rest.RestResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -44,5 +46,13 @@ public class SaApi implements RestApi {
     @RequestMapping("/publicKey")
     public RestResult<PublicKeyResp> getPublicKey() {
         return this.execute(GetPublicKeyReq.EMPTY);
+    }
+
+    /**
+     * 获取头像
+     */
+    @RequestMapping("/avatar")
+    public RestResult getAvatar(@RequestParam("avatarId") String avatarId){
+        return this.execute(GetAvatarReq.of(avatarId));
     }
 }

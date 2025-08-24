@@ -16,5 +16,5 @@ public interface ArticleFetch {
      * @author yz.sun
      * @date 2025/8/22
      */
-    ArticleContentResp queryArticleContent(StringId articleId, String craft);
+    ArticleContentResp queryArticleContent(StringId articleId, String draft);
 }
