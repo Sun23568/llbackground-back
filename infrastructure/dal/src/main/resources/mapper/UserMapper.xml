@@ -23,7 +23,7 @@
     <!-- 添加用户 -->
     <insert id="addUser">
         INSERT INTO SYS_USER (PK_ID, USER_ID, USER_NAME, PASSWORD, AVATAR, CREATE_TIME, UPDATE_TIME, IS_DEL)
-        VALUES (UUID32(), #{userId}, #{userName}, #{password}, 'default', now(), now(), '0')
+        VALUES (UUID32(), #{userId}, #{userName}, #{password}, 'defaultAvatar', now(), now(), '0')
     </insert>
 
     <!-- 修改用户信息 -->

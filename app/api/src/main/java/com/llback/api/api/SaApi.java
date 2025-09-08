@@ -1,9 +1,6 @@
 package com.llback.api.api;
 
-import com.llback.api.app.sa.dto.req.GetAvatarReq;
-import com.llback.api.app.sa.dto.req.GetPublicKeyReq;
-import com.llback.api.app.sa.dto.req.GetSessionReq;
-import com.llback.api.app.sa.dto.req.LoginCmd;
+import com.llback.api.app.sa.dto.req.*;
 import com.llback.api.app.sa.dto.resp.LoginResp;
 import com.llback.api.app.sa.dto.resp.PublicKeyResp;
 import com.llback.frame.rest.RestApi;
@@ -32,6 +29,14 @@ public class SaApi implements RestApi {
     }
 
     /**
+     * 登出
+     */
+    @RequestMapping("/logout")
+    public RestResult logout() {
+        return this.execute(LogoutCmd.EMPTY);
+    }
+
+    /**
      * 获取登录信息
      * 根据token
      */
@@ -52,7 +57,7 @@ public class SaApi implements RestApi {
      * 获取头像
      */
     @RequestMapping("/avatar")
-    public RestResult getAvatar(@RequestParam("avatarId") String avatarId){
+    public RestResult getAvatar(@RequestParam("avatarId") String avatarId) {
         return this.execute(GetAvatarReq.of(avatarId));
     }
 }

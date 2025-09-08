@@ -26,7 +26,6 @@ public class AddUserHandler implements Handler<Void, AddUserCmd> {
 
     @Override
     public Void execute(AddUserCmd cmd) {
-        AssertUtil.notNull(cmd, "入参异常");
         AssertUtil.notEmpty(cmd.getUserId(), "用户ID不能为空");
         AssertUtil.notEmpty(cmd.getUserName(), "用户名称不能为空");
         AssertUtil.notEmpty(cmd.getPassword(), "密码不能为空");
