@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.llback.dal.user.po.UserMenuPo;
 import com.llback.dal.user.po.UserPermPo;
 import com.llback.dal.user.po.UserPo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -142,4 +143,9 @@ public interface UserDao {
      * 添加用户菜单
      */
     void addUserMenus(String userId, List<String> menuIds);
+
+    /**
+     * 批量删除用户
+     */
+    int removeUsers(List<String> userIds);
 }

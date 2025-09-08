@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.llback.common.types.UserId;
 import com.llback.core.user.eo.UserEo;
 
+import java.util.List;
+
 /**
  * 鉴权仓储
  */
@@ -27,4 +29,9 @@ public interface UserRepository {
      * 修改用户
      */
     int updateUser(UserEo userEo);
+
+    /**
+     * 删除用户
+     */
+    boolean removeUsers(List<String> userIds);
 }

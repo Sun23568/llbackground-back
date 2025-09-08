@@ -37,6 +37,16 @@
           AND IS_DEL = '0'
     </update>
 
+    <!-- 批量删除用户 -->
+    <update id="removeUsers">
+        UPDATE SYS_USER
+        SET IS_DEL = '1'
+        WHERE PK_ID IN
+        <foreach item="i" collection="userIds" separator="," close=")" open="(" index="">
+            #{i}
+        </foreach>
+    </update>
+
     <!-- 删除用户下 -->
     <delete id="removeUserPerms">
         DELETE

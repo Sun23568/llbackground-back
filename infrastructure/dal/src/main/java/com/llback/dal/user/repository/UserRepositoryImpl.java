@@ -13,6 +13,8 @@ import com.llback.rt.common.cache.PoAssembleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class UserRepositoryImpl implements UserRepository {
 
@@ -59,5 +61,14 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public int updateUser(UserEo userEo) {
         return userDao.updateUser(PoAssembleUtil.eo2Po(userEo, UserPo.class));
+    }
+
+    /**
+     * 删除用户
+     */
+    @Override
+    public boolean removeUsers(List<String> userIds) {
+        int count = userDao.removeUsers(userIds);
+        return userIds.size() == count;
     }
 }

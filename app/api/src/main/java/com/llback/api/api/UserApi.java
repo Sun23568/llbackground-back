@@ -1,9 +1,6 @@
 package com.llback.api.api;
 
-import com.llback.api.app.user.dto.req.AddUserCmd;
-import com.llback.api.app.user.dto.req.QueryUserListReq;
-import com.llback.api.app.user.dto.req.UpdateCurUserCmd;
-import com.llback.api.app.user.dto.req.UpdateUserCmd;
+import com.llback.api.app.user.dto.req.*;
 import com.llback.frame.rest.RestApi;
 import com.llback.frame.rest.RestResult;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +42,14 @@ public class UserApi implements RestApi {
      */
     @RequestMapping("/update/cur")
     public RestResult updateCurUser(@RequestBody UpdateCurUserCmd cmd) {
+        return this.execute(cmd);
+    }
+
+    /**
+     * 删除用户
+     */
+    @RequestMapping("/remove")
+    public RestResult removeUser(@RequestBody RemoveUsersCmd cmd) {
         return this.execute(cmd);
     }
 }

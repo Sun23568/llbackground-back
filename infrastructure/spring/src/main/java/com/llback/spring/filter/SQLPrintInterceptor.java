@@ -11,8 +11,10 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -66,12 +68,16 @@ public class SQLPrintInterceptor implements Interceptor {
 
                 if (parameterObject == null) {
                     continue;
-                } else if (parameterObject instanceof java.util.Map) {
+                } else if (parameterObject instanceof Map) {
                     // 处理Map类型的参数
-                    java.util.Map<?, ?> map = (java.util.Map<?, ?>) parameterObject;
-                    value = map.get(propertyName);
-                }
-                if (parameterObject instanceof String) {
+                    Map<?, ?> map = (Map<?, ?>) parameterObject;
+                    if (map.containsKey(propertyName)) {
+                        value = map.get(propertyName);
+                    } else {
+                        // 处理MyBatis foreach循环生成的参数名，如 __frch_i_0
+                        value = findValueInMap(map, propertyName);
+                    }
+                } else if (parameterObject instanceof String) {
                     value = parameterObject;
                 } else {
                     // 处理普通对象的参数
@@ -91,6 +97,80 @@ public class SQLPrintInterceptor implements Interceptor {
         }
 
         return formattedSql;
+    }
+
+    /**
+     * 在Map中查找参数值，处理MyBatis foreach生成的参数名
+     *
+     * @param map          参数Map
+     * @param propertyName 属性名
+     * @return 参数值
+     */
+    private Object findValueInMap(Map<?, ?> map, String propertyName) {
+        // 处理MyBatis foreach循环生成的参数名，如 __frch_item_0, __frch_i_0 等
+        if (propertyName.startsWith("__frch_")) {
+            // 尝试获取原始集合参数
+            // MyBatis会为foreach循环中的参数创建 __frch_xxx_index 格式的名称
+            // 其中xxx是item属性的名称，index是索引
+
+            // 遍历map中的所有条目，寻找可能的集合参数
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
+                Object key = entry.getKey();
+                Object value = entry.getValue();
+
+                // 如果值是集合类型
+                if (value instanceof Collection) {
+                    // 检查参数名是否包含键名
+                    String keyStr = key != null ? key.toString() : "";
+                    if (!keyStr.isEmpty() && propertyName.contains(keyStr)) {
+                        // 提取索引
+                        String[] parts = propertyName.split("_");
+                        if (parts.length >= 3) {
+                            try {
+                                int index = Integer.parseInt(parts[parts.length - 1]);
+                                Collection<?> collection = (Collection<?>) value;
+                                if (collection instanceof List) {
+                                    List<?> list = (List<?>) collection;
+                                    if (index < list.size()) {
+                                        return list.get(index);
+                                    }
+                                } else {
+                                    // 对于其他集合类型，尝试获取第index个元素
+                                    int i = 0;
+                                    for (Object obj : collection) {
+                                        if (i == index) {
+                                            return obj;
+                                        }
+                                        i++;
+                                    }
+                                }
+                            } catch (NumberFormatException e) {
+                                // 忽略解析错误
+                            }
+                        }
+                    }
+                }
+
+                // 特殊处理：尝试直接使用"userIds"键
+                if ("userIds".equals(key) && value instanceof List) {
+                    String[] parts = propertyName.split("_");
+                    if (parts.length >= 3) {
+                        try {
+                            int index = Integer.parseInt(parts[parts.length - 1]);
+                            List<?> list = (List<?>) value;
+                            if (index < list.size()) {
+                                return list.get(index);
+                            }
+                        } catch (NumberFormatException e) {
+                            // 忽略解析错误
+                        }
+                    }
+                }
+            }
+        }
+
+        // 如果无法找到匹配的值，返回null
+        return null;
     }
 
     /**
@@ -124,6 +204,21 @@ public class SQLPrintInterceptor implements Interceptor {
 
         if (value instanceof String) {
             return "'" + value.toString().replace("'", "''") + "'";
+        } else if (value instanceof Collection) {
+            // 处理集合类型参数
+            Collection<?> collection = (Collection<?>) value;
+            StringBuilder sb = new StringBuilder();
+            sb.append("(");
+            boolean first = true;
+            for (Object item : collection) {
+                if (!first) {
+                    sb.append(", ");
+                }
+                sb.append(formatValue(item));
+                first = false;
+            }
+            sb.append(")");
+            return sb.toString();
         } else if (value instanceof Date) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             return "'" + sdf.format((Date) value) + "'";
