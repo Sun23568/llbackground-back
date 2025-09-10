@@ -81,4 +81,8 @@ public class ArticleEo {
     public void updateUpdateTime() {
         updateTime = LocalDateTime.now();
     }
+
+    public void setPkId(StringId pkid) {
+        this.pkId = pkid;
+    }
 }

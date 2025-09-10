@@ -31,7 +31,6 @@ public class UpdateArticleHandler implements Handler<ArticleDto, UpdateArticleCm
 
     @Override
     public ArticleDto execute(UpdateArticleCmd req) {
-        AssertUtil.notNull(req, "入参异常");
         AssertUtil.notEmpty(req.getTitle(), "标题不能为空");
         AssertUtil.notEmpty(req.getContent(), "内容不能为空");
         AssertUtil.notEmpty(req.getPublicFlag(), "公开标识不可为空");
@@ -39,7 +38,6 @@ public class UpdateArticleHandler implements Handler<ArticleDto, UpdateArticleCm
 
         // 构建EO
         ArticleEo articleEo = ArticleEo.builder()
-                .pkId(StringId.of(req.getArticleId()))
                 .author(ReqContext.getCurrent().getUserSession().getUserId())
                 .title(ArticleTitle.of(req.getTitle()))
                 .publicFlag(Flag.of(req.getPublicFlag()))
@@ -57,6 +55,7 @@ public class UpdateArticleHandler implements Handler<ArticleDto, UpdateArticleCm
             articleId = articleEo.getPkId().toString();
             AssertUtil.assertTrue(articleRepository.addArticle(articleEo) == 1, "添加文章失败");
         } else {
+            articleEo.setPkId(StringId.of(articleId));
             AssertUtil.assertTrue(articleRepository.updateArticle(articleEo) == 1, "更新文章失败");
         }
         // 删除草稿信息

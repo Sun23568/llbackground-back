@@ -1,28 +1,15 @@
 package com.llback.dal.file.dao;
 
-import com.llback.dal.file.po.FileInfoPo;
+import com.llback.dal.file.po.FilePo;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * 文件仓储
- *
- * @author yz.sun
- * @date 2025/3/27
  */
+@Mapper
 public interface FileDao {
-
     /**
-     * 保存文件
-     *
-     * @author yz.sun
-     * @date 2025/3/27
+     * 添加文件
      */
-    void saveFileId(String uuid, String ftpPath, String fullPath, String fileName);
-
-    /**
-     * 根据文件id获取文件信息
-     *
-     * @author yz.sun
-     * @date 2025/3/27
-     */
-    FileInfoPo getFileById(String fileId);
+    int addFile(FilePo filePo);
 }
