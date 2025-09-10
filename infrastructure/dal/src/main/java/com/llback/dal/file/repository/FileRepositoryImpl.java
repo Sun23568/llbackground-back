@@ -1,5 +1,6 @@
 package com.llback.dal.file.repository;
 
+import com.llback.common.types.StringId;
 import com.llback.core.article.eo.FileEo;
 import com.llback.core.article.repository.FileRepository;
 import com.llback.dal.file.dao.FileDao;
@@ -29,5 +30,14 @@ public class FileRepositoryImpl implements FileRepository {
     public int addFile(FileEo fileEo) {
         FilePo filePo = PoAssembleUtil.eo2Po(fileEo, FilePo.class);
         return fileDao.addFile(filePo);
+    }
+
+    /**
+     * 获取文件
+     */
+    @Override
+    public FileEo getFile(StringId imageId) {
+        FilePo filePo = fileDao.getFileById(imageId.toString());
+        return PoAssembleUtil.po2Eo(filePo, FileEo.class);
     }
 }

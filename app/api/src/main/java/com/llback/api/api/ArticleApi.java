@@ -6,6 +6,8 @@ import com.llback.frame.rest.RestResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author: llback
  * @description: 文章相关Controller
@@ -55,5 +57,10 @@ public class ArticleApi implements RestApi {
     @PostMapping("/upload/image")
     public RestResult uploadImage(@RequestParam("file") MultipartFile file){
         return this.execute(ArticleUploadImageCmd.of(file));
+    }
+
+    @GetMapping("/image/{imageId}")
+    public void getImage(@PathVariable String imageId, HttpServletResponse response) {
+        this.execute(GetImageReq.of(imageId, response)).getData();
     }
 }
