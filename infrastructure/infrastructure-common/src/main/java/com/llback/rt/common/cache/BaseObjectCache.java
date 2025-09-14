@@ -1,7 +1,6 @@
 package com.llback.rt.common.cache;
 
 import com.alibaba.fastjson2.JSONObject;
-import com.llback.common.types.CacheType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,7 +23,7 @@ public abstract class BaseObjectCache<T> {
     /**
      * 获取缓存类型
      */
-    protected abstract CacheType getCacheType();
+    public abstract String getCacheType();
 
     /**
      * 获取缓存前缀

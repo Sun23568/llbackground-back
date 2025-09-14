@@ -21,12 +21,12 @@
     <dependencies>
         <dependency>
             <groupId>com.llback</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>domain-core</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.llback</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>domain-base</artifactId>
         </dependency>
 
         <dependency>

@@ -5,7 +5,7 @@ import com.llback.core.perm.eo.FuncPermEo;
 import com.llback.core.perm.repository.PermRepository;
 import com.llback.dal.perm.dao.PermDao;
 import com.llback.dal.perm.po.PermissionPo;
-import com.llback.rt.common.cache.PoAssembleUtil;
+import com.llback.rt.common.util.PoAssembleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

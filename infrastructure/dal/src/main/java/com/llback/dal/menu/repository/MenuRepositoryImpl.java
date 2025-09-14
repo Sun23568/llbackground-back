@@ -5,7 +5,7 @@ import com.llback.core.menu.eo.MenuEo;
 import com.llback.core.menu.repository.MenuRepository;
 import com.llback.dal.menu.dao.MenuDao;
 import com.llback.dal.menu.po.MenuPo;
-import com.llback.rt.common.cache.PoAssembleUtil;
+import com.llback.rt.common.util.PoAssembleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

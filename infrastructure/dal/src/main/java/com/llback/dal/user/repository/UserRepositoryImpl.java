@@ -2,14 +2,14 @@ package com.llback.dal.user.repository;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.llback.base.user.eo.UserEo;
+import com.llback.base.user.repository.UserRepository;
 import com.llback.common.types.UserId;
 import com.llback.common.util.AssertUtil;
-import com.llback.core.user.eo.UserEo;
-import com.llback.core.user.repository.UserRepository;
 import com.llback.dal.user.assembler.UserAssembler;
 import com.llback.dal.user.dao.UserDao;
 import com.llback.dal.user.po.UserPo;
-import com.llback.rt.common.cache.PoAssembleUtil;
+import com.llback.rt.common.util.PoAssembleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

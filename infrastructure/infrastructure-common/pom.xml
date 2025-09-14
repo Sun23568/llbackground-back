@@ -27,7 +27,7 @@
 
         <dependency>
             <groupId>com.llback</groupId>
-            <artifactId>core</artifactId>
+            <artifactId>domain-base</artifactId>
         </dependency>
 
         <dependency>

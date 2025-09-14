@@ -22,12 +22,17 @@
     <dependencies>
         <dependency>
             <groupId>com.llback</groupId>
-            <artifactId>common</artifactId>
+            <artifactId>domain-common</artifactId>
         </dependency>
 
         <dependency>
             <groupId>com.llback</groupId>
             <artifactId>infrastructure-common</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.llback</groupId>
+            <artifactId>domain-base</artifactId>
         </dependency>
 
         <dependency>

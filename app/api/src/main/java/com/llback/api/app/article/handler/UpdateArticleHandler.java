@@ -16,6 +16,7 @@ import com.llback.frame.context.ReqContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 修改文章处理器
@@ -30,6 +31,7 @@ public class UpdateArticleHandler implements Handler<ArticleDto, UpdateArticleCm
     private ArticleRepository articleRepository;
 
     @Override
+    @Transactional
     public ArticleDto execute(UpdateArticleCmd req) {
         AssertUtil.notEmpty(req.getTitle(), "标题不能为空");
         AssertUtil.notEmpty(req.getContent(), "内容不能为空");

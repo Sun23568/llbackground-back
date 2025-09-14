@@ -12,7 +12,7 @@ import com.llback.core.article.repository.ArticleRepository;
 import com.llback.dal.article.dao.ArticleDao;
 import com.llback.dal.article.po.ArticleContentPo;
 import com.llback.dal.article.po.ArticlePo;
-import com.llback.rt.common.cache.PoAssembleUtil;
+import com.llback.rt.common.util.PoAssembleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

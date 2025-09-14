@@ -23,12 +23,12 @@ public class UnifiedCacheService implements CacheService {
      * 注册缓存实例
      */
     public static void registerCache(BaseObjectCache cacheInst) {
-        CacheType cacheType = cacheInst.getCacheType();
+        CacheType cacheType = CacheType.of(cacheInst.getCacheType());
         if (cacheMap.containsKey(cacheType)) {
             log.warn("缓存类型{}已存在", cacheType);
             return;
         }
-        cacheMap.put(cacheInst.getCacheType(), cacheInst);
+        cacheMap.put(cacheType, cacheInst);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.llback.frame.context;
 
+import com.llback.base.user.vo.UserCacheItemVo;
 import com.llback.common.types.OperationId;
 import com.llback.common.util.AssertUtil;
-import com.llback.core.user.vo.UserCacheItemVo;
 import lombok.Getter;
 
 import java.util.Set;

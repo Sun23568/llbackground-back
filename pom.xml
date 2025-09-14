@@ -12,11 +12,12 @@
         <module>starter</module>
         <module>app/api</module>
         <module>app/frame</module>
-        <module>domain/core</module>
-        <module>domain/common</module>
+        <module>domain/domain-core</module>
+        <module>domain/domain-common</module>
         <module>infrastructure/dal</module>
         <module>infrastructure/spring</module>
         <module>infrastructure/infrastructure-common</module>
+        <module>domain/domain-base</module>
     </modules>
 
     <parent>
@@ -130,7 +131,7 @@
 
             <dependency>
                 <groupId>com.llback</groupId>
-                <artifactId>core</artifactId>
+                <artifactId>domain-core</artifactId>
                 <version>2.0.0-SNAPSHOT</version>
             </dependency>
 
@@ -154,13 +155,19 @@
 
             <dependency>
                 <groupId>com.llback</groupId>
-                <artifactId>common</artifactId>
+                <artifactId>domain-common</artifactId>
                 <version>2.0.0-SNAPSHOT</version>
             </dependency>
 
             <dependency>
                 <groupId>com.llback</groupId>
                 <artifactId>infrastructure-common</artifactId>
+                <version>2.0.0-SNAPSHOT</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.llback</groupId>
+                <artifactId>domain-base</artifactId>
                 <version>2.0.0-SNAPSHOT</version>
             </dependency>
 

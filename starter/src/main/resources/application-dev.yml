@@ -49,10 +49,4 @@ mybatis:
 sa:
   public-key: 034331b158275b2867f12afc75051ebe56f38265469675a44c23563326df8fa63e
   private-key: fc3ff3f8dfff886dc34673a431ec562830b2933d720248e9f0a38aba38b0ab60
-ftp:
-  ip: 120.27.201.34
-  port: 21
-  user: ftpUser
-  password: O(i*U7y6
-  path: /home/ftpUser/cloudFile/
 
