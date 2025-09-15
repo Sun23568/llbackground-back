@@ -11,6 +11,7 @@ import com.llback.common.util.RandomIdUtil;
 import com.llback.core.article.eo.ArticleContentEo;
 import com.llback.core.article.eo.ArticleEo;
 import com.llback.core.article.repository.ArticleRepository;
+import com.llback.core.article.service.ArticleService;
 import com.llback.frame.Handler;
 import com.llback.frame.context.ReqContext;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,12 @@ public class UpdateArticleHandler implements Handler<ArticleDto, UpdateArticleCm
      */
     @Autowired
     private ArticleRepository articleRepository;
+
+    /**
+     * 文章领域
+     */
+    @Autowired
+    private ArticleService articleService;
 
     @Override
     @Transactional
@@ -62,6 +69,8 @@ public class UpdateArticleHandler implements Handler<ArticleDto, UpdateArticleCm
         }
         // 删除草稿信息
         articleRepository.removeContent(StringId.of(articleId), PublicFlagEnum.YES_FLAG.getCode().equals(req.getDraft()));
+        // 转换内容
+        String contentAfterHandler = articleService.handlerHtmlImage(req.getContent());
         // 构造 文章内容实例
         ArticleContentEo articleContentEo = ArticleContentEo.builder()
                 .pkId(StringId.of(RandomIdUtil.uuid()))

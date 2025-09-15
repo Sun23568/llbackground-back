@@ -42,6 +42,9 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
+ftp:
+  service:
+    url: http://localhost:8086/file
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
   configuration:

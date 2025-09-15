@@ -52,7 +52,7 @@ class SpringRunContext implements AppRunContext {
      */
     @Override
     public <T> Collection<T> getBeansOfType(Class<?> clazz) {
-        Collection<T> collection = (Collection<T>) Collections.unmodifiableCollection(applicationContext.getBeansOfType(clazz).values());
+            Collection<T> collection = (Collection<T>) Collections.unmodifiableCollection(applicationContext.getBeansOfType(clazz).values());
         return collection;
     }
 
