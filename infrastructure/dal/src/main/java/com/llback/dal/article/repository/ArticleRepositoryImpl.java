@@ -7,7 +7,7 @@ import com.llback.api.app.article.fetch.ArticleFetch;
 import com.llback.common.types.StringId;
 import com.llback.common.types.UserId;
 import com.llback.core.article.eo.ArticleContentEo;
-import com.llback.core.article.eo.ArticleEo;
+import com.llback.core.article.vo.ArticleVo;
 import com.llback.core.article.repository.ArticleRepository;
 import com.llback.dal.article.dao.ArticleDao;
 import com.llback.dal.article.po.ArticleContentPo;
@@ -37,23 +37,23 @@ public class ArticleRepositoryImpl implements ArticleRepository, ArticleFetch {
      * @date 2025/8/22
      */
     @Override
-    public PageInfo<ArticleEo> listArticle(int pageIndex, int pageSize, UserId userId, boolean queryAll) {
+    public PageInfo<ArticleVo> listArticle(int pageIndex, int pageSize, UserId userId, boolean queryAll) {
         PageHelper.startPage(pageIndex, pageSize);
         PageInfo<ArticlePo> poPageInfo = new PageInfo<>(articleDao.listArticle(userId.toString(), queryAll));
-        return PoAssembleUtil.poPage2EoPage(poPageInfo, ArticleEo.class);
+        return PoAssembleUtil.poPage2EoPage(poPageInfo, ArticleVo.class);
     }
 
     /**
      * 添加文章
      */
     @Override
-    public int addArticle(ArticleEo eo) {
+    public int addArticle(ArticleVo eo) {
         ArticlePo articlePo = PoAssembleUtil.eo2Po(eo, ArticlePo.class);
         return articleDao.addArticle(articlePo);
     }
 
     @Override
-    public int updateArticle(ArticleEo eo) {
+    public int updateArticle(ArticleVo eo) {
         ArticlePo articlePo = PoAssembleUtil.eo2Po(eo, ArticlePo.class);
         return articleDao.updateArticleBaseInfo(articlePo);
     }
@@ -96,9 +96,9 @@ public class ArticleRepositoryImpl implements ArticleRepository, ArticleFetch {
      * 获取文章基本信息
      */
     @Override
-    public ArticleEo getArticleBaseInfo(StringId articleId) {
+    public ArticleVo getArticleBaseInfo(StringId articleId) {
         ArticlePo articleBaseInfo = articleDao.getArticleBaseInfo(articleId.toString());
-        return PoAssembleUtil.po2Eo(articleBaseInfo, ArticleEo.class);
+        return PoAssembleUtil.po2Eo(articleBaseInfo, ArticleVo.class);
     }
 
     /**

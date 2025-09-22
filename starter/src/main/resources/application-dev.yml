@@ -44,7 +44,8 @@ spring:
       max-request-size: 10MB
 ftp:
   service:
-    url: http://localhost:8086/file
+    url: http://120.27.201.34:8081/file
+    get-image-prefix: http://120.27.201.34:8081/file/image/
 mybatis:
   mapper-locations: classpath*:mapper/**/*.xml
   configuration:

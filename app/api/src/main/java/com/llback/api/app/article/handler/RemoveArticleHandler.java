@@ -3,7 +3,7 @@ package com.llback.api.app.article.handler;
 import com.llback.api.app.article.dto.req.RemoveArticleCmd;
 import com.llback.common.types.StringId;
 import com.llback.common.util.AssertUtil;
-import com.llback.core.article.eo.ArticleEo;
+import com.llback.core.article.vo.ArticleVo;
 import com.llback.core.article.repository.ArticleRepository;
 import com.llback.frame.Handler;
 import com.llback.frame.context.ReqContext;
@@ -27,7 +27,7 @@ public class RemoveArticleHandler implements Handler<Void, RemoveArticleCmd> {
         AssertUtil.notEmpty(req.getArticleId(), "文章ID不能为空");
 
         // 查询该文章信息
-        ArticleEo articleBaseInfo = articleRepository.getArticleBaseInfo(StringId.of(req.getArticleId()));
+        ArticleVo articleBaseInfo = articleRepository.getArticleBaseInfo(StringId.of(req.getArticleId()));
         // 只有作者本人或拥有article:remove权限的人可删除
         UserSession userSession = ReqContext.getCurrent().getUserSession();
         AssertUtil.assertTrue(articleBaseInfo.getAuthor().equals(userSession.getUserId())

@@ -1,9 +1,6 @@
-package com.llback.core.article.eo;
+package com.llback.core.article.vo;
 
-import com.llback.common.types.ArticleTitle;
-import com.llback.common.types.Flag;
-import com.llback.common.types.StringId;
-import com.llback.common.types.UserId;
+import com.llback.common.types.*;
 import com.llback.common.util.RandomIdUtil;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +15,7 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Builder
-public class ArticleEo {
+public class ArticleVo {
     /**
      * 主键
      */
@@ -33,6 +30,11 @@ public class ArticleEo {
      * 作者
      */
     private UserId author;
+
+    /**
+     * 作者名称
+     */
+    private UserName authorName;
 
     /**
      * 公开标识

@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.llback.api.app.article.dto.ArticleDto;
 import com.llback.api.app.article.dto.req.QueryArticleReq;
 import com.llback.api.util.DtoEoAssemblerUtil;
-import com.llback.core.article.eo.ArticleEo;
+import com.llback.core.article.vo.ArticleVo;
 import com.llback.core.article.repository.ArticleRepository;
 import com.llback.frame.Handler;
 import com.llback.frame.context.ReqContext;
@@ -31,7 +31,7 @@ public class QueryArticleHandler implements Handler<PageResult<ArticleDto>, Quer
     public PageResult<ArticleDto> execute(QueryArticleReq req) {
         // 传入本账号是否拥有查询所有账号文章权限
         UserSession userSession = ReqContext.userSession();
-        PageInfo<ArticleEo> articleEoPageInfo = articleRepository.listArticle(req.getPageIndex(), req.getPageSize(), userSession.getUserId(), userSession.hasPerm("article:view"));
+        PageInfo<ArticleVo> articleEoPageInfo = articleRepository.listArticle(req.getPageIndex(), req.getPageSize(), userSession.getUserId(), userSession.hasPerm("article:view"));
         return DtoEoAssemblerUtil.eoPageToDtoResult(articleEoPageInfo, ArticleDto.class);
     }
 }

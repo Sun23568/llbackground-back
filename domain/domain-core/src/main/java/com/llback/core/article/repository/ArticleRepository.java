@@ -4,7 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.llback.common.types.StringId;
 import com.llback.common.types.UserId;
 import com.llback.core.article.eo.ArticleContentEo;
-import com.llback.core.article.eo.ArticleEo;
+import com.llback.core.article.vo.ArticleVo;
 
 /**
  * 文章仓储
@@ -19,17 +19,17 @@ public interface ArticleRepository {
      * @author yz.sun
      * @date 2025/8/22
      */
-    PageInfo<ArticleEo> listArticle(int pageIndex, int pageSize, UserId userId, boolean queryAll);
+    PageInfo<ArticleVo> listArticle(int pageIndex, int pageSize, UserId userId, boolean queryAll);
 
     /**
      * 添加文章
      */
-    int addArticle(ArticleEo eo);
+    int addArticle(ArticleVo eo);
 
     /**
      * 修改文章
      */
-    int updateArticle(ArticleEo eo);
+    int updateArticle(ArticleVo eo);
 
     /**
      * 删除文章草稿
@@ -49,7 +49,7 @@ public interface ArticleRepository {
     /**
      * 获取文章基本信息
      */
-    ArticleEo getArticleBaseInfo(StringId articleId);
+    ArticleVo getArticleBaseInfo(StringId articleId);
 
     /**
      * 删除文章

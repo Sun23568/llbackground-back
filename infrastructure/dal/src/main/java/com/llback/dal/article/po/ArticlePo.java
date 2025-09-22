@@ -25,6 +25,11 @@ public class ArticlePo {
     private String author;
 
     /**
+     * 作者姓名
+     */
+    private String authorName;
+
+    /**
      * 公开标识
      */
     private String publicFlag;

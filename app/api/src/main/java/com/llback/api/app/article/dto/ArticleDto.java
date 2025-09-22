@@ -34,6 +34,11 @@ public class ArticleDto {
     private String author;
 
     /**
+     * 作者姓名
+     */
+    private String authorName;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

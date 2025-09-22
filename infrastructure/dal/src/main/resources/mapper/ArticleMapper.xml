@@ -34,19 +34,23 @@
     <!-- 查询文章列表 -->
     <select id="listArticle" resultType="com.llback.dal.article.po.ArticlePo">
         SELECT
-        PK_ID,
-        TITLE,
-        AUTHOR,
-        CREATE_TIME,
-        UPDATE_TIME
+            T1.PK_ID,
+            T1.TITLE,
+            T1.AUTHOR,
+            T2.USER_NAME AS AUTHOR_NAME,
+            T1.CREATE_TIME,
+            T1.UPDATE_TIME
         FROM
-        ARTICLE
+            ARTICLE T1
+        LEFT JOIN SYS_USER T2
+            ON T1.AUTHOR = T2.USER_ID
+            AND T2.IS_DEL = '0'
         WHERE
-        IS_DEL = '0'
-        <if test="!queryAll">
-            AND (PUBLIC_FLAG = '1' OR AUTHOR = #{userId})
-        </if>
-        ORDER BY CREATE_TIME DESC
+            T1.IS_DEL = '0'
+            <if test="!queryAll">
+                AND (T1.PUBLIC_FLAG = '1' OR T1.AUTHOR = #{userId})
+            </if>
+        ORDER BY T1.CREATE_TIME DESC
     </select>
 
     <!-- 根据id查询文章 -->
