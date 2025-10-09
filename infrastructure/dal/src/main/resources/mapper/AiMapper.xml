@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.llback.dal.ai.dao.AiDao">
+    <insert id="addBackground">
+        insert into ai_background(ai_menu_id, file_id) values (#{aiMenuId}, #{fileId})
+    </insert>
+
+    <delete id="deleteBackground">
+        delete from ai_background where ai_menu_id = #{aiMenuId}
+    </delete>
+</mapper>
