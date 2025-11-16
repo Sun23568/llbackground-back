@@ -60,4 +60,12 @@ public class SaApi implements RestApi {
     public RestResult getAvatar(@RequestParam("avatarId") String avatarId) {
         return this.execute(GetAvatarReq.of(avatarId));
     }
+
+    /**
+     * 心跳检测
+     */
+    @RequestMapping("/heart")
+    public String heart() {
+        return "200";
+    }
 }

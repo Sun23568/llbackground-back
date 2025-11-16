@@ -159,4 +159,19 @@ public class PoAssembleUtil {
         }
         return false;
     }
+
+    /**
+     * poList转为dtoList
+     */
+    public static <T> List<T> poList2DtoList(List poObj, Class<T> dtoClassType) {
+        List<T> dtoList = new ArrayList<>();
+        if (CollectionUtils.isEmpty(poObj)) {
+            return dtoList;
+        }
+        for (Object o : poObj) {
+            T t = poToDto(o, dtoClassType);
+            dtoList.add(t);
+        }
+        return dtoList;
+    }
 }

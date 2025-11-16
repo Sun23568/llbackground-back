@@ -2,7 +2,7 @@ package com.llback.core.ai.repository;
 
 import com.llback.common.types.StringId;
 
-public interface AiRepository {
+public interface AiModelRepository {
     /**
      * 更新AI菜单背景图片
      *

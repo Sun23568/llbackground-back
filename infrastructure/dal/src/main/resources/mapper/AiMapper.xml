@@ -2,11 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.llback.dal.ai.dao.AiDao">
+    <!-- 添加背景图片 -->
     <insert id="addBackground">
-        insert into ai_background(ai_menu_id, file_id) values (#{aiMenuId}, #{fileId})
+        insert into ai_config(ai_menu_id, background_file_id) values (#{aiMenuId}, #{fileId})
     </insert>
 
+    <!-- 根据AI菜单ID删除背景图片 -->
     <delete id="deleteBackground">
-        delete from ai_background where ai_menu_id = #{aiMenuId}
+        delete from ai_config where ai_menu_id = #{aiMenuId}
     </delete>
+
+    <!-- 根据AI菜单ID查询背景图片ID -->
+    <select id="queryConfig" resultType="com.llback.dal.ai.po.AiConfigPo">
+        select ai_menu_id, background_file_id, context_size, comfy_file_id from ai_config where ai_menu_id = #{aiMenuId}
+    </select>
+
+    <!-- 查询所有AI菜单配置 -->
+    <select id="queryAllConfig" resultType="com.llback.dal.ai.po.AiConfigPo">
+
+    </select>
 </mapper>
