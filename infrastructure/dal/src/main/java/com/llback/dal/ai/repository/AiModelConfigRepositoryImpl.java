@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * AI模块仓储实现类
+ * AI模块仓储实现 类
  *
  * @author yz.sun
  * @date 2025/10/6
