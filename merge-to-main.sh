@@ -37,10 +37,11 @@ echo -e "${CYAN}当前分支: ${CURRENT_BRANCH}${NC}"
 MAIN_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
 if [ -z "$MAIN_BRANCH" ]; then
     # 如果无法自动检测，尝试常见的主分支名称
-    if git show-ref --verify --quiet refs/heads/main; then
-        MAIN_BRANCH="main"
-    elif git show-ref --verify --quiet refs/heads/master; then
+    if git show-ref --verify --quiet refs/heads/master; then
         MAIN_BRANCH="master"
+    elif git show-ref --verify --quiet refs/heads/main; then
+        MAIN_BRANCH="main"
+    el
     else
         echo -e "${RED}错误: 无法检测主分支名称${NC}"
         exit 1
