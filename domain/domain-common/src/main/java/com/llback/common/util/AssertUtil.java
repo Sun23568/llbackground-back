@@ -81,6 +81,19 @@ public class AssertUtil {
     /**
      * 输入对象不能为空
      *
+     * @param input   input
+     * @param message message
+     */
+    public static <T> T isNull(T input, String message) {
+        if (null != input) {
+            throw new BizException(message);
+        }
+        return null;
+    }
+
+    /**
+     * 输入对象不能为空
+     *
      * @param input             input
      * @param exceptionSupplier exceptionSupplier
      */
@@ -381,6 +394,4 @@ public class AssertUtil {
             throw fnThrow.get();
         }
     }
-
-
 }

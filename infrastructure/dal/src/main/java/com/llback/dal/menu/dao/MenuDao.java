@@ -1,6 +1,7 @@
 package com.llback.dal.menu.dao;
 
 import com.llback.dal.menu.po.MenuPo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -22,6 +23,11 @@ public interface MenuDao {
      * 获取菜单编码数量
      */
     int getMenuCodeCount(String menuCode);
+
+    /**
+     * 根据菜单代码查询菜单
+     */
+    MenuPo queryMenuByCode(@Param("menuCode") String menuCode);
 
     /**
      * 添加菜单

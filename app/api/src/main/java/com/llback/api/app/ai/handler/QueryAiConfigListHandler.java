@@ -1,28 +1,41 @@
 package com.llback.api.app.ai.handler;
 
+import com.llback.api.app.ai.dto.AiConfigDto;
 import com.llback.api.app.ai.dto.req.AiConfigListReq;
-import com.llback.api.app.ai.fetch.AiConfigFetch;
+import com.llback.api.app.ai.dto.resp.AiConfigListResp;
+import com.llback.api.util.DtoEoAssemblerUtil;
+import com.llback.core.ai.eo.AiConfigEo;
+import com.llback.core.ai.repository.AiConfigRepository;
 import com.llback.frame.Handler;
 import com.llback.frame.HandlerAcl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * AI菜单配置列表查询处理器
  */
 @Component
 @HandlerAcl("ai:config:list")
-public class QueryAiConfigListHandler implements Handler<Void, AiConfigListReq> {
+public class QueryAiConfigListHandler implements Handler<AiConfigListResp, AiConfigListReq> {
     /**
-     * AI菜单配置查询
+     * AI配置仓储
      */
     @Autowired
-    private AiConfigFetch aiConfigFetch;
+    private AiConfigRepository aiConfigRepository;
 
     @Override
-    public Void execute(AiConfigListReq req) {
-        // 查询AI菜单列表
-        aiConfigFetch.queryAllAiConfigList();
-        return null;
+    public AiConfigListResp execute(AiConfigListReq req) {
+        // 查询所有AI配置
+        List<AiConfigEo> configList = aiConfigRepository.queryAllConfigs();
+
+        // 转换为DTO
+        List<AiConfigDto> dtoList = DtoEoAssemblerUtil.eoList2DtoList(configList, AiConfigDto.class);
+
+        // 构建响应
+        AiConfigListResp resp = new AiConfigListResp();
+        resp.setUserAccessRespList(dtoList);
+        return resp;
     }
 }

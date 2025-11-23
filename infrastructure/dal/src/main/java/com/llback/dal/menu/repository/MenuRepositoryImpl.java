@@ -1,5 +1,7 @@
 package com.llback.dal.menu.repository;
 
+import com.llback.api.app.menu.dto.MenuDto;
+import com.llback.api.app.menu.fetch.MenuFetch;
 import com.llback.common.types.UserId;
 import com.llback.core.menu.eo.MenuEo;
 import com.llback.core.menu.repository.MenuRepository;
@@ -16,7 +18,7 @@ import java.util.List;
  * 菜单数据访问接口实现
  */
 @Component
-public class MenuRepositoryImpl implements MenuRepository {
+public class MenuRepositoryImpl implements MenuRepository, MenuFetch {
     /**
      * 菜单数据访问接口
      */
@@ -51,5 +53,14 @@ public class MenuRepositoryImpl implements MenuRepository {
     public void addMenu(MenuEo menuEo) {
         MenuPo menuPo = PoAssembleUtil.eo2Po(menuEo, MenuPo.class);
         menuDao.addMenu(menuPo);
+    }
+
+    /**
+     * 根据菜单代码查询菜单
+     */
+    @Override
+    public MenuDto queryMenuByCode(String menuCode) {
+        MenuPo menuPo = menuDao.queryMenuByCode(menuCode);
+        return PoAssembleUtil.poToDto(menuPo, MenuDto.class);
     }
 }

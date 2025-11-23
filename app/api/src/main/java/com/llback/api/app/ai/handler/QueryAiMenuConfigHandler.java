@@ -42,10 +42,10 @@ public class QueryAiMenuConfigHandler implements Handler<AiConfigDto, AiConfigRe
         if (aiConfigDto == null) {
             return new AiConfigDto();
         }
-        // 如果背景图片ID不为空，则拼接URL
-        String fileId = aiConfigDto.getBackgroundFileId();
+        // 如果背景图片不为空，则拼接URL
+        String fileId = aiConfigDto.getBackgroundImage();
         if (StringUtil.isNotEmpty(fileId)) {
-            aiConfigDto.setBackgroundFileId(ftpGetImageUrl + fileId);
+            aiConfigDto.setBackgroundImage(ftpGetImageUrl + fileId);
         }
         return aiConfigDto;
     }

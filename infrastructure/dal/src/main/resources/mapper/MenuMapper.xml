@@ -36,4 +36,15 @@
         FROM SYS_MENU
         WHERE MENU_CODE = #{menuCode}
     </select>
+
+    <!-- 根据菜单代码查询菜单 -->
+    <select id="queryMenuByCode" resultType="com.llback.dal.menu.po.MenuPo">
+        SELECT
+            MENU_ID,
+            MENU_CODE,
+            MENU_NAME
+        FROM
+            SYS_MENU
+        WHERE MENU_CODE = #{menuCode}
+    </select>
 </mapper>

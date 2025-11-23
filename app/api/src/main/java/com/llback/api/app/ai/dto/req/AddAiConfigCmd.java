@@ -1,17 +1,15 @@
-package com.llback.api.app.ai.dto;
+package com.llback.api.app.ai.dto.req;
 
+import com.llback.frame.dto.Command;
 import lombok.Data;
 
 /**
- * AI配置DTO
+ * 新增AI配置命令
+ *
+ * @author llback
  */
 @Data
-public class AiConfigDto {
-    /**
-     * 主键ID
-     */
-    private String pkId;
-
+public class AddAiConfigCmd implements Command {
     /**
      * 菜单名称
      */

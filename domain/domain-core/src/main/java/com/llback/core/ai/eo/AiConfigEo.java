@@ -1,31 +1,36 @@
-package com.llback.dal.ai.po;
+package com.llback.core.ai.eo;
 
-import lombok.Data;
+import com.llback.common.types.StringId;
+import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 /**
- * AI配置PO
+ * AI配置实体对象
+ *
+ * @author llback
  */
-@Data
-public class AiConfigPo {
+@Getter
+@Builder
+public class AiConfigEo {
     /**
      * 主键ID
      */
-    private String pkId;
+    private StringId pkId;
 
     /**
-     * 菜单ID（存储在表中）
+     * 菜单ID
      */
-    private String menuId;
+    private StringId menuId;
 
     /**
-     * 菜单名称（不存储在表中，仅用于接收关联查询结果）
+     * 菜单名称（从菜单表关联查询获取，用于展示）
      */
     private String menuName;
 
     /**
-     * 菜单代码（不存储在表中，仅用于接收关联查询结果）
+     * 菜单代码（从菜单表关联查询获取，用于展示）
      */
     private String menuCode;
 
