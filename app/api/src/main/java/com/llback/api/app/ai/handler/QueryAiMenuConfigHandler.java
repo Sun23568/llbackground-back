@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 /**
- * AI模块菜单配置查询处理器
+ * AI配置-查询菜单配置处理器
  *
  * @author yz.sun
  * @date 2025/8/22
@@ -34,10 +34,10 @@ public class QueryAiMenuConfigHandler implements Handler<AiConfigDto, AiConfigRe
     @Override
     public AiConfigDto execute(AiConfigReq req) {
         // 非法返回空
-        if (StringUtils.isEmpty(req.getAiMenuId())) {
+        if (StringUtils.isEmpty(req.getAiMenuCode())) {
             return new AiConfigDto();
         }
-        AiConfigDto aiConfigDto = aiConfigFetch.queryAiConfig(StringId.of(req.getAiMenuId()));
+        AiConfigDto aiConfigDto = aiConfigFetch.queryAiConfig(StringId.of(req.getAiMenuCode()));
         // 无配置则返回空
         if (aiConfigDto == null) {
             return new AiConfigDto();

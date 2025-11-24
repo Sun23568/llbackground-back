@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * AI模块上传背景图片处理器
+ * AI配置-上传背景图片处理器
  *
  * @author yz.sun 孙延昭
  * @date 2025/8/22
  */
 @Component
-@HandlerAcl("ai:backgroundUpload")
+@HandlerAcl("ai:config:background-image:upload")
 public class AiUploadBackgroundHandler implements Handler<String, UploadBackgroundReq> {
     /**
      * ftp文件服务
@@ -54,7 +54,7 @@ public class AiUploadBackgroundHandler implements Handler<String, UploadBackgrou
         // 上传文件
         ResponseEntity<String> fileId = feign.uploadFile(req.getFile());
         // 更新AI菜单背景图片
-        aiModelRepository.updateBackground(StringId.of(req.getAiMenuId()), StringId.of(fileId.getBody()));
+        aiModelRepository.updateBackgroundImage(StringId.of(req.getAiMenuCode()), StringId.of(fileId.getBody()));
         return ftpGetImageUrl + fileId.getBody();
     }
 }

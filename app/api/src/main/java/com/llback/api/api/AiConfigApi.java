@@ -3,13 +3,13 @@ package com.llback.api.api;
 
 import com.llback.api.app.ai.dto.req.AddAiConfigCmd;
 import com.llback.api.app.ai.dto.req.AiConfigListReq;
+import com.llback.api.app.ai.dto.req.AiConfigReq;
 import com.llback.api.app.ai.dto.req.UpdateAiConfigCmd;
+import com.llback.api.app.ai.dto.req.UploadBackgroundReq;
 import com.llback.frame.rest.RestApi;
 import com.llback.frame.rest.RestResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * AI配置接口
@@ -39,5 +39,22 @@ public class AiConfigApi implements RestApi {
     @PostMapping("/update")
     public RestResult updateAiConfig(@RequestBody UpdateAiConfigCmd cmd) {
         return this.execute(cmd);
+    }
+
+    /**
+     * 获取AI菜单背景图片配置
+     */
+    @GetMapping("/background-image")
+    public RestResult getBackgroundImage(@RequestParam("aiMenuCode") String aiMenuCode) {
+        return this.execute(AiConfigReq.of(aiMenuCode));
+    }
+
+    /**
+     * 上传AI菜单背景图片
+     */
+    @PostMapping("/background-image/upload")
+    public RestResult uploadBackgroundImage(@RequestParam("file") MultipartFile file,
+                                            @RequestParam("aiMenuCode") String aiMenuCode) {
+        return this.execute(UploadBackgroundReq.of(file, aiMenuCode));
     }
 }

@@ -27,6 +27,11 @@ public class ModelChat implements Query {
     private String model;
 
     /**
+     * AI菜单代码（menu_code，用于获取AI配置）
+     */
+    private String aiMenuCode;
+
+    /**
      * 响应
      */
     private HttpServletResponse response;

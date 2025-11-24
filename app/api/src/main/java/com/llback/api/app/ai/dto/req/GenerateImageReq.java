@@ -11,7 +11,7 @@ public class GenerateImageReq implements Query {
     private String keyWord;
 
     /**
-     * 模型名称
+     * AI菜单代码（menu_code，用于获取AI配置）
      */
-    private String modelName;
+    private String aiMenuCode;
 }

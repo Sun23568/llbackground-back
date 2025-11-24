@@ -68,8 +68,8 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
      * 更新背景图片
      */
     @Override
-    public void updateBackground(StringId aiMenuId, StringId backgroundId) {
-        aiDao.updateBackgroundImage(aiMenuId.toString(), backgroundId.toString());
+    public void updateBackgroundImage(StringId aiMenuCode, StringId backgroundImageId) {
+        aiDao.updateBackgroundImage(aiMenuCode.toString(), backgroundImageId.toString());
     }
 
     /**

@@ -6,15 +6,15 @@ import lombok.Data;
 @Data
 public class AiConfigReq implements Query {
     /**
-     * AI菜单ID
+     * AI菜单代码（menu_code）
      */
-    private String aiMenuId;
+    private String aiMenuCode;
 
-    private AiConfigReq(String aiMenuId) {
-        this.aiMenuId = aiMenuId;
+    private AiConfigReq(String aiMenuCode) {
+        this.aiMenuCode = aiMenuCode;
     }
 
-    public static AiConfigReq of(String aiMenuId) {
-        return new AiConfigReq(aiMenuId);
+    public static AiConfigReq of(String aiMenuCode) {
+        return new AiConfigReq(aiMenuCode);
     }
 }

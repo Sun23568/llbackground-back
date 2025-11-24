@@ -12,16 +12,16 @@ public class UploadBackgroundReq implements Query {
     private MultipartFile file;
 
     /**
-     * AI菜单ID
+     * AI菜单代码（menu_code）
      */
-    private String aiMenuId;
+    private String aiMenuCode;
 
-    private UploadBackgroundReq(MultipartFile file, String aiMenuId) {
+    private UploadBackgroundReq(MultipartFile file, String aiMenuCode) {
         this.file = file;
-        this.aiMenuId = aiMenuId;
+        this.aiMenuCode = aiMenuCode;
     }
 
-    public static UploadBackgroundReq of(MultipartFile file, String aiMenuId) {
-        return new UploadBackgroundReq(file, aiMenuId);
+    public static UploadBackgroundReq of(MultipartFile file, String aiMenuCode) {
+        return new UploadBackgroundReq(file, aiMenuCode);
     }
 }
