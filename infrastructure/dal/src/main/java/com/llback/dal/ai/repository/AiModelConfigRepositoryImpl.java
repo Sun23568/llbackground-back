@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * AI模块仓储实现类
@@ -34,7 +33,7 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
      */
     @Override
     public void addAiConfig(AiConfigEo aiConfigEo) {
-        AiConfigPo po = eoToPo(aiConfigEo);
+        AiConfigPo po = PoAssembleUtil.eo2Po(aiConfigEo, AiConfigPo.class);
         aiDao.insertAiConfig(po);
     }
 
@@ -43,7 +42,7 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
      */
     @Override
     public void updateAiConfig(AiConfigEo aiConfigEo) {
-        AiConfigPo po = eoToPo(aiConfigEo);
+        AiConfigPo po = PoAssembleUtil.eo2Po(aiConfigEo, AiConfigPo.class);
         aiDao.updateAiConfig(po);
     }
 
@@ -53,7 +52,7 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
     @Override
     public AiConfigEo queryByMenuCode(String menuCode) {
         AiConfigPo po = aiDao.queryConfigByMenuCode(menuCode);
-        return poToEo(po);
+        return PoAssembleUtil.po2Eo(po, AiConfigEo.class);
     }
 
     /**
@@ -62,7 +61,7 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
     @Override
     public List<AiConfigEo> queryAllConfigs() {
         List<AiConfigPo> poList = aiDao.queryAllConfig();
-        return poList.stream().map(this::poToEo).collect(Collectors.toList());
+        return PoAssembleUtil.poList2EoList(poList, AiConfigEo.class);
     }
 
     /**
@@ -70,9 +69,7 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
      */
     @Override
     public void updateBackground(StringId aiMenuId, StringId backgroundId) {
-        // 先删后增
-        aiDao.deleteBackground(aiMenuId.toString());
-        aiDao.addBackground(aiMenuId.toString(), backgroundId.toString());
+        aiDao.updateBackgroundImage(aiMenuId.toString(), backgroundId.toString());
     }
 
     /**
@@ -91,51 +88,5 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
     @Override
     public List<AiConfigDto> queryAllAiConfigList() {
         return PoAssembleUtil.poList2DtoList(aiDao.queryAllConfig(), AiConfigDto.class);
-    }
-
-    /**
-     * EO转PO
-     */
-    private AiConfigPo eoToPo(AiConfigEo eo) {
-        if (eo == null) {
-            return null;
-        }
-        AiConfigPo po = new AiConfigPo();
-        po.setPkId(eo.getPkId() != null ? eo.getPkId().toString() : null);
-        po.setMenuId(eo.getMenuId() != null ? eo.getMenuId().toString() : null);
-        po.setMenuName(eo.getMenuName());
-        po.setMenuCode(eo.getMenuCode());
-        po.setOllamaModelId(eo.getOllamaModelId());
-        po.setComfyUiUrl(eo.getComfyUiUrl());
-        po.setOllamaUrl(eo.getOllamaUrl());
-        po.setComfyFileId(eo.getComfyFileId());
-        po.setBackgroundImage(eo.getBackgroundImage());
-        po.setContextSize(eo.getContextSize());
-        po.setCreateTime(eo.getCreateTime());
-        po.setUpdateTime(eo.getUpdateTime());
-        return po;
-    }
-
-    /**
-     * PO转EO
-     */
-    private AiConfigEo poToEo(AiConfigPo po) {
-        if (po == null) {
-            return null;
-        }
-        return AiConfigEo.builder()
-                .pkId(StringId.of(po.getPkId()))
-                .menuId(po.getMenuId() != null ? StringId.of(po.getMenuId()) : null)
-                .menuName(po.getMenuName())
-                .menuCode(po.getMenuCode())
-                .ollamaModelId(po.getOllamaModelId())
-                .comfyUiUrl(po.getComfyUiUrl())
-                .ollamaUrl(po.getOllamaUrl())
-                .comfyFileId(po.getComfyFileId())
-                .backgroundImage(po.getBackgroundImage())
-                .contextSize(po.getContextSize())
-                .createTime(po.getCreateTime())
-                .updateTime(po.getUpdateTime())
-                .build();
     }
 }

@@ -3,6 +3,7 @@ package com.llback.api.app.ai.handler;
 import com.llback.api.app.ai.dto.req.AddAiConfigCmd;
 import com.llback.api.app.menu.dto.MenuDto;
 import com.llback.api.app.menu.fetch.MenuFetch;
+import com.llback.common.types.MenuCode;
 import com.llback.common.types.StringId;
 import com.llback.common.util.AssertUtil;
 import com.llback.common.util.RandomIdUtil;
@@ -52,7 +53,7 @@ public class AddAiConfigHandler implements Handler<Void, AddAiConfigCmd> {
         LocalDateTime now = LocalDateTime.now();
         AiConfigEo aiConfigEo = AiConfigEo.builder()
                 .pkId(StringId.of(RandomIdUtil.uuid()))
-                .menuId(StringId.of(menuDto.getMenuId()))
+                .menuCode(MenuCode.of(menuDto.getMenuCode()))
                 .ollamaModelId(cmd.getOllamaModelId())
                 .comfyUiUrl(cmd.getComfyUiUrl())
                 .ollamaUrl(cmd.getOllamaUrl())

@@ -9,6 +9,7 @@ import com.llback.core.ai.repository.AiConfigRepository;
 import com.llback.frame.Handler;
 import com.llback.frame.HandlerAcl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -25,6 +26,9 @@ public class QueryAiConfigListHandler implements Handler<AiConfigListResp, AiCon
     @Autowired
     private AiConfigRepository aiConfigRepository;
 
+    @Value("${ftp.service.get-image-prefix}")
+    private String ftpGetImageUrl;
+
     @Override
     public AiConfigListResp execute(AiConfigListReq req) {
         // 查询所有AI配置
@@ -32,6 +36,9 @@ public class QueryAiConfigListHandler implements Handler<AiConfigListResp, AiCon
 
         // 转换为DTO
         List<AiConfigDto> dtoList = DtoEoAssemblerUtil.eoList2DtoList(configList, AiConfigDto.class);
+
+        // 组装图片URL
+        dtoList.forEach(dto -> dto.setBackgroundImage(ftpGetImageUrl + dto.getBackgroundImage()));
 
         // 构建响应
         AiConfigListResp resp = new AiConfigListResp();

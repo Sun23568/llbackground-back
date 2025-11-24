@@ -15,19 +15,14 @@ public class AiConfigPo {
     private String pkId;
 
     /**
-     * 菜单ID（存储在表中）
-     */
-    private String menuId;
-
-    /**
-     * 菜单名称（不存储在表中，仅用于接收关联查询结果）
-     */
-    private String menuName;
-
-    /**
-     * 菜单代码（不存储在表中，仅用于接收关联查询结果）
+     * 菜单代码（存储在表中）
      */
     private String menuCode;
+
+    /**
+     * 菜单名称（不存储在表中，通过menu_code关联SYS_MENU表查询获取，仅用于展示）
+     */
+    private String menuName;
 
     /**
      * Ollama模型ID

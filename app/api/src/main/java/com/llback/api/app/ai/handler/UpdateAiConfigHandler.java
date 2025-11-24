@@ -49,7 +49,7 @@ public class UpdateAiConfigHandler implements Handler<Void, UpdateAiConfigCmd> {
         // 构建更新实体对象
         AiConfigEo aiConfigEo = AiConfigEo.builder()
                 .pkId(existConfig.getPkId())
-                .menuId(existConfig.getMenuId())
+                .menuCode(existConfig.getMenuCode())
                 .ollamaModelId(cmd.getOllamaModelId())
                 .comfyUiUrl(cmd.getComfyUiUrl())
                 .ollamaUrl(cmd.getOllamaUrl())

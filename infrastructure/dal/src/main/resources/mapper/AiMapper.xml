@@ -5,11 +5,11 @@
     <!-- 新增AI配置 -->
     <insert id="insertAiConfig" parameterType="com.llback.dal.ai.po.AiConfigPo">
         INSERT INTO ai_config (
-            pk_id, menu_id, ollama_model_id,
+            pk_id, menu_code, ollama_model_id,
             comfy_ui_url, ollama_url, comfy_file_id,
             background_image, context_size, create_time, update_time
         ) VALUES (
-            #{pkId}, #{menuId}, #{ollamaModelId},
+            #{pkId}, #{menuCode}, #{ollamaModelId},
             #{comfyUiUrl}, #{ollamaUrl}, #{comfyFileId},
             #{backgroundImage}, #{contextSize}, #{createTime}, #{updateTime}
         )
@@ -25,16 +25,15 @@
             background_image = #{backgroundImage},
             context_size = #{contextSize},
             update_time = #{updateTime}
-        WHERE menu_id = #{menuId}
+        WHERE menu_code = #{menuCode}
     </update>
 
     <!-- 根据菜单代码查询AI配置 -->
     <select id="queryConfigByMenuCode" resultType="com.llback.dal.ai.po.AiConfigPo">
         SELECT
             T1.pk_id,
-            T1.menu_id,
+            T1.menu_code,
             T2.MENU_NAME as menu_name,
-            T2.MENU_CODE as menu_code,
             T1.ollama_model_id,
             T1.comfy_ui_url,
             T1.ollama_url,
@@ -44,17 +43,16 @@
             T1.create_time,
             T1.update_time
         FROM ai_config T1
-        LEFT JOIN SYS_MENU T2 ON T1.menu_id = T2.MENU_ID
-        WHERE T2.MENU_CODE = #{menuCode}
+        LEFT JOIN SYS_MENU T2 ON T1.menu_code = T2.MENU_CODE
+        WHERE T1.menu_code = #{menuCode}
     </select>
 
     <!-- 查询所有AI菜单配置 -->
     <select id="queryAllConfig" resultType="com.llback.dal.ai.po.AiConfigPo">
         SELECT
             T1.pk_id,
-            T1.menu_id,
+            T1.menu_code,
             T2.MENU_NAME as menu_name,
-            T2.MENU_CODE as menu_code,
             T1.ollama_model_id,
             T1.comfy_ui_url,
             T1.ollama_url,
@@ -64,22 +62,34 @@
             T1.create_time,
             T1.update_time
         FROM ai_config T1
-        LEFT JOIN SYS_MENU T2 ON T1.menu_id = T2.MENU_ID
+        LEFT JOIN SYS_MENU T2 ON T1.menu_code = T2.MENU_CODE
         ORDER BY T1.create_time DESC
     </select>
 
-    <!-- 添加背景图片 -->
-    <insert id="addBackground">
-        insert into ai_config(ai_menu_id, background_file_id) values (#{aiMenuId}, #{fileId})
-    </insert>
+    <!-- 更新背景图片 -->
+    <update id="updateBackgroundImage">
+        UPDATE ai_config
+        SET background_image = #{backgroundImage},
+            update_time = NOW()
+        WHERE menu_code = #{menuCode}
+    </update>
 
-    <!-- 根据AI菜单ID删除背景图片 -->
-    <delete id="deleteBackground">
-        delete from ai_config where ai_menu_id = #{aiMenuId}
-    </delete>
-
-    <!-- 根据AI菜单ID查询背景图片ID -->
+    <!-- 根据AI菜单代码查询配置 -->
     <select id="queryConfig" resultType="com.llback.dal.ai.po.AiConfigPo">
-        select ai_menu_id, background_file_id, context_size, comfy_file_id from ai_config where ai_menu_id = #{aiMenuId}
+        SELECT
+            T1.pk_id,
+            T1.menu_code,
+            T2.MENU_NAME as menu_name,
+            T1.ollama_model_id,
+            T1.comfy_ui_url,
+            T1.ollama_url,
+            T1.comfy_file_id,
+            T1.background_image,
+            T1.context_size,
+            T1.create_time,
+            T1.update_time
+        FROM ai_config T1
+        LEFT JOIN SYS_MENU T2 ON T1.menu_code = T2.MENU_CODE
+        WHERE T1.menu_code = #{aiMenuId}
     </select>
 </mapper>

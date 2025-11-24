@@ -1,5 +1,6 @@
 package com.llback.core.ai.eo;
 
+import com.llback.common.types.MenuCode;
 import com.llback.common.types.StringId;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,19 +21,14 @@ public class AiConfigEo {
     private StringId pkId;
 
     /**
-     * 菜单ID
+     * 菜单代码
      */
-    private StringId menuId;
+    private MenuCode menuCode;
 
     /**
      * 菜单名称（从菜单表关联查询获取，用于展示）
      */
     private String menuName;
-
-    /**
-     * 菜单代码（从菜单表关联查询获取，用于展示）
-     */
-    private String menuCode;
 
     /**
      * Ollama模型ID

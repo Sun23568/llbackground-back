@@ -44,20 +44,14 @@ public interface AiDao {
     List<AiConfigPo> queryAllConfig();
 
     /**
-     * 根据AI菜单ID删除背景图片
+     * 更新背景图片
      *
+     * @param menuCode 菜单代码
+     * @param backgroundImage 背景图片
      * @author yz.sun
      * @date 2025/10/6
      */
-    void deleteBackground(String aiMenuId);
-
-    /**
-     * 添加背景图片
-     *
-     * @author yz.sun
-     * @date 2025/10/6
-     */
-    int addBackground(String aiMenuId, String fileId);
+    void updateBackgroundImage(@Param("menuCode") String menuCode, @Param("backgroundImage") String backgroundImage);
 
     /**
      * 查询AI模块菜单背景图片

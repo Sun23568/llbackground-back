@@ -26,6 +26,9 @@ public class PoAssembleUtil {
      * @date 2025/8/22
      */
     public static <T> T poToDto(Object poObj, Class<T> dtoClass) {
+        if (poObj == null) {
+            return null;
+        }
         try {
             T dtoObj = dtoClass.newInstance();
             BeanUtils.copyProperties(poObj, dtoObj);
@@ -41,7 +44,6 @@ public class PoAssembleUtil {
      * @param eoObj
      * @param poClassType
      * @param <T>
-     * @return
      */
     public static <T> T eo2Po(Object eoObj, Class<T> poClassType) {
         try {
@@ -79,6 +81,9 @@ public class PoAssembleUtil {
      * po转为eo
      */
     public static <T> T po2Eo(Object poObj, Class<T> eoClassType) {
+        if (poObj == null) {
+            return null;
+        }
         try {
             // 获取builder方法
             Method builderMethod = eoClassType.getDeclaredMethod("builder");
