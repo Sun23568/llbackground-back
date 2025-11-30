@@ -21,4 +21,20 @@ public interface FileDao {
      * @return
      */
     FilePo getFileById(@Param("fileId") String fileId);
+
+    /**
+     * 更新文件信息
+     *
+     * @param filePo
+     * @return
+     */
+    int updateFile(FilePo filePo);
+
+    /**
+     * 删除文件信息
+     *
+     * @param fileId
+     * @return
+     */
+    int deleteFile(@Param("fileId") String fileId);
 }
