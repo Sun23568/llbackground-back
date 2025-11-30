@@ -15,4 +15,19 @@
         FROM FILE_INFO
         WHERE PK_ID = #{fileId}
     </select>
+
+    <!-- 更新文件信息 -->
+    <update id="updateFile" parameterType="com.llback.dal.file.po.FilePo">
+        UPDATE FILE_INFO
+        SET `PATH` = #{path},
+            FILE_NAME = #{fileName},
+            CREATE_TIME = #{createTime}
+        WHERE PK_ID = #{pkId}
+    </update>
+
+    <!-- 删除文件信息 -->
+    <delete id="deleteFile">
+        DELETE FROM FILE_INFO
+        WHERE PK_ID = #{fileId}
+    </delete>
 </mapper>

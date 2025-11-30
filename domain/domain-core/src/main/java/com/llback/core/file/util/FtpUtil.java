@@ -149,4 +149,29 @@ public class FtpUtil {
             ftpClient.disconnect();
         }
     }
+
+    /**
+     * 删除FTP服务器上的文件
+     *
+     * @param fileName 文件名
+     * @param path     文件路径
+     * @return true表示删除成功，false表示删除失败
+     * @throws IOException IO异常
+     */
+    public static boolean deleteFile(String fileName, String path) throws IOException {
+        FTPClient ftpClient = getFtpClient();
+        try {
+            // 检查路径是否存在
+            if (!isDirectory(ftpClient, path)) {
+                return false;
+            }
+            // 切换到目标目录
+            ftpClient.changeWorkingDirectory(path);
+            // 删除文件
+            return ftpClient.deleteFile(fileName);
+        } finally {
+            ftpClient.logout();
+            ftpClient.disconnect();
+        }
+    }
 }
