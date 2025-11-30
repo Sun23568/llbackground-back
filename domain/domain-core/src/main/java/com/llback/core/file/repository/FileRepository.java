@@ -17,4 +17,18 @@ public interface FileRepository {
      * @return 文件信息
      */
     FileEo getFileById(StringId fileId);
+
+    /**
+     * 更新文件信息
+     * @param fileEo 文件信息
+     * @return 更新记录数
+     */
+    int updateFile(FileEo fileEo);
+
+    /**
+     * 删除文件信息
+     * @param fileId 文件ID
+     * @return 删除记录数
+     */
+    int deleteFile(StringId fileId);
 }

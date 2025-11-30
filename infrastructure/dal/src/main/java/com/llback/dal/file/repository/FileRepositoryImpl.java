@@ -35,4 +35,20 @@ public class FileRepositoryImpl implements FileRepository {
     public FileEo getFileById(StringId fileId) {
         return PoAssembleUtil.po2Eo(fileDao.getFileById(fileId.toString()), FileEo.class);
     }
+
+    /**
+     * 更新文件信息
+     */
+    @Override
+    public int updateFile(FileEo fileEo) {
+        return fileDao.updateFile(PoAssembleUtil.eo2Po(fileEo, FilePo.class));
+    }
+
+    /**
+     * 删除文件信息
+     */
+    @Override
+    public int deleteFile(StringId fileId) {
+        return fileDao.deleteFile(fileId.toString());
+    }
 }
