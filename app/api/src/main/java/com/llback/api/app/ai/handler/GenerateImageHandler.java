@@ -33,9 +33,9 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class GenerateImageHandler implements Handler<ResponseBodyEmitter, GenerateImageReq> {
     /**
-     * 轮询最大重试次数
+     * 轮询最大重试次数（600次 × 500ms = 5分钟）
      */
-    private static final int MAX_RETRY_COUNT = 120;
+    private static final int MAX_RETRY_COUNT = 600;
 
     /**
      * 轮询间隔时间（毫秒）
@@ -149,7 +149,7 @@ public class GenerateImageHandler implements Handler<ResponseBodyEmitter, Genera
             String promptId = JSONObject.parseObject(promptResp).getString("prompt_id");
             log.info("获取到prompt_id: {}", promptId);
 
-            // 轮询获取生成结果，添加超时机制
+            // 轮询获取生成结果，5分钟超时
             JSONObject historyResp = null;
             int retryCount = 0;
             while (retryCount < MAX_RETRY_COUNT) {
