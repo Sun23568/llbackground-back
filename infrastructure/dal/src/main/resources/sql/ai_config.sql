@@ -11,6 +11,7 @@ CREATE TABLE `ai_config` (
   `comfy_file_id` VARCHAR(32) DEFAULT NULL COMMENT 'ComfyUI参数文件ID',
   `background_image` VARCHAR(255) DEFAULT NULL COMMENT '背景图片',
   `context_size` INT DEFAULT 1024 COMMENT '上下文大小',
+  `initial_character_state` TEXT DEFAULT NULL COMMENT '初始人物状态（JSON格式：发色、面部、上身、下身、鞋子）',
   `create_time` DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `update_time` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   PRIMARY KEY (`pk_id`),

@@ -60,6 +60,7 @@ public class AddAiConfigHandler implements Handler<Void, AddAiConfigCmd> {
                 .comfyFileId(cmd.getComfyFileId())
                 .backgroundImage(cmd.getBackgroundImage())
                 .contextSize(cmd.getContextSize() != null ? cmd.getContextSize() : 1024)
+                .initialCharacterState(cmd.getInitialCharacterState())
                 .createTime(now)
                 .updateTime(now)
                 .build();

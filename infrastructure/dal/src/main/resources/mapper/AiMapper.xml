@@ -7,11 +7,13 @@
         INSERT INTO ai_config (
             pk_id, menu_code, ollama_model_id,
             comfy_ui_url, ollama_url, comfy_file_id,
-            background_image, context_size, create_time, update_time
+            background_image, context_size, initial_character_state,
+            create_time, update_time
         ) VALUES (
             #{pkId}, #{menuCode}, #{ollamaModelId},
             #{comfyUiUrl}, #{ollamaUrl}, #{comfyFileId},
-            #{backgroundImage}, #{contextSize}, #{createTime}, #{updateTime}
+            #{backgroundImage}, #{contextSize}, #{initialCharacterState},
+            #{createTime}, #{updateTime}
         )
     </insert>
 
@@ -24,6 +26,7 @@
             comfy_file_id = #{comfyFileId},
             background_image = #{backgroundImage},
             context_size = #{contextSize},
+            initial_character_state = #{initialCharacterState},
             update_time = #{updateTime}
         WHERE menu_code = #{menuCode}
     </update>
@@ -40,6 +43,7 @@
             T1.comfy_file_id,
             T1.background_image,
             T1.context_size,
+            T1.initial_character_state,
             T1.create_time,
             T1.update_time
         FROM ai_config T1
@@ -59,6 +63,7 @@
             T1.comfy_file_id,
             T1.background_image,
             T1.context_size,
+            T1.initial_character_state,
             T1.create_time,
             T1.update_time
         FROM ai_config T1
@@ -86,6 +91,7 @@
             T1.comfy_file_id,
             T1.background_image,
             T1.context_size,
+            T1.initial_character_state,
             T1.create_time,
             T1.update_time
         FROM ai_config T1
