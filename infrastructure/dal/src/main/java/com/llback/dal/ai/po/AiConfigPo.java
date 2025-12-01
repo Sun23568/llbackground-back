@@ -55,6 +55,11 @@ public class AiConfigPo {
     private Integer contextSize;
 
     /**
+     * 初始人物状态（JSON格式）
+     */
+    private String initialCharacterState;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

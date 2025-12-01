@@ -49,4 +49,9 @@ public class UpdateAiConfigCmd implements Command {
      * 上下文大小
      */
     private Integer contextSize;
+
+    /**
+     * 初始人物状态（JSON格式）
+     */
+    private String initialCharacterState;
 }

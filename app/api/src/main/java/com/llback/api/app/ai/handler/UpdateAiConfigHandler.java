@@ -56,6 +56,7 @@ public class UpdateAiConfigHandler implements Handler<Void, UpdateAiConfigCmd> {
                 .comfyFileId(cmd.getComfyFileId())
                 .backgroundImage(cmd.getBackgroundImage())
                 .contextSize(cmd.getContextSize() != null ? cmd.getContextSize() : 1024)
+                .initialCharacterState(cmd.getInitialCharacterState())
                 .createTime(existConfig.getCreateTime())
                 .updateTime(LocalDateTime.now())
                 .build();
