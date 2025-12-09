@@ -5,29 +5,36 @@ import com.llback.api.app.ai.dto.AiConfigDto;
 import com.llback.api.app.ai.dto.req.ModelChat;
 import com.llback.api.app.ai.fetch.AiConfigFetch;
 import com.llback.common.types.StringId;
+import com.llback.common.types.UserId;
 import com.llback.common.util.AssertUtil;
+import com.llback.core.ai.eo.ChatHistoryEo;
+import com.llback.core.ai.repository.ChatHistoryRepository;
 import com.llback.frame.Handler;
 import com.llback.frame.context.ReqContext;
-import org.springframework.beans.factory.annotation.Autowired;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.StreamingResponseHandler;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 import dev.langchain4j.model.output.Response;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
 import java.io.IOException;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 /**
  * 模型聊天处理器
  */
+@Slf4j
 @Component
 public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat> {
     /**
@@ -40,7 +47,10 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
      * AI配置查询服务
      */
     @Autowired
-    private com.llback.api.app.ai.fetch.AiConfigFetch aiConfigFetch;
+    private AiConfigFetch aiConfigFetch;
+
+    @Autowired
+    private ChatHistoryRepository chatHistoryRepository;
 
     /**
      * 模型聊天
@@ -72,6 +82,10 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
             emitter.complete();
         });
 
+        // 获取用户ID和生成会话ID
+        UserId userId = ReqContext.getCurrent().getUserSession().getUserId();
+        String conversationId = UUID.randomUUID().toString();
+
         // 启动异步任务
         CompletableFuture.runAsync(() -> {
             try {
@@ -82,7 +96,7 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
                         .build();
                 // 构造上下文，使用配置的上下文大小
                 List<ChatMessage> chatMessages = buildChatMessages(req.getContext(), req.getMessage(), contextSize);
-                model.generate(chatMessages, new StreamingResponseHandler() {
+                model.generate(chatMessages, new StreamingResponseHandler<AiMessage>() {
                     @Override
                     public void onNext(String chatResp) {
                         try {
@@ -105,8 +119,24 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
                     }
 
                     @Override
-                    public void onComplete(Response response) {
-                        emitter.complete();
+                    public void onComplete(Response<AiMessage> response) {
+                        try {
+                            ChatHistoryEo history = ChatHistoryEo.builder()
+                                    .conversationId(conversationId)
+                                    .userId(userId)
+                                    .modelId(req.getModel())
+                                    .menuCode(req.getAiMenuCode())
+                                    .userMessage(req.getMessage())
+                                    .aiResponse(response.content().text()) // Get full response
+                                    .createTime(LocalDateTime.now())
+                                    .build();
+                            chatHistoryRepository.save(history);
+                        } catch (Exception e) {
+                            // Log the error, but don't fail the emitter for a history save failure
+                            log.error("Failed to save chat history: " + e.getMessage());
+                        } finally {
+                            emitter.complete();
+                        }
                     }
                 });
             } catch (Exception e) {
