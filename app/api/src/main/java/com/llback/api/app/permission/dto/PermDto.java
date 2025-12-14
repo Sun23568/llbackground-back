@@ -1,4 +1,4 @@
-package com.llback.api.app.access.dto;
+package com.llback.api.app.permission.dto;
 
 import lombok.Data;
 
@@ -25,5 +25,12 @@ public class PermDto {
     /**
      * 权限类型
      */
-    private String type;
+    private String permType;
+
+    /**
+     * 设置类型（字段名映射）
+     */
+    public void setType(String type) {
+        this.permType = type;
+    }
 }

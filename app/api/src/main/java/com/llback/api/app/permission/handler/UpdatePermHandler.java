@@ -1,7 +1,6 @@
-package com.llback.api.app.access.handler;
+package com.llback.api.app.permission.handler;
 
-import com.llback.api.app.access.dto.req.AddPermCmd;
-import com.llback.api.app.access.fetch.AccessFetch;
+import com.llback.api.app.permission.dto.req.UpdatePermCmd;
 import com.llback.common.types.FuncCode;
 import com.llback.common.util.AssertUtil;
 import com.llback.core.perm.eo.FuncPermEo;
@@ -11,38 +10,36 @@ import com.llback.frame.HandlerAcl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+/**
+ * 更新权限处理器
+ */
 @Component
-@HandlerAcl("access:addPerm")
-public class AddPermHandler implements Handler<Void, AddPermCmd> {
+@HandlerAcl("perm:update")
+public class UpdatePermHandler implements Handler<Void, UpdatePermCmd> {
     /**
-     * 权限数据源
-     */
-    @Autowired
-    private AccessFetch accessFetch;
-
-    /**
-     * 权限数据源
+     * 权限仓储
      */
     @Autowired
     private PermRepository permRepository;
 
-    /**
-     * 添加权限
-     */
     @Override
-    public Void execute(AddPermCmd cmd) {
+    public Void execute(UpdatePermCmd cmd) {
         // 校验
+        AssertUtil.notEmpty(cmd.getPermId(), "权限ID不能为空");
         AssertUtil.notEmpty(cmd.getPermCode(), "权限编码不能为空");
         AssertUtil.notEmpty(cmd.getPermName(), "权限名称不能为空");
         AssertUtil.notEmpty(cmd.getPermType(), "权限类型不能为空");
-        AssertUtil.assertTrue(accessFetch.getPermCodeCount(cmd.getPermCode()) == 0, "权限编码已存在");
 
+        // 构建更新实体对象
         FuncPermEo permEo = FuncPermEo.builder()
+                .permId(cmd.getPermId())
                 .permCode(FuncCode.of(cmd.getPermCode()))
                 .permName(cmd.getPermName())
                 .type(cmd.getPermType())
                 .build();
-        permRepository.addPerm(permEo);
+
+        // 更新权限
+        permRepository.updatePerm(permEo);
         return null;
     }
 }

@@ -6,7 +6,6 @@ import com.llback.base.user.eo.UserEo;
 import com.llback.base.user.repository.UserRepository;
 import com.llback.common.types.UserId;
 import com.llback.common.util.AssertUtil;
-import com.llback.dal.user.assembler.UserAssembler;
 import com.llback.dal.user.dao.UserDao;
 import com.llback.dal.user.po.UserPo;
 import com.llback.rt.common.util.PoAssembleUtil;
@@ -34,7 +33,7 @@ public class UserRepositoryImpl implements UserRepository {
     public UserEo findUser(UserId userId) {
         AssertUtil.notEmpty(userId, "用户ID不能为空");
         UserPo userInfo = userDao.getUserInfo(userId.toString());
-        return UserAssembler.poToEo(userInfo);
+        return PoAssembleUtil.po2Eo(userInfo, UserEo.class);
     }
 
     /**

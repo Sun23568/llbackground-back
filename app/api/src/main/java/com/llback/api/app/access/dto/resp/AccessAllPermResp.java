@@ -1,7 +1,7 @@
 package com.llback.api.app.access.dto.resp;
 
-import com.llback.api.app.access.dto.MenuDto;
 import com.llback.api.app.access.dto.PermTypeDto;
+import com.llback.api.app.menu.dto.MenuDto;
 import lombok.Data;
 
 import java.util.List;

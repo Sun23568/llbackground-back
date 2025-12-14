@@ -33,4 +33,24 @@ public interface MenuDao {
      * 添加菜单
      */
     void addMenu(MenuPo menuPo);
+
+    /**
+     * 更新菜单
+     */
+    void updateMenu(MenuPo menuPo);
+
+    /**
+     * 删除菜单
+     */
+    void deleteMenu(String menuId);
+
+    /**
+     * 删除用户菜单关联（级联删除）
+     */
+    void deleteUserMenus(String menuId);
+
+    /**
+     * 分页查询菜单列表
+     */
+    List<MenuPo> queryMenuPage();
 }

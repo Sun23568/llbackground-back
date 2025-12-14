@@ -1,13 +1,15 @@
 package com.llback.api.api;
 
-import com.llback.api.app.access.dto.req.*;
+import com.llback.api.app.access.dto.req.AccessAllPermReq;
+import com.llback.api.app.access.dto.req.AccessListReq;
+import com.llback.api.app.access.dto.req.UpdateUserAccessCmd;
 import com.llback.api.app.access.dto.resp.AccessAllPermResp;
 import com.llback.frame.rest.RestApi;
 import com.llback.frame.rest.RestResult;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * 访问控制
+ * 授权管理（用户权限分配）
  */
 @RestController
 @RequestMapping("/access")
@@ -34,21 +36,6 @@ public class AccessApi implements RestApi {
     @PostMapping("/update-user")
     public RestResult updateUserAccess(@RequestBody UpdateUserAccessCmd updateUserAccessCmd) {
         this.execute(updateUserAccessCmd);
-        return RestResult.ok(null);
-    }
-
-    /**
-     * 新增权限
-     */
-    @PostMapping("/add-perm")
-    public RestResult addPerm(@RequestBody AddPermCmd addPermCmd) {
-        this.execute(addPermCmd);
-        return RestResult.ok(null);
-    }
-
-    @PostMapping("/add-menu")
-    public RestResult addMenu(@RequestBody AddMenuCmd addMenuCmd) {
-        this.execute(addMenuCmd);
         return RestResult.ok(null);
     }
 }
