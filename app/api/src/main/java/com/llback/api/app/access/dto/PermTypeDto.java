@@ -1,5 +1,6 @@
 package com.llback.api.app.access.dto;
 
+import com.llback.api.app.permission.dto.PermDto;
 import lombok.Data;
 
 import java.util.List;

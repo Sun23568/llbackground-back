@@ -1,13 +1,18 @@
-package com.llback.api.app.access.dto.req;
+package com.llback.api.app.permission.dto.req;
 
 import com.llback.frame.dto.Command;
 import lombok.Data;
 
 /**
- * 添加权限CMD
+ * 更新权限CMD
  */
 @Data
-public class AddPermCmd implements Command {
+public class UpdatePermCmd implements Command {
+    /**
+     * 权限ID
+     */
+    private String permId;
+
     /**
      * 权限编码
      */

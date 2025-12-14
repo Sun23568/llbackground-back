@@ -1,7 +1,5 @@
 package com.llback.dal.menu.repository;
 
-import com.llback.api.app.menu.dto.MenuDto;
-import com.llback.api.app.menu.fetch.MenuFetch;
 import com.llback.common.types.UserId;
 import com.llback.core.menu.eo.MenuEo;
 import com.llback.core.menu.repository.MenuRepository;
@@ -18,7 +16,7 @@ import java.util.List;
  * 菜单数据访问接口实现
  */
 @Component
-public class MenuRepositoryImpl implements MenuRepository, MenuFetch {
+public class MenuRepositoryImpl implements MenuRepository {
     /**
      * 菜单数据访问接口
      */
@@ -56,11 +54,33 @@ public class MenuRepositoryImpl implements MenuRepository, MenuFetch {
     }
 
     /**
-     * 根据菜单代码查询菜单
+     * 更新菜单
      */
     @Override
-    public MenuDto queryMenuByCode(String menuCode) {
-        MenuPo menuPo = menuDao.queryMenuByCode(menuCode);
-        return PoAssembleUtil.poToDto(menuPo, MenuDto.class);
+    public void updateMenu(MenuEo menuEo) {
+        MenuPo po = PoAssembleUtil.eo2Po(menuEo, MenuPo.class);
+        menuDao.updateMenu(po);
+    }
+
+    /**
+     * 删除菜单（含级联删除用户关联）
+     */
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public void deleteMenu(String menuId) {
+        // 1. 先删除用户菜单关联
+        menuDao.deleteUserMenus(menuId);
+        // 2. 再删除菜单本身
+        menuDao.deleteMenu(menuId);
+    }
+
+    /**
+     * 分页查询菜单列表
+     */
+    @Override
+    public com.github.pagehelper.PageInfo<MenuEo> queryMenuPage(int pageNum, int pageRow) {
+        com.github.pagehelper.PageHelper.startPage(pageNum, pageRow);
+        com.github.pagehelper.PageInfo<MenuPo> pageInfo = new com.github.pagehelper.PageInfo<>(menuDao.queryMenuPage());
+        return PoAssembleUtil.poPage2EoPage(pageInfo, MenuEo.class);
     }
 }

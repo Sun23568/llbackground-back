@@ -1,10 +1,10 @@
 package com.llback.api.app.access.handler;
 
-import com.llback.api.app.access.dto.MenuDto;
-import com.llback.api.app.access.dto.PermDto;
 import com.llback.api.app.access.dto.PermTypeDto;
 import com.llback.api.app.access.dto.req.AccessAllPermReq;
 import com.llback.api.app.access.dto.resp.AccessAllPermResp;
+import com.llback.api.app.menu.dto.MenuDto;
+import com.llback.api.app.permission.dto.PermDto;
 import com.llback.api.util.DtoEoAssemblerUtil;
 import com.llback.core.menu.eo.MenuEo;
 import com.llback.core.menu.repository.MenuRepository;
@@ -49,10 +49,10 @@ public class GetAllAccessHandler implements Handler<AccessAllPermResp, AccessAll
         // 转为权限DTO并按照类型分组
         List<PermDto> permDtos = DtoEoAssemblerUtil.eoList2DtoList(allPermission, PermDto.class);
         List<PermTypeDto> permTypes = permDtos.stream()
-                .collect(Collectors.groupingBy(PermDto::getType))
+                .collect(Collectors.groupingBy(PermDto::getPermType))
                 .values().stream().map(item -> {
                     PermTypeDto permTypeDto = new PermTypeDto();
-                    permTypeDto.setType(item.get(0).getType());
+                    permTypeDto.setType(item.get(0).getPermType());
                     permTypeDto.setPerms(item);
                     return permTypeDto;
                 }).collect(Collectors.toList());

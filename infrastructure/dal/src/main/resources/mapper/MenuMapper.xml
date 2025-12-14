@@ -47,4 +47,31 @@
             SYS_MENU
         WHERE MENU_CODE = #{menuCode}
     </select>
+
+    <!-- 更新菜单 -->
+    <update id="updateMenu">
+        UPDATE SYS_MENU
+        SET MENU_CODE = #{menuCode},
+            MENU_NAME = #{menuName}
+        WHERE MENU_ID = #{menuId}
+    </update>
+
+    <!-- 删除菜单 -->
+    <delete id="deleteMenu">
+        DELETE FROM SYS_MENU
+        WHERE MENU_ID = #{menuId}
+    </delete>
+
+    <!-- 删除用户菜单关联 -->
+    <delete id="deleteUserMenus">
+        DELETE FROM USER_MENU
+        WHERE MENU_ID = #{menuId}
+    </delete>
+
+    <!-- 分页查询菜单列表 -->
+    <select id="queryMenuPage" resultType="com.llback.dal.menu.po.MenuPo">
+        SELECT MENU_ID, MENU_CODE, MENU_NAME
+        FROM SYS_MENU
+        ORDER BY MENU_ID
+    </select>
 </mapper>

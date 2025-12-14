@@ -1,4 +1,13 @@
-# 忽略 node_modules 目录
-logs/
+# Claude Code 用户配置
+.claude/
+
+# 构建输出
 target/
+
+# 日志文件
+logs/
+*.log
+
+# IDE 和编辑器
 .idea/
+*.iml

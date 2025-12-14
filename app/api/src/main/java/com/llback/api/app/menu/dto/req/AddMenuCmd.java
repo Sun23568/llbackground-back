@@ -1,17 +1,13 @@
-package com.llback.api.app.access.dto;
+package com.llback.api.app.menu.dto.req;
 
+import com.llback.frame.dto.Command;
 import lombok.Data;
 
 /**
- * 菜单DTO
+ * 添加菜单命令
  */
 @Data
-public class MenuDto {
-    /**
-     * 菜单ID
-     */
-    private String menuId;
-
+public class AddMenuCmd implements Command {
     /**
      * 菜单编码
      */

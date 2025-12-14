@@ -15,4 +15,12 @@ public interface MenuFetch {
      * @return 菜单DTO
      */
     MenuDto queryMenuByCode(String menuCode);
+
+    /**
+     * 获取菜单编码数量
+     *
+     * @param menuCode 菜单编码
+     * @return 数量
+     */
+    int getMenuCodeCount(String menuCode);
 }

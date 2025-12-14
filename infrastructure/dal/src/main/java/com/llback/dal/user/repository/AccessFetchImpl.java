@@ -4,10 +4,10 @@ import com.llback.api.app.access.dto.UserAccessDto;
 import com.llback.api.app.access.fetch.AccessFetch;
 import com.llback.dal.menu.dao.MenuDao;
 import com.llback.dal.perm.dao.PermDao;
-import com.llback.dal.user.assembler.AccessAssembler;
 import com.llback.dal.user.dao.UserDao;
 import com.llback.dal.user.po.UserMenuPo;
 import com.llback.dal.user.po.UserPermPo;
+import com.llback.rt.common.util.PoAssembleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,7 +40,7 @@ public class AccessFetchImpl implements AccessFetch {
     @Override
     public List<UserAccessDto> queryAllUserPerms() {
         List<UserPermPo> userPermPoList = userDao.queryAllUserPerms();
-        return AccessAssembler.userPermPoToDto(userPermPoList);
+        return PoAssembleUtil.poList2DtoList(userPermPoList, UserAccessDto.class);
     }
 
     /**
@@ -49,7 +49,7 @@ public class AccessFetchImpl implements AccessFetch {
     @Override
     public List<UserAccessDto> queryAllUserMenus() {
         List<UserMenuPo> userMenuPos = userDao.queryAllUserMenus();
-        return AccessAssembler.userMenuPoToDto(userMenuPos);
+        return PoAssembleUtil.poList2DtoList(userMenuPos, UserAccessDto.class);
     }
 
     /**

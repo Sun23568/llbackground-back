@@ -22,7 +22,7 @@
     </select>
 
     <!-- 获取所有权限列表 -->
-    <select id="queryAllPermmission" resultType="com.llback.dal.perm.po.PermissionPo">
+    <select id="queryAllPermission" resultType="com.llback.dal.perm.po.PermissionPo">
         SELECT
             PERM_ID,
             PERM_CODE,
@@ -40,5 +40,38 @@
             SYS_PERMISSION
         WHERE
             PERM_CODE = #{permCode}
+    </select>
+
+    <!-- 更新权限 -->
+    <update id="updatePermission">
+        UPDATE SYS_PERMISSION
+        SET PERM_CODE = #{permCode},
+            PERM_NAME = #{permName},
+            TYPE = #{type}
+        WHERE PERM_ID = #{permId}
+    </update>
+
+    <!-- 删除权限 -->
+    <delete id="deletePermission">
+        DELETE FROM SYS_PERMISSION
+        WHERE PERM_ID = #{permId}
+    </delete>
+
+    <!-- 删除用户权限关联 -->
+    <delete id="deleteUserPermissions">
+        DELETE FROM USER_PERMISSION
+        WHERE PERM_ID = #{permId}
+    </delete>
+
+    <!-- 分页查询权限列表 -->
+    <select id="queryPermPage" resultType="com.llback.dal.perm.po.PermissionPo">
+        SELECT PERM_ID, PERM_CODE, PERM_NAME, `TYPE`
+        FROM SYS_PERMISSION
+        <where>
+            <if test="permType != null and permType != ''">
+                AND `TYPE` = #{permType}
+            </if>
+        </where>
+        ORDER BY TYPE, PERM_ID
     </select>
 </mapper>
