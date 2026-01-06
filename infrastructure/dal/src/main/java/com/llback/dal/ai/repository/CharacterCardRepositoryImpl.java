@@ -1,5 +1,7 @@
 package com.llback.dal.ai.repository;
 
+import com.llback.common.types.StringId;
+import com.llback.common.types.UserId;
 import com.llback.core.ai.eo.CharacterCardEo;
 import com.llback.core.ai.repository.CharacterCardRepository;
 import com.llback.dal.ai.dao.CharacterCardDao;
@@ -28,14 +30,14 @@ public class CharacterCardRepositoryImpl implements CharacterCardRepository {
     }
 
     @Override
-    public CharacterCardEo findById(Long id) {
-        CharacterCardPo po = characterCardDao.selectById(id);
-        return PoAssembleUtil.po2Eo(po, CharacterCardEo.class);
+    public CharacterCardEo findById(StringId id) {
+        CharacterCardPo po = characterCardDao.selectById(id.toString());
+        return po == null ? null : PoAssembleUtil.po2Eo(po, CharacterCardEo.class);
     }
 
     @Override
-    public List<CharacterCardEo> findByUserId(Long userId) {
-        List<CharacterCardPo> poList = characterCardDao.selectByUserId(userId);
+    public List<CharacterCardEo> findByUserId(UserId userId) {
+        List<CharacterCardPo> poList = characterCardDao.selectByUserId(userId.getValue());
         return PoAssembleUtil.poList2EoList(poList, CharacterCardEo.class);
     }
 
@@ -46,7 +48,7 @@ public class CharacterCardRepositoryImpl implements CharacterCardRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-        characterCardDao.deleteById(id);
+    public void deleteById(StringId id) {
+        characterCardDao.deleteById(id.getValue());
     }
 }

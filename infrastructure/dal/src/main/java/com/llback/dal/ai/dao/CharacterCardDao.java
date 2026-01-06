@@ -27,7 +27,7 @@ public interface CharacterCardDao {
      * @param id 角色卡ID
      * @return 角色卡持久化对象
      */
-    CharacterCardPo selectById(@Param("id") Long id);
+    CharacterCardPo selectById(@Param("id") String id);
 
     /**
      * 根据用户ID查询角色卡列表
@@ -35,7 +35,7 @@ public interface CharacterCardDao {
      * @param userId 用户ID
      * @return 角色卡列表
      */
-    List<CharacterCardPo> selectByUserId(@Param("userId") Long userId);
+    List<CharacterCardPo> selectByUserId(@Param("userId") String userId);
 
     /**
      * 更新角色卡
@@ -49,5 +49,5 @@ public interface CharacterCardDao {
      *
      * @param id 角色卡ID
      */
-    void deleteById(@Param("id") Long id);
+    void deleteById(@Param("id") String id);
 }

@@ -1,5 +1,7 @@
 package com.llback.core.ai.repository;
 
+import com.llback.common.types.StringId;
+import com.llback.common.types.UserId;
 import com.llback.core.ai.eo.CharacterCardEo;
 
 import java.util.List;
@@ -24,7 +26,7 @@ public interface CharacterCardRepository {
      * @param id 角色卡ID
      * @return 角色卡实体对象
      */
-    CharacterCardEo findById(Long id);
+    CharacterCardEo findById(StringId id);
 
     /**
      * 根据用户ID查询角色卡列表
@@ -32,7 +34,7 @@ public interface CharacterCardRepository {
      * @param userId 用户ID
      * @return 角色卡列表
      */
-    List<CharacterCardEo> findByUserId(Long userId);
+    List<CharacterCardEo> findByUserId(UserId userId);
 
     /**
      * 更新角色卡
@@ -46,5 +48,5 @@ public interface CharacterCardRepository {
      *
      * @param id 角色卡ID
      */
-    void deleteById(Long id);
+    void deleteById(StringId id);
 }
