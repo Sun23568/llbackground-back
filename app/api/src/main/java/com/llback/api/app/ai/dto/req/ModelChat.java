@@ -32,6 +32,11 @@ public class ModelChat implements Query {
     private String aiMenuCode;
 
     /**
+     * 角色卡ID（可选，如果提供则将角色卡描述作为system消息）
+     */
+    private String characterCardId;
+
+    /**
      * 响应
      */
     private HttpServletResponse response;

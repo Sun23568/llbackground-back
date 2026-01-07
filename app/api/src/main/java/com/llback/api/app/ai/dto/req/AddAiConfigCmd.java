@@ -54,4 +54,9 @@ public class AddAiConfigCmd implements Command {
      * 初始人物状态（JSON格式）
      */
     private String initialCharacterState;
+
+    /**
+     * 角色卡ID
+     */
+    private String characterCardId;
 }

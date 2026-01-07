@@ -1,18 +1,22 @@
 package com.llback.api.app.ai.handler;
 
 import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.StrUtil;
 import com.llback.api.app.ai.dto.AiConfigDto;
 import com.llback.api.app.ai.dto.req.ModelChat;
 import com.llback.api.app.ai.fetch.AiConfigFetch;
 import com.llback.common.types.StringId;
 import com.llback.common.types.UserId;
 import com.llback.common.util.AssertUtil;
+import com.llback.core.ai.eo.CharacterCardEo;
 import com.llback.core.ai.eo.ChatHistoryEo;
+import com.llback.core.ai.repository.CharacterCardRepository;
 import com.llback.core.ai.repository.ChatHistoryRepository;
 import com.llback.frame.Handler;
 import com.llback.frame.context.ReqContext;
 import dev.langchain4j.data.message.AiMessage;
 import dev.langchain4j.data.message.ChatMessage;
+import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.StreamingResponseHandler;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
@@ -53,6 +57,12 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
     private ChatHistoryRepository chatHistoryRepository;
 
     /**
+     * 角色卡仓储
+     */
+    @Autowired
+    private CharacterCardRepository characterCardRepository;
+
+    /**
      * 模型聊天
      */
     @Override
@@ -71,6 +81,16 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
 
         // 获取上下文大小，如果配置中没有则使用默认值
         Integer contextSize = aiConfig.getContextSize() != null ? aiConfig.getContextSize() : 10;
+
+        // 查询角色卡描述（如果提供了角色卡ID）
+        final String systemMessage;
+        if (StrUtil.isNotBlank(req.getCharacterCardId())) {
+            CharacterCardEo card = characterCardRepository.findById(StringId.of(req.getCharacterCardId()));
+            AssertUtil.notNull(card, "角色卡不存在");
+            systemMessage = card.getCardDescription();
+        } else {
+            systemMessage = null;
+        }
 
         // 模型权限校验
         AssertUtil.assertTrue(ReqContext.getCurrent().getUserSession().hasPerm("ai:model:" + req.getModel()), "无权限访问该模型");
@@ -95,7 +115,7 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
                         .modelName(req.getModel())
                         .build();
                 // 构造上下文，使用配置的上下文大小
-                List<ChatMessage> chatMessages = buildChatMessages(req.getContext(), req.getMessage(), contextSize);
+                List<ChatMessage> chatMessages = buildChatMessages(req.getContext(), req.getMessage(), contextSize, systemMessage);
                 model.generate(chatMessages, new StreamingResponseHandler<AiMessage>() {
                     @Override
                     public void onNext(String chatResp) {
@@ -152,8 +172,9 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
      * @param context 上下文消息列表
      * @param message 当前消息
      * @param contextSize 上下文大小（从AI配置表读取）
+     * @param systemMessage 系统消息（角色卡描述，可选）
      */
-    private List<ChatMessage> buildChatMessages(List<String> context, String message, Integer contextSize) {
+    private List<ChatMessage> buildChatMessages(List<String> context, String message, Integer contextSize, String systemMessage) {
         List<ChatMessage> chatMessages = new ArrayList<>();
         // 添加用户消息
         chatMessages.add(UserMessage.from(message));
@@ -172,6 +193,11 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
                 }
                 flag = !flag;
             }
+        }
+
+        // 添加系统消息（不计入上下文数量限制）
+        if (StrUtil.isNotBlank(systemMessage)) {
+            chatMessages.add(0, SystemMessage.from(systemMessage));
         }
         return chatMessages;
     }
