@@ -66,6 +66,11 @@ public class AiConfigEo {
     private String initialCharacterState;
 
     /**
+     * 角色卡ID
+     */
+    private StringId characterCardId;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

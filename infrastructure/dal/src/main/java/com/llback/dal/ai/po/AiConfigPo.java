@@ -60,6 +60,11 @@ public class AiConfigPo {
     private String initialCharacterState;
 
     /**
+     * 角色卡ID
+     */
+    private String characterCardId;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;
