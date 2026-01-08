@@ -2,6 +2,7 @@ package com.llback.api.api;
 
 import com.llback.api.app.ai.dto.req.QueryCharacterCardListReq;
 import com.llback.api.app.ai.dto.req.RemoveCharacterCardCmd;
+import com.llback.api.app.ai.dto.req.UpdateCharacterCardConfigCmd;
 import com.llback.api.app.ai.dto.req.UploadCharacterCardCmd;
 import com.llback.frame.rest.RestApi;
 import com.llback.frame.rest.RestResult;
@@ -44,6 +45,14 @@ public class CharacterCardApi implements RestApi {
      */
     @PostMapping("/remove")
     public RestResult removeCharacterCard(@RequestBody RemoveCharacterCardCmd cmd) {
+        return this.execute(cmd);
+    }
+
+    /**
+     * 更新角色卡配置（角色名称、用户名称、初始提示词）
+     */
+    @PostMapping("/update-config")
+    public RestResult updateConfig(@RequestBody UpdateCharacterCardConfigCmd cmd) {
         return this.execute(cmd);
     }
 }

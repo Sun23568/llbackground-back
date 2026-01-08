@@ -5,11 +5,11 @@
     <!-- 插入角色卡 -->
     <insert id="insert" parameterType="com.llback.dal.ai.po.CharacterCardPo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO character_card (
-            id, user_id, card_name, card_description, card_content,
-            delete_status, create_time, update_time
+            id, user_id, card_name, user_name, card_description, card_content,
+            initial_prompt, delete_status, create_time, update_time
         ) VALUES (
-            #{id}, #{userId}, #{cardName}, #{cardDescription}, #{cardContent},
-            1, NOW(), NOW()
+            #{id}, #{userId}, #{cardName}, #{userName}, #{cardDescription}, #{cardContent},
+            #{initialPrompt}, 1, NOW(), NOW()
         )
     </insert>
 
@@ -19,8 +19,10 @@
             id,
             user_id,
             card_name,
+            user_name,
             card_description,
             card_content,
+            initial_prompt,
             delete_status,
             create_time,
             update_time
@@ -35,8 +37,10 @@
             id,
             user_id,
             card_name,
+            user_name,
             card_description,
             card_content,
+            initial_prompt,
             delete_status,
             create_time,
             update_time
@@ -50,8 +54,10 @@
     <update id="update" parameterType="com.llback.dal.ai.po.CharacterCardPo">
         UPDATE character_card
         SET card_name = #{cardName},
+            user_name = #{userName},
             card_description = #{cardDescription},
             card_content = #{cardContent},
+            initial_prompt = #{initialPrompt},
             update_time = NOW()
         WHERE id = #{id}
           AND delete_status = 1

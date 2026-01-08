@@ -28,6 +28,11 @@ public class CharacterCardPo {
     private String cardName;
 
     /**
+     * 用户名称（对应角色卡中的{{user}}占位符）
+     */
+    private String userName;
+
+    /**
      * 角色卡描述
      */
     private String cardDescription;
@@ -36,6 +41,11 @@ public class CharacterCardPo {
      * 角色卡完整内容(JSON格式)
      */
     private String cardContent;
+
+    /**
+     * 初始提示词（用于AI生成图片的初始人物状态描述）
+     */
+    private String initialPrompt;
 
     /**
      * 删除状态: 1-正常, 2-已删除
