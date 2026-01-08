@@ -92,8 +92,6 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
             systemMessage = null;
         }
 
-        // 模型权限校验
-        AssertUtil.assertTrue(ReqContext.getCurrent().getUserSession().hasPerm("ai:model:" + req.getModel()), "无权限访问该模型");
         // 返回emitter
         ResponseBodyEmitter emitter = new ResponseBodyEmitter(10 * 60 * 1000L);
         // response content-type

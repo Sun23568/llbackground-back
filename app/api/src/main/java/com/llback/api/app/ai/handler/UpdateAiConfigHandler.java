@@ -3,6 +3,7 @@ package com.llback.api.app.ai.handler;
 import com.llback.api.app.ai.dto.req.UpdateAiConfigCmd;
 import com.llback.api.app.menu.dto.MenuDto;
 import com.llback.api.app.menu.fetch.MenuFetch;
+import com.llback.common.types.StringId;
 import com.llback.common.util.AssertUtil;
 import com.llback.core.ai.eo.AiConfigEo;
 import com.llback.core.ai.repository.AiConfigRepository;
@@ -55,6 +56,7 @@ public class UpdateAiConfigHandler implements Handler<Void, UpdateAiConfigCmd> {
                 .ollamaUrl(cmd.getOllamaUrl())
                 .comfyFileId(cmd.getComfyFileId())
                 .backgroundImage(cmd.getBackgroundImage())
+                .characterCardId(StringId.of(cmd.getCharacterCardId()))
                 .contextSize(cmd.getContextSize() != null ? cmd.getContextSize() : 1024)
                 .initialCharacterState(cmd.getInitialCharacterState())
                 .createTime(existConfig.getCreateTime())
