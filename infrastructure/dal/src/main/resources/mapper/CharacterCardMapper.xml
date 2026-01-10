@@ -65,6 +65,7 @@
         UPDATE character_card
         SET card_name = #{cardName},
             user_name = #{userName},
+            initial_prompt = #{initialPrompt},
             update_time = NOW()
         WHERE id = #{id}
           AND delete_status = 1
