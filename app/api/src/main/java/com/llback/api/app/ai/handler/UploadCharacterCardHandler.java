@@ -74,22 +74,32 @@ public class UploadCharacterCardHandler implements Handler<JSONObject, UploadCha
         }
         String cardDescription = cardData.getString("description");
 
-        // 6. 获取当前用户ID
+        // 6. 提取角色卡扩展字段
+        String firstMes = cardData.getString("first_mes");
+        String avatar = cardData.getString("avatar");
+        String mesExample = cardData.getString("mes_example");
+        String scenario = cardData.getString("scenario");
+
+        // 7. 获取当前用户ID
         UserId userId = ReqContext.userSession().getUserId();
 
-        // 7. 构建角色卡实体并保存
+        // 8. 构建角色卡实体并保存
         CharacterCardEo characterCardEo = CharacterCardEo.builder()
                 .id(StringId.of(RandomIdUtil.uuid()))
                 .userId(UserId.of(userId.getValue()))
                 .cardName(cardName)
                 .cardDescription(cardDescription)
                 .cardContent(cardJson.toString())
+                .firstMes(firstMes)
+                .avatar(avatar)
+                .mesExample(mesExample)
+                .scenario(scenario)
                 .deleteStatus(1)
                 .build();
 
         characterCardRepository.save(characterCardEo);
 
-        // 8. 返回结果
+        // 9. 返回结果
         JSONObject result = new JSONObject();
         result.put("cardName", cardName);
         result.put("cardDescription", cardDescription);

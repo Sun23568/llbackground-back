@@ -43,6 +43,26 @@ public class CharacterCardDto {
     private String initialPrompt;
 
     /**
+     * 开场白
+     */
+    private String firstMes;
+
+    /**
+     * 头像URL
+     */
+    private String avatar;
+
+    /**
+     * 对话示例
+     */
+    private String mesExample;
+
+    /**
+     * 场景描述
+     */
+    private String scenario;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

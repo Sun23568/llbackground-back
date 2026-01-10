@@ -54,6 +54,26 @@ public class CharacterCardEo {
     private String initialPrompt;
 
     /**
+     * 开场白
+     */
+    private String firstMes;
+
+    /**
+     * 头像URL
+     */
+    private String avatar;
+
+    /**
+     * 对话示例
+     */
+    private String mesExample;
+
+    /**
+     * 场景描述
+     */
+    private String scenario;
+
+    /**
      * 删除状态: 1-正常, 2-已删除
      */
     private Integer deleteStatus;

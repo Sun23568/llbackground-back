@@ -31,4 +31,24 @@ public class UpdateCharacterCardConfigCmd implements Command {
      * 初始提示词（用于AI生成图片的初始人物状态描述）
      */
     private String initialPrompt;
+
+    /**
+     * 开场白
+     */
+    private String firstMes;
+
+    /**
+     * 头像URL
+     */
+    private String avatar;
+
+    /**
+     * 对话示例
+     */
+    private String mesExample;
+
+    /**
+     * 场景描述
+     */
+    private String scenario;
 }
