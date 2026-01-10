@@ -1,5 +1,6 @@
 package com.llback.api.api;
 
+import com.llback.api.app.ai.dto.req.QueryCharacterCardDetailReq;
 import com.llback.api.app.ai.dto.req.QueryCharacterCardListReq;
 import com.llback.api.app.ai.dto.req.RemoveCharacterCardCmd;
 import com.llback.api.app.ai.dto.req.UpdateCharacterCardConfigCmd;
@@ -38,6 +39,14 @@ public class CharacterCardApi implements RestApi {
     @GetMapping("/list")
     public RestResult queryCharacterCardList() {
         return this.execute(QueryCharacterCardListReq.EMPTY);
+    }
+
+    /**
+     * 查询角色卡详情
+     */
+    @GetMapping("/detail")
+    public RestResult queryCharacterCardDetail(@RequestParam("cardId") String cardId) {
+        return this.execute(QueryCharacterCardDetailReq.of(cardId));
     }
 
     /**
