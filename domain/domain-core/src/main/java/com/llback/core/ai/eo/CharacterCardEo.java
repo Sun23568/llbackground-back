@@ -39,6 +39,11 @@ public class CharacterCardEo {
     private String userName;
 
     /**
+     * 角色名称（对应角色卡中的{{char}}占位符）
+     */
+    private String characterName;
+
+    /**
      * 角色卡描述
      */
     private String cardDescription;

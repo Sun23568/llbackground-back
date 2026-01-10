@@ -40,6 +40,7 @@ public class UpdateCharacterCardConfigHandler implements Handler<Void, UpdateCha
             .userId(existingCard.getUserId())
             .cardName(cmd.getCardName())
             .userName(cmd.getUserName())
+            .characterName(cmd.getCharacterName())
             .cardDescription(existingCard.getCardDescription())
             .cardContent(existingCard.getCardContent())
             .initialPrompt(cmd.getInitialPrompt())
