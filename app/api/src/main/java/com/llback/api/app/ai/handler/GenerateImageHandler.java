@@ -9,14 +9,12 @@ import com.alibaba.fastjson2.JSONObject;
 import com.llback.api.app.ai.dto.AiConfigDto;
 import com.llback.api.app.ai.dto.req.GenerateImageReq;
 import com.llback.api.app.ai.fetch.AiConfigFetch;
-import com.llback.common.types.StringId;
 import com.llback.common.util.AssertUtil;
 import com.llback.core.article.feign.FtpFileFeign;
 import com.llback.frame.Handler;
 import com.llback.rt.common.util.OkHttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
@@ -41,11 +39,6 @@ public class GenerateImageHandler implements Handler<ResponseBodyEmitter, Genera
      * 轮询间隔时间（毫秒）
      */
     private static final long POLL_INTERVAL_MS = 500;
-    /**
-     * 模型服务地址（作为默认值）
-     */
-    @Value("${comfy-ui.base-url}")
-    private String comfyBaseUrl;
 
     @Lazy
     @Autowired
@@ -63,14 +56,13 @@ public class GenerateImageHandler implements Handler<ResponseBodyEmitter, Genera
         AssertUtil.notEmpty(req.getKeyWord(), "关键词不能为空");
         AssertUtil.notEmpty(req.getAiMenuCode(), "AI菜单代码不能为空");
 
-        // 查询AI配置
-        AiConfigDto aiConfig = aiConfigFetch.queryAiConfig(StringId.of(req.getAiMenuCode()));
+        // 查询AI配置（已包含从配置文件读取的默认地址）
+        AiConfigDto aiConfig = aiConfigFetch.queryAiConfig();
         AssertUtil.notNull(aiConfig, "AI配置不存在");
+        AssertUtil.notEmpty(aiConfig.getComfyUiUrl(), "ComfyUI服务地址未配置");
 
-        // 获取ComfyUI服务地址，如果配置中没有则使用默认值
-        String comfyUiUrl = cn.hutool.core.util.StrUtil.isNotBlank(aiConfig.getComfyUiUrl())
-                ? aiConfig.getComfyUiUrl()
-                : comfyBaseUrl;
+        // 获取ComfyUI服务地址（已由queryAiConfig方法填充）
+        String comfyUiUrl = aiConfig.getComfyUiUrl();
 
         // emitter基础设置
         ResponseBodyEmitter emitter = new ResponseBodyEmitter(10 * 60 * 1000L);

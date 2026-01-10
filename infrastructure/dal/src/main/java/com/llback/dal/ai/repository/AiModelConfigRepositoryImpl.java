@@ -3,6 +3,7 @@ package com.llback.dal.ai.repository;
 import com.llback.api.app.ai.dto.AiConfigDto;
 import com.llback.api.app.ai.fetch.AiConfigFetch;
 import com.llback.common.types.StringId;
+import com.llback.core.ai.config.AiUrlProperties;
 import com.llback.core.ai.eo.AiConfigEo;
 import com.llback.core.ai.repository.AiConfigRepository;
 import com.llback.core.ai.repository.AiModelRepository;
@@ -27,6 +28,12 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
      */
     @Autowired
     private AiDao aiDao;
+
+    /**
+     * AI服务地址配置
+     */
+    @Autowired
+    private AiUrlProperties aiUrlProperties;
 
     /**
      * 新增AI配置
@@ -73,13 +80,18 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
     }
 
     /**
-     * 查询AI菜单背景图片
+     * 查询AI配置（包含从配置文件读取的服务地址）
+     * <p>
+     * 优先级：数据库配置 > 配置文件默认值
      *
-     * @param aiMenuId
+     * @return AI配置DTO（已填充服务地址）
      */
     @Override
-    public AiConfigDto queryAiConfig(StringId aiMenuId) {
-        return PoAssembleUtil.poToDto(aiDao.queryConfig(aiMenuId.toString()), AiConfigDto.class);
+    public AiConfigDto queryAiConfig() {
+        AiConfigDto dto = new AiConfigDto();
+        dto.setOllamaUrl(aiUrlProperties.getActiveOllamaUrl());
+        dto.setComfyUiUrl(aiUrlProperties.getActiveComfyUiUrl());
+        return dto;
     }
 
     /**

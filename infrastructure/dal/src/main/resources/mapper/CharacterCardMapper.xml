@@ -47,6 +47,7 @@
             user_name,
             character_name,
             card_description,
+            initial_prompt,
             avatar,
             scenario,
             delete_status,

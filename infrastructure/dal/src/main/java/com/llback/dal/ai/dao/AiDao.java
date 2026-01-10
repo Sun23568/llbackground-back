@@ -52,12 +52,4 @@ public interface AiDao {
      * @date 2025/10/6
      */
     void updateBackgroundImage(@Param("menuCode") String menuCode, @Param("backgroundImage") String backgroundImage);
-
-    /**
-     * 查询AI模块菜单背景图片
-     *
-     * @param aiMenuId
-     * @return
-     */
-    AiConfigPo queryConfig(String aiMenuId);
 }

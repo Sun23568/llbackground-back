@@ -4,7 +4,6 @@ import com.github.pagehelper.util.StringUtil;
 import com.llback.api.app.ai.dto.AiConfigDto;
 import com.llback.api.app.ai.dto.req.AiConfigReq;
 import com.llback.api.app.ai.fetch.AiConfigFetch;
-import com.llback.common.types.StringId;
 import com.llback.frame.Handler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -37,7 +36,7 @@ public class QueryAiMenuConfigHandler implements Handler<AiConfigDto, AiConfigRe
         if (StringUtils.isEmpty(req.getAiMenuCode())) {
             return new AiConfigDto();
         }
-        AiConfigDto aiConfigDto = aiConfigFetch.queryAiConfig(StringId.of(req.getAiMenuCode()));
+        AiConfigDto aiConfigDto = aiConfigFetch.queryAiConfig();
         // 无配置则返回空
         if (aiConfigDto == null) {
             return new AiConfigDto();

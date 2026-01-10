@@ -65,7 +65,15 @@ mybatis:
 sa:
   public-key: 034331b158275b2867f12afc75051ebe56f38265469675a44c23563326df8fa63e
   private-key: fc3ff3f8dfff886dc34673a431ec562830b2933d720248e9f0a38aba38b0ab60
-ollama:
-  base-url: http://localhost:6006
-comfy-ui:
-  base-url: http://localhost:8188/api
+# AI服务配置
+ai:
+  # 当前激活的环境：local(本地) 或 remote(远程)
+  active-profile: local
+  # 本地环境配置
+  local:
+    ollama-url: http://127.0.0.1:11434
+    comfy-ui-url: http://127.0.0.1:8188
+  # 远程环境配置
+  remote:
+    ollama-url: https://ollama.ai
+    comfy-ui-url: https://comfyui.ai

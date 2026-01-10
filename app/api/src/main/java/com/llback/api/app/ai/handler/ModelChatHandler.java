@@ -1,7 +1,6 @@
 package com.llback.api.app.ai.handler;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.StrUtil;
 import com.llback.api.app.ai.dto.AiConfigDto;
 import com.llback.api.app.ai.dto.req.ModelChat;
 import com.llback.api.app.ai.fetch.AiConfigFetch;
@@ -22,8 +21,8 @@ import dev.langchain4j.model.StreamingResponseHandler;
 import dev.langchain4j.model.ollama.OllamaStreamingChatModel;
 import dev.langchain4j.model.output.Response;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter;
 
@@ -41,12 +40,6 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Component
 public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat> {
-    /**
-     * 模型服务地址（作为默认值）
-     */
-    @Value("${ollama.base-url}")
-    private String modelBaseUrl;
-
     /**
      * AI配置查询服务
      */
@@ -68,23 +61,21 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
     @Override
     public ResponseBodyEmitter execute(ModelChat req) {
         AssertUtil.notEmpty(req.getModel(), "模型不能为空");
-        AssertUtil.notEmpty(req.getAiMenuCode(), "AI菜单代码不能为空");
 
-        // 查询AI配置
-        AiConfigDto aiConfig = aiConfigFetch.queryAiConfig(StringId.of(req.getAiMenuCode()));
+        // 查询AI配置（已包含从配置文件读取的默认地址）
+        AiConfigDto aiConfig = aiConfigFetch.queryAiConfig();
         AssertUtil.notNull(aiConfig, "AI配置不存在");
+        AssertUtil.notEmpty(aiConfig.getOllamaUrl(), "Ollama服务地址未配置");
 
-        // 获取Ollama服务地址，如果配置中没有则使用默认值
-        String ollamaUrl = cn.hutool.core.util.StrUtil.isNotBlank(aiConfig.getOllamaUrl())
-                ? aiConfig.getOllamaUrl()
-                : modelBaseUrl;
+        // 获取Ollama服务地址（已由queryAiConfig方法填充）
+        String ollamaUrl = aiConfig.getOllamaUrl();
 
         // 获取上下文大小，如果配置中没有则使用默认值
         Integer contextSize = aiConfig.getContextSize() != null ? aiConfig.getContextSize() : 10;
 
         // 查询角色卡描述（如果提供了角色卡ID）
         final String systemMessage;
-        if (StrUtil.isNotBlank(req.getCharacterCardId())) {
+        if (StringUtils.isNotBlank(req.getCharacterCardId())) {
             CharacterCardEo card = characterCardRepository.findById(StringId.of(req.getCharacterCardId()));
             AssertUtil.notNull(card, "角色卡不存在");
             systemMessage = card.getCardDescription();
@@ -194,7 +185,7 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
         }
 
         // 添加系统消息（不计入上下文数量限制）
-        if (StrUtil.isNotBlank(systemMessage)) {
+        if (StringUtils.isNotBlank(systemMessage)) {
             chatMessages.add(0, SystemMessage.from(systemMessage));
         }
         return chatMessages;

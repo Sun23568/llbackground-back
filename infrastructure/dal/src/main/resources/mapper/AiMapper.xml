@@ -81,25 +81,4 @@
             update_time = NOW()
         WHERE menu_code = #{menuCode}
     </update>
-
-    <!-- 根据AI菜单代码查询配置 -->
-    <select id="queryConfig" resultType="com.llback.dal.ai.po.AiConfigPo">
-        SELECT
-            T1.pk_id,
-            T1.menu_code,
-            T2.MENU_NAME as menu_name,
-            T1.ollama_model_id,
-            T1.comfy_ui_url,
-            T1.ollama_url,
-            T1.comfy_file_id,
-            T1.background_image,
-            T1.context_size,
-            T1.initial_character_state,
-            T1.character_card_id,
-            T1.create_time,
-            T1.update_time
-        FROM ai_config T1
-        LEFT JOIN SYS_MENU T2 ON T1.menu_code = T2.MENU_CODE
-        WHERE T1.menu_code = #{aiMenuId}
-    </select>
 </mapper>
