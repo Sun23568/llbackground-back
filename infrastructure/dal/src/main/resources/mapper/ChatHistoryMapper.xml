@@ -8,7 +8,7 @@
             conversation_id,
             user_id,
             model_id,
-            menu_code,
+            character_card_id,
             user_message,
             ai_response,
             create_time
@@ -16,7 +16,7 @@
             #{conversationId},
             #{userId},
             #{modelId},
-            #{menuCode},
+            #{characterCardId},
             #{userMessage},
             #{aiResponse},
             #{createTime}

@@ -134,7 +134,7 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
                                     .conversationId(conversationId)
                                     .userId(userId)
                                     .modelId(req.getModel())
-                                    .menuCode(req.getAiMenuCode())
+                                    .characterCardId(req.getCharacterCardId())
                                     .userMessage(req.getMessage())
                                     .aiResponse(response.content().text()) // Get full response
                                     .createTime(LocalDateTime.now())

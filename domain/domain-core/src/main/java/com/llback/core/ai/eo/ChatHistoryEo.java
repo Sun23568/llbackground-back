@@ -34,9 +34,9 @@ public class ChatHistoryEo implements Serializable {
     private String modelId;
 
     /**
-     * 菜单/功能编码
+     * 角色卡ID（关联使用的角色卡）
      */
-    private String menuCode;
+    private String characterCardId;
 
     /**
      * 用户发送的消息

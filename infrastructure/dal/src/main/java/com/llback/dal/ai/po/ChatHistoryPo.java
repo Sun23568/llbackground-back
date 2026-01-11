@@ -11,7 +11,7 @@ public class ChatHistoryPo {
     private String conversationId;
     private String userId;
     private String modelId;
-    private String menuCode;
+    private String characterCardId;
     private String userMessage;
     private String aiResponse;
     private LocalDateTime createTime;

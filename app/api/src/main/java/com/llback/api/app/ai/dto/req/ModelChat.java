@@ -27,12 +27,7 @@ public class ModelChat implements Query {
     private String model;
 
     /**
-     * AI菜单代码（menu_code，用于获取AI配置）
-     */
-    private String aiMenuCode;
-
-    /**
-     * 角色卡ID（可选，如果提供则将角色卡描述作为system消息）
+     * 角色卡ID（用于获取角色卡描述作为system消息）
      */
     private String characterCardId;
 
