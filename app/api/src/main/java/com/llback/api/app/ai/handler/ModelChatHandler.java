@@ -98,11 +98,21 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
         // 启动异步任务
         CompletableFuture.runAsync(() -> {
             try {
-                OllamaStreamingChatModel model = OllamaStreamingChatModel.builder()
+                // 构建 Ollama 模型（根据角色卡条件性地添加温度参数）
+                OllamaStreamingChatModel.OllamaStreamingChatModelBuilder builder = OllamaStreamingChatModel.builder()
                         .baseUrl(ollamaUrl)
                         .timeout(Duration.ofDays(1))
-                        .modelName(req.getModel())
-                        .build();
+                        .modelName(req.getModel());
+
+                // 只在有角色卡时添加温度等参数
+                if (characterCardEo != null) {
+                    builder.temperature(1.2)
+                           .topK(40)
+                           .topP(0.95)
+                           .repeatPenalty(1.1);
+                }
+
+                OllamaStreamingChatModel model = builder.build();
                 // 构造上下文，使用配置的上下文大小
                 List<ChatMessage> chatMessages = buildChatMessages(req.getContext(), req.getMessage(), contextSize, characterCardEo);
                 model.generate(chatMessages, new StreamingResponseHandler<AiMessage>() {
