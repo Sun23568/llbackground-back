@@ -74,13 +74,13 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
         Integer contextSize = aiConfig.getContextSize() != null ? aiConfig.getContextSize() : 10;
 
         // 查询角色卡描述（如果提供了角色卡ID）
-        final String systemMessage;
+        final CharacterCardEo characterCardEo;
         if (StringUtils.isNotBlank(req.getCharacterCardId())) {
             CharacterCardEo card = characterCardRepository.findById(StringId.of(req.getCharacterCardId()));
             AssertUtil.notNull(card, "角色卡不存在");
-            systemMessage = card.getCardDescription();
+            characterCardEo = card;
         } else {
-            systemMessage = null;
+            characterCardEo = null;
         }
 
         // 返回emitter
@@ -104,7 +104,7 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
                         .modelName(req.getModel())
                         .build();
                 // 构造上下文，使用配置的上下文大小
-                List<ChatMessage> chatMessages = buildChatMessages(req.getContext(), req.getMessage(), contextSize, systemMessage);
+                List<ChatMessage> chatMessages = buildChatMessages(req.getContext(), req.getMessage(), contextSize, characterCardEo);
                 model.generate(chatMessages, new StreamingResponseHandler<AiMessage>() {
                     @Override
                     public void onNext(String chatResp) {
@@ -161,9 +161,9 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
      * @param context 上下文消息列表
      * @param message 当前消息
      * @param contextSize 上下文大小（从AI配置表读取）
-     * @param systemMessage 系统消息（角色卡描述，可选）
+     * @param characterCardEo 系统消息（角色卡描述，可选）
      */
-    private List<ChatMessage> buildChatMessages(List<String> context, String message, Integer contextSize, String systemMessage) {
+    private List<ChatMessage> buildChatMessages(List<String> context, String message, Integer contextSize, CharacterCardEo characterCardEo) {
         List<ChatMessage> chatMessages = new ArrayList<>();
         // 添加用户消息
         chatMessages.add(UserMessage.from(message));
@@ -185,8 +185,11 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
         }
 
         // 添加系统消息（不计入上下文数量限制）
-        if (StringUtils.isNotBlank(systemMessage)) {
-            chatMessages.add(0, SystemMessage.from(systemMessage));
+        if (characterCardEo != null) {
+            chatMessages.add(0, SystemMessage.from(characterCardEo.getCardDescription()));
+            chatMessages.add(0, SystemMessage.from(String.format("{user}=%s", characterCardEo.getUserName())));
+            chatMessages.add(0, SystemMessage.from(String.format("{char}=%s", characterCardEo.getCharacterName())));
+            chatMessages.add(0, SystemMessage.from(String.format("场景=%s", characterCardEo.getScenario())));
         }
         return chatMessages;
     }

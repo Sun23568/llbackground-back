@@ -51,6 +51,24 @@ public class AiUrlProperties {
     }
 
     /**
+     * 获取当前激活环境的上下文大小
+     *
+     * @return 上下文大小
+     */
+    public Integer getContextSize() {
+        return getActiveProfile().getContextSize();
+    }
+
+    /**
+     * 获取当前激活环境的ComfyUI参数文件ID
+     *
+     * @return ComfyUI参数文件ID
+     */
+    public String getComfyFileId() {
+        return getActiveProfile().getComfyFileId();
+    }
+
+    /**
      * 获取当前激活的环境配置
      *
      * @return 环境配置对象
@@ -76,5 +94,15 @@ public class AiUrlProperties {
          * ComfyUI服务地址
          */
         private String comfyUiUrl;
+
+        /**
+         *  上下文长度
+         */
+        private Integer contextSize;
+
+        /**
+         * ComfyUI参数文件ID
+         */
+        private String comfyFileId;
     }
 }

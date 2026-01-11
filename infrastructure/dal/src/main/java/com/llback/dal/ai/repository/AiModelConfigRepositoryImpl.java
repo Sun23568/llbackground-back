@@ -91,6 +91,8 @@ public class AiModelConfigRepositoryImpl implements AiModelRepository, AiConfigF
         AiConfigDto dto = new AiConfigDto();
         dto.setOllamaUrl(aiUrlProperties.getActiveOllamaUrl());
         dto.setComfyUiUrl(aiUrlProperties.getActiveComfyUiUrl());
+        dto.setContextSize(aiUrlProperties.getContextSize());
+        dto.setComfyFileId(aiUrlProperties.getComfyFileId());
         return dto;
     }
 

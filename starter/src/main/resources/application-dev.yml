@@ -73,7 +73,11 @@ ai:
   local:
     ollama-url: http://127.0.0.1:11434
     comfy-ui-url: http://127.0.0.1:8188
+    context-size: 20
+    comfy-file-id: luoli
   # 远程环境配置
   remote:
     ollama-url: https://ollama.ai
     comfy-ui-url: https://comfyui.ai
+    context-size: 20
+    comfy-file-id: luoliAutoDL

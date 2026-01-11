@@ -54,7 +54,6 @@ public class GenerateImageHandler implements Handler<ResponseBodyEmitter, Genera
     public ResponseBodyEmitter execute(GenerateImageReq req) {
         // 校验
         AssertUtil.notEmpty(req.getKeyWord(), "关键词不能为空");
-        AssertUtil.notEmpty(req.getAiMenuCode(), "AI菜单代码不能为空");
 
         // 查询AI配置（已包含从配置文件读取的默认地址）
         AiConfigDto aiConfig = aiConfigFetch.queryAiConfig();

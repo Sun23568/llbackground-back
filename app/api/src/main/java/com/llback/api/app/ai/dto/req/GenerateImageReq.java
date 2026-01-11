@@ -9,9 +9,4 @@ public class GenerateImageReq implements Query {
      * 关键词
      */
     private String keyWord;
-
-    /**
-     * AI菜单代码（menu_code，用于获取AI配置）
-     */
-    private String aiMenuCode;
 }
