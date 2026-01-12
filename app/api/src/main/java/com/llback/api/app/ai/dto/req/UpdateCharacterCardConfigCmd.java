@@ -56,4 +56,9 @@ public class UpdateCharacterCardConfigCmd implements Command {
      * 场景描述
      */
     private String scenario;
+
+    /**
+     * 是否NSFW（不适合工作场景观看）: 0-否, 1-是
+     */
+    private Integer nsfw;
 }

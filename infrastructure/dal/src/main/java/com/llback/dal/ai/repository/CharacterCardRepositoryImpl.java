@@ -42,6 +42,12 @@ public class CharacterCardRepositoryImpl implements CharacterCardRepository {
     }
 
     @Override
+    public List<CharacterCardEo> findByUserIdWithNsfw(UserId userId, Boolean showNsfw) {
+        List<CharacterCardPo> poList = characterCardDao.selectByUserIdWithNsfw(userId.getValue(), showNsfw);
+        return PoAssembleUtil.poList2EoList(poList, CharacterCardEo.class);
+    }
+
+    @Override
     public void update(CharacterCardEo characterCardEo) {
         CharacterCardPo po = PoAssembleUtil.eo2Po(characterCardEo, CharacterCardPo.class);
         characterCardDao.update(po);

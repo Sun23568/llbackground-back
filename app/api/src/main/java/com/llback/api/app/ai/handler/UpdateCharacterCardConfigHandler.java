@@ -48,6 +48,7 @@ public class UpdateCharacterCardConfigHandler implements Handler<Void, UpdateCha
             .avatar(cmd.getAvatar())
             .mesExample(cmd.getMesExample())
             .scenario(cmd.getScenario())
+            .nsfw(cmd.getNsfw())
             .deleteStatus(existingCard.getDeleteStatus())
             .createTime(existingCard.getCreateTime())
             .updateTime(existingCard.getUpdateTime())

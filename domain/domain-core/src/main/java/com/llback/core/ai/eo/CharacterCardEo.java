@@ -79,6 +79,11 @@ public class CharacterCardEo {
     private String scenario;
 
     /**
+     * 是否NSFW（不适合工作场景观看）: 0-否, 1-是
+     */
+    private Integer nsfw;
+
+    /**
      * 删除状态: 1-正常, 2-已删除
      */
     private Integer deleteStatus;

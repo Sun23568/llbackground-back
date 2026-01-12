@@ -35,10 +35,12 @@ public class CharacterCardApi implements RestApi {
 
     /**
      * 查询角色卡列表
+     *
+     * @param showNsfw 是否显示NSFW内容（可选，默认false）
      */
     @GetMapping("/list")
-    public RestResult queryCharacterCardList() {
-        return this.execute(QueryCharacterCardListReq.EMPTY);
+    public RestResult queryCharacterCardList(@RequestParam(value = "showNsfw", required = false) Boolean showNsfw) {
+        return this.execute(QueryCharacterCardListReq.of(showNsfw));
     }
 
     /**

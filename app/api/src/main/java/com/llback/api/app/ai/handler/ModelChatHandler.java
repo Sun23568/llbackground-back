@@ -109,7 +109,7 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
                     builder.temperature(1.2)
                            .topK(40)
                            .topP(0.95)
-                           .repeatPenalty(1.1);
+                           .repeatPenalty(1.2);
                 }
 
                 OllamaStreamingChatModel model = builder.build();
@@ -197,6 +197,7 @@ public class ModelChatHandler implements Handler<ResponseBodyEmitter, ModelChat>
         // 添加系统消息（不计入上下文数量限制）
         if (characterCardEo != null) {
             chatMessages.add(0, SystemMessage.from(characterCardEo.getCardDescription()));
+            chatMessages.add(0, SystemMessage.from("你是一个剧本创作助手。你只输出角色对话和简短的动作括号。严禁输出大段的环境、外貌或心理描写。保持语言简洁、直接、富有张力。"));
             chatMessages.add(0, SystemMessage.from(String.format("{user}=%s", characterCardEo.getUserName())));
             chatMessages.add(0, SystemMessage.from(String.format("{char}=%s", characterCardEo.getCharacterName())));
             chatMessages.add(0, SystemMessage.from(String.format("场景=%s", characterCardEo.getScenario())));

@@ -68,6 +68,11 @@ public class CharacterCardDto {
     private String scenario;
 
     /**
+     * 是否NSFW（不适合工作场景观看）: 0-否, 1-是
+     */
+    private Integer nsfw;
+
+    /**
      * 创建时间
      */
     private LocalDateTime createTime;

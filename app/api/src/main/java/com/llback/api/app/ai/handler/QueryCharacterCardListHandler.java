@@ -33,8 +33,9 @@ public class QueryCharacterCardListHandler implements Handler<List<CharacterCard
         // 获取当前用户ID
         UserId userId = ReqContext.userSession().getUserId();
 
-        // 查询当前用户的所有角色卡
-        List<CharacterCardEo> characterCardList = characterCardRepository.findByUserId(userId);
+        // 查询当前用户的所有角色卡（支持NSFW过滤）
+        Boolean showNsfw = req.getShowNsfw() != null && req.getShowNsfw();
+        List<CharacterCardEo> characterCardList = characterCardRepository.findByUserIdWithNsfw(userId, showNsfw);
 
         // 过滤有效的角色卡（未删除）
         List<CharacterCardEo> validCards = characterCardList.stream()

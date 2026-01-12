@@ -79,6 +79,11 @@ public class UploadCharacterCardHandler implements Handler<JSONObject, UploadCha
         String avatar = cardData.getString("avatar");
         String mesExample = cardData.getString("mes_example");
         String scenario = cardData.getString("scenario");
+        // 提取 NSFW 标识，如果未指定则默认为 0（适合工作场景）
+        Integer nsfw = cardData.getInteger("nsfw");
+        if (nsfw == null) {
+            nsfw = 0;
+        }
 
         // 7. 提取角色名称（默认使用 cardName）
         String characterName = cardName;
@@ -98,6 +103,7 @@ public class UploadCharacterCardHandler implements Handler<JSONObject, UploadCha
                 .avatar(avatar)
                 .mesExample(mesExample)
                 .scenario(scenario)
+                .nsfw(nsfw)
                 .deleteStatus(1)
                 .build();
 

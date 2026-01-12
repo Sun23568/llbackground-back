@@ -37,6 +37,15 @@ public interface CharacterCardRepository {
     List<CharacterCardEo> findByUserId(UserId userId);
 
     /**
+     * 根据用户ID查询角色卡列表（支持NSFW过滤）
+     *
+     * @param userId 用户ID
+     * @param showNsfw 是否显示NSFW内容
+     * @return 角色卡列表
+     */
+    List<CharacterCardEo> findByUserIdWithNsfw(UserId userId, Boolean showNsfw);
+
+    /**
      * 更新角色卡
      *
      * @param characterCardEo 角色卡实体对象

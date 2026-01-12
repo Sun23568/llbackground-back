@@ -38,6 +38,15 @@ public interface CharacterCardDao {
     List<CharacterCardPo> selectByUserId(@Param("userId") String userId);
 
     /**
+     * 根据用户ID查询角色卡列表（支持NSFW过滤）
+     *
+     * @param userId 用户ID
+     * @param showNsfw 是否显示NSFW内容
+     * @return 角色卡列表
+     */
+    List<CharacterCardPo> selectByUserIdWithNsfw(@Param("userId") String userId, @Param("showNsfw") Boolean showNsfw);
+
+    /**
      * 更新角色卡
      *
      * @param characterCardPo 角色卡持久化对象

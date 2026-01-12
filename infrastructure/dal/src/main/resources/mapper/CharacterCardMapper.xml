@@ -6,16 +6,16 @@
     <insert id="insert" parameterType="com.llback.dal.ai.po.CharacterCardPo" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO character_card (
             id, user_id, card_name, user_name, character_name, card_description, card_content,
-            initial_prompt, first_mes, avatar, mes_example, scenario,
+            initial_prompt, first_mes, avatar, mes_example, scenario, nsfw,
             delete_status, create_time, update_time
         ) VALUES (
             #{id}, #{userId}, #{cardName}, #{userName}, #{characterName}, #{cardDescription}, #{cardContent},
-            #{initialPrompt}, #{firstMes}, #{avatar}, #{mesExample}, #{scenario},
+            #{initialPrompt}, #{firstMes}, #{avatar}, #{mesExample}, #{scenario}, #{nsfw},
             1, NOW(), NOW()
         )
     </insert>
 
-    <!-- 根据ID查询角色卡 -->
+    <!-- 根据ID查询角色卡（仅查询适合工作场景的内容 nsfw=0） -->
     <select id="selectById" resultType="com.llback.dal.ai.po.CharacterCardPo">
         SELECT
             id,
@@ -30,15 +30,17 @@
             avatar,
             mes_example,
             scenario,
+            nsfw,
             delete_status,
             create_time,
             update_time
         FROM character_card
         WHERE id = #{id}
           AND delete_status = 1
+          AND nsfw = 0
     </select>
 
-    <!-- 根据用户ID查询角色卡列表 -->
+    <!-- 根据用户ID查询角色卡列表（仅查询适合工作场景的内容 nsfw=0） -->
     <select id="selectByUserId" resultType="com.llback.dal.ai.po.CharacterCardPo">
         SELECT
             id,
@@ -50,12 +52,40 @@
             initial_prompt,
             avatar,
             scenario,
+            nsfw,
             delete_status,
             create_time,
             update_time
         FROM character_card
         WHERE user_id = #{userId}
           AND delete_status = 1
+          AND nsfw = 0
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据用户ID查询角色卡列表（支持NSFW过滤选项） -->
+    <select id="selectByUserIdWithNsfw" resultType="com.llback.dal.ai.po.CharacterCardPo">
+        SELECT
+            id,
+            user_id,
+            card_name,
+            user_name,
+            character_name,
+            card_description,
+            initial_prompt,
+            avatar,
+            scenario,
+            nsfw,
+            delete_status,
+            create_time,
+            update_time
+        FROM character_card
+        WHERE user_id = #{userId}
+          AND delete_status = 1
+          <!-- 动态NSFW过滤：showNsfw=true时不过滤，false或null时过滤 -->
+          <if test="showNsfw == null or showNsfw == false">
+              AND nsfw = 0
+          </if>
         ORDER BY create_time DESC
     </select>
 
