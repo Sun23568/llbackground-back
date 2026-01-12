@@ -15,7 +15,7 @@
         )
     </insert>
 
-    <!-- 根据ID查询角色卡（仅查询适合工作场景的内容 nsfw=0） -->
+    <!-- 根据ID查询角色卡（不过滤NSFW，允许通过ID精确访问） -->
     <select id="selectById" resultType="com.llback.dal.ai.po.CharacterCardPo">
         SELECT
             id,
@@ -37,7 +37,6 @@
         FROM character_card
         WHERE id = #{id}
           AND delete_status = 1
-          AND nsfw = 0
     </select>
 
     <!-- 根据用户ID查询角色卡列表（仅查询适合工作场景的内容 nsfw=0） -->
