@@ -56,8 +56,7 @@
             create_time,
             update_time
         FROM character_card
-        WHERE user_id = #{userId}
-          AND delete_status = 1
+        WHERE delete_status = 1
           AND nsfw = 0
         ORDER BY create_time DESC
     </select>
@@ -79,8 +78,7 @@
             create_time,
             update_time
         FROM character_card
-        WHERE user_id = #{userId}
-          AND delete_status = 1
+        WHERE delete_status = 1
           <!-- 动态NSFW过滤：showNsfw=true时不过滤，false或null时过滤 -->
           <if test="showNsfw == null or showNsfw == false">
               AND nsfw = 0
