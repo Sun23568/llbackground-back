@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.llback.dal.crawler.dao.CrawlerDao">
+    <!-- 新增爬虫配置 -->
+    <insert id="insertConfig" parameterType="com.llback.dal.crawler.po.CrawlerConfigPo">
+        INSERT INTO crawler_config (
+            pk_id, config_name, target_url, request_method,
+            request_headers, request_body, pre_processor, post_processor,
+            cron_expression, enabled, description,
+            create_time, update_time
+        ) VALUES (
+            #{pkId}, #{configName}, #{targetUrl}, #{requestMethod},
+            #{requestHeaders}, #{requestBody}, #{preProcessor}, #{postProcessor},
+            #{cronExpression}, #{enabled}, #{description},
+            #{createTime}, #{updateTime}
+        )
+    </insert>
+
+    <!-- 更新爬虫配置 -->
+    <update id="updateConfig" parameterType="com.llback.dal.crawler.po.CrawlerConfigPo">
+        UPDATE crawler_config
+        SET config_name = #{configName},
+            target_url = #{targetUrl},
+            request_method = #{requestMethod},
+            request_headers = #{requestHeaders},
+            request_body = #{requestBody},
+            pre_processor = #{preProcessor},
+            post_processor = #{postProcessor},
+            cron_expression = #{cronExpression},
+            enabled = #{enabled},
+            description = #{description},
+            update_time = NOW()
+        WHERE pk_id = #{pkId}
+    </update>
+
+    <!-- 根据ID删除配置 -->
+    <delete id="deleteConfigById">
+        DELETE FROM crawler_config WHERE pk_id = #{pkId}
+    </delete>
+
+    <!-- 根据ID查询配置 -->
+    <select id="queryConfigById" resultType="com.llback.dal.crawler.po.CrawlerConfigPo">
+        SELECT
+            pk_id,
+            config_name,
+            target_url,
+            request_method,
+            request_headers,
+            request_body,
+            pre_processor,
+            post_processor,
+            cron_expression,
+            enabled,
+            description,
+            create_time,
+            update_time
+        FROM crawler_config
+        WHERE pk_id = #{pkId}
+    </select>
+
+    <!-- 查询所有配置 -->
+    <select id="queryAllConfig" resultType="com.llback.dal.crawler.po.CrawlerConfigPo">
+        SELECT
+            pk_id,
+            config_name,
+            target_url,
+            request_method,
+            request_headers,
+            request_body,
+            pre_processor,
+            post_processor,
+            cron_expression,
+            enabled,
+            description,
+            create_time,
+            update_time
+        FROM crawler_config
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 根据启用状态查询配置 -->
+    <select id="queryConfigByEnabled" resultType="com.llback.dal.crawler.po.CrawlerConfigPo">
+        SELECT
+            pk_id,
+            config_name,
+            target_url,
+            request_method,
+            request_headers,
+            request_body,
+            pre_processor,
+            post_processor,
+            cron_expression,
+            enabled,
+            description,
+            create_time,
+            update_time
+        FROM crawler_config
+        WHERE enabled = #{enabled}
+        ORDER BY create_time DESC
+    </select>
+
+    <!-- 新增爬取记录 -->
+    <insert id="insertRecord" parameterType="com.llback.dal.crawler.po.CrawlerRecordPo">
+        INSERT INTO crawler_record (
+            pk_id, config_id, config_name, execute_time,
+            status, result_data, error_message, duration
+        ) VALUES (
+            #{pkId}, #{configId}, #{configName}, #{executeTime},
+            #{status}, #{resultData}, #{errorMessage}, #{duration}
+        )
+    </insert>
+
+    <!-- 根据配置ID查询记录 -->
+    <select id="queryRecordByConfigId" resultType="com.llback.dal.crawler.po.CrawlerRecordPo">
+        SELECT
+            pk_id,
+            config_id,
+            config_name,
+            execute_time,
+            status,
+            result_data,
+            error_message,
+            duration
+        FROM crawler_record
+        WHERE config_id = #{configId}
+        ORDER BY execute_time DESC
+    </select>
+
+    <!-- 查询所有记录 -->
+    <select id="queryAllRecord" resultType="com.llback.dal.crawler.po.CrawlerRecordPo">
+        SELECT
+            pk_id,
+            config_id,
+            config_name,
+            execute_time,
+            status,
+            result_data,
+            error_message,
+            duration
+        FROM crawler_record
+        ORDER BY execute_time DESC
+    </select>
+</mapper>
