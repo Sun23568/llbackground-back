@@ -1,7 +1,7 @@
 package com.llback.core.crawler.eo;
 
 import com.llback.common.types.StringId;
-import com.llback.core.crawler.enums.CrawlerStatus;
+import com.llback.core.crawler.types.CrawlerStatus;
 import lombok.Builder;
 import lombok.Getter;
 

@@ -6,7 +6,7 @@ import com.llback.common.util.AssertUtil;
 import com.llback.common.util.RandomIdUtil;
 import com.llback.core.crawler.eo.CrawlerConfigEo;
 import com.llback.core.crawler.eo.CrawlerRecordEo;
-import com.llback.core.crawler.enums.CrawlerStatus;
+import com.llback.core.crawler.types.CrawlerStatus;
 import com.llback.core.crawler.repository.CrawlerConfigRepository;
 import com.llback.core.crawler.repository.CrawlerRecordRepository;
 import com.llback.frame.Handler;
@@ -50,7 +50,7 @@ public class ExecuteCrawlerHandler implements Handler<Void, ExecuteCrawlerCmd> {
         CrawlerStatus status;
 
         try {
-            // TODO: 实际的爬虫执行逻辑
+            // TODO:
             // 这里先返回一个模拟结果
             resultData = executeCrawler(config);
             status = CrawlerStatus.SUCCESS;
