@@ -4,6 +4,7 @@ import com.llback.api.app.crawler.dto.req.DeleteCrawlerConfigCmd;
 import com.llback.common.types.StringId;
 import com.llback.common.util.AssertUtil;
 import com.llback.core.crawler.repository.CrawlerConfigRepository;
+import com.llback.core.crawler.service.CrawlerSchedulerService;
 import com.llback.frame.Handler;
 import com.llback.frame.HandlerAcl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,15 @@ public class DeleteCrawlerConfigHandler implements Handler<Void, DeleteCrawlerCo
     @Autowired
     private CrawlerConfigRepository crawlerConfigRepository;
 
+    @Autowired
+    private CrawlerSchedulerService crawlerSchedulerService;
+
     @Override
     public Void execute(DeleteCrawlerConfigCmd cmd) {
         AssertUtil.notEmpty(cmd.getPkId(), "配置ID不能为空");
         crawlerConfigRepository.deleteById(StringId.of(cmd.getPkId()));
+        // 取消调度
+        crawlerSchedulerService.unschedule(cmd.getPkId());
         return null;
     }
 }

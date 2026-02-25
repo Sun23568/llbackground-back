@@ -5,6 +5,7 @@ import com.llback.common.types.StringId;
 import com.llback.common.util.AssertUtil;
 import com.llback.core.crawler.eo.CrawlerConfigEo;
 import com.llback.core.crawler.repository.CrawlerConfigRepository;
+import com.llback.core.crawler.service.CrawlerSchedulerService;
 import com.llback.frame.Handler;
 import com.llback.frame.HandlerAcl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class UpdateCrawlerConfigHandler implements Handler<Void, UpdateCrawlerCo
 
     @Autowired
     private CrawlerConfigRepository crawlerConfigRepository;
+
+    @Autowired
+    private CrawlerSchedulerService crawlerSchedulerService;
 
     @Override
     public Void execute(UpdateCrawlerConfigCmd cmd) {
@@ -44,6 +48,9 @@ public class UpdateCrawlerConfigHandler implements Handler<Void, UpdateCrawlerCo
 
         // 更新配置
         crawlerConfigRepository.update(configEo);
+
+        // 重新调度
+        crawlerSchedulerService.reschedule(configEo);
 
         return null;
     }
