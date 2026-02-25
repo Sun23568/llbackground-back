@@ -2,6 +2,8 @@ package com.llback.api.app.crawler.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 爬虫配置DTO
  *
@@ -67,10 +69,10 @@ public class CrawlerConfigDto {
     /**
      * 创建时间
      */
-    private String createTime;
+    private LocalDateTime createTime;
 
     /**
      * 更新时间
      */
-    private String updateTime;
+    private LocalDateTime updateTime;
 }

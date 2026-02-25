@@ -11,6 +11,8 @@ import com.llback.frame.HandlerAcl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 /**
  * 添加爬虫配置Handler
  *
@@ -42,6 +44,7 @@ public class AddCrawlerConfigHandler implements Handler<Void, AddCrawlerConfigCm
                 .cronExpression(cmd.getCronExpression())
                 .enabled(cmd.getEnabled() != null ? cmd.getEnabled() : true)
                 .description(cmd.getDescription())
+                .createTime(LocalDateTime.now())
                 .build();
 
         // 保存配置

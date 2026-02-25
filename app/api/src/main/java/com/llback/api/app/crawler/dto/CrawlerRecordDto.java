@@ -2,6 +2,8 @@ package com.llback.api.app.crawler.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * 爬取记录DTO
  *
@@ -27,7 +29,7 @@ public class CrawlerRecordDto {
     /**
      * 执行时间
      */
-    private String executeTime;
+    private LocalDateTime executeTime;
 
     /**
      * 执行状态
