@@ -9,6 +9,7 @@ import com.llback.core.crawler.eo.CrawlerRecordEo;
 import com.llback.core.crawler.types.CrawlerStatus;
 import com.llback.core.crawler.repository.CrawlerConfigRepository;
 import com.llback.core.crawler.repository.CrawlerRecordRepository;
+import com.llback.core.crawler.service.CrawlerEngine;
 import com.llback.frame.Handler;
 import com.llback.frame.HandlerAcl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,9 @@ public class ExecuteCrawlerHandler implements Handler<Void, ExecuteCrawlerCmd> {
     @Autowired
     private CrawlerRecordRepository crawlerRecordRepository;
 
+    @Autowired
+    private CrawlerEngine crawlerEngine;
+
     @Override
     public Void execute(ExecuteCrawlerCmd cmd) {
         // 校验
@@ -50,9 +54,8 @@ public class ExecuteCrawlerHandler implements Handler<Void, ExecuteCrawlerCmd> {
         CrawlerStatus status;
 
         try {
-            // TODO:
-            // 这里先返回一个模拟结果
-            resultData = executeCrawler(config);
+            // 使用爬虫引擎执行
+            resultData = crawlerEngine.execute(config);
             status = CrawlerStatus.SUCCESS;
         } catch (Exception e) {
             status = CrawlerStatus.FAILED;
@@ -76,17 +79,5 @@ public class ExecuteCrawlerHandler implements Handler<Void, ExecuteCrawlerCmd> {
         crawlerRecordRepository.save(record);
 
         return null;
-    }
-
-    /**
-     * 执行爬虫（简单实现）
-     * TODO: 实现完整的爬虫逻辑，包括HTTP请求、前置/后置处理器等
-     */
-    private String executeCrawler(CrawlerConfigEo config) {
-        // 模拟爬取结果
-        return String.format("{\"url\":\"%s\",\"method\":\"%s\",\"timestamp\":\"%s\",\"data\":\"模拟爬取的数据内容\"}",
-                config.getTargetUrl(),
-                config.getRequestMethod(),
-                LocalDateTime.now());
     }
 }
