@@ -65,6 +65,13 @@ public class CrawlerConfigEo {
     private Boolean enabled;
 
     /**
+     * 是否已启用（充血模型方法，null 视为未启用）
+     */
+    public boolean isEnabled() {
+        return Boolean.TRUE.equals(enabled);
+    }
+
+    /**
      * 描述信息
      */
     private String description;

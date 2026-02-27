@@ -77,7 +77,7 @@ public class CrawlerSchedulerServiceImpl implements CrawlerSchedulerService {
             return;
         }
 
-        if (config.getEnabled() == null || !config.getEnabled()) {
+        if (!config.isEnabled()) {
             log.info("爬虫配置 [{}] 未启用，仅取消现有调度", config.getConfigName());
             return;
         }

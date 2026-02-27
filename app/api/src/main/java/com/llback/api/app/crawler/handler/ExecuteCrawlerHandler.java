@@ -43,11 +43,6 @@ public class ExecuteCrawlerHandler implements Handler<Void, ExecuteCrawlerCmd> {
         // 查询配置
         CrawlerConfigEo config = crawlerConfigRepository.findById(StringId.of(cmd.getConfigId()));
         AssertUtil.notNull(config, "爬虫配置不存在");
-        // 检查配置是否启用
-        if (!config.getEnabled()) {
-            throw new IllegalArgumentException("爬虫配置未启用");
-        }
-
         long startTime = System.currentTimeMillis();
         String resultData = null;
         String errorMessage = null;
