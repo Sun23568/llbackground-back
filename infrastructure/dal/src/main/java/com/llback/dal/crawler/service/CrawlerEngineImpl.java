@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * 爬虫引擎实现
@@ -21,19 +23,25 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class CrawlerEngineImpl implements CrawlerEngine {
 
+    private static final Pattern PLACEHOLDER_PATTERN = Pattern.compile("\\{\\{(\\w+)\\}\\}");
+
     private final OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .build();
 
     @Override
-    public String execute(CrawlerConfigEo config) {
-        String url = config.getTargetUrl();
+    public String execute(CrawlerConfigEo config, Map<String, String> variables) {
+        // 替换占位符
+        String url = replacePlaceholders(config.getTargetUrl(), variables);
         String method = config.getRequestMethod();
         String headersJson = config.getRequestHeaders();
-        String bodyContent = config.getRequestBody();
+        String bodyContent = replacePlaceholders(config.getRequestBody(), variables);
 
         log.info("开始执行爬虫任务: {} {}", method, url);
+        if (variables != null && !variables.isEmpty()) {
+            log.info("执行变量: {}", variables);
+        }
 
         Request.Builder requestBuilder = new Request.Builder().url(url);
 
@@ -83,5 +91,27 @@ public class CrawlerEngineImpl implements CrawlerEngine {
             log.error("爬虫执行异常: {}", url, e);
             throw new RuntimeException("爬虫执行异常: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * 替换模板字符串中的 {{占位符}}
+     *
+     * @param template  包含占位符的字符串
+     * @param variables 占位符变量 Map
+     * @return 替换后的字符串
+     */
+    private String replacePlaceholders(String template, Map<String, String> variables) {
+        if (template == null || template.isEmpty() || variables == null || variables.isEmpty()) {
+            return template;
+        }
+        Matcher matcher = PLACEHOLDER_PATTERN.matcher(template);
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            String key = matcher.group(1);
+            String value = variables.getOrDefault(key, matcher.group(0)); // 未提供则保留原占位符
+            matcher.appendReplacement(sb, Matcher.quoteReplacement(value));
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
     }
 }

@@ -49,8 +49,8 @@ public class ExecuteCrawlerHandler implements Handler<Void, ExecuteCrawlerCmd> {
         CrawlerStatus status;
 
         try {
-            // 使用爬虫引擎执行
-            resultData = crawlerEngine.execute(config);
+            // 使用爬虫引擎执行（传入变量，用于替换 URL/Body 中的占位符）
+            resultData = crawlerEngine.execute(config, cmd.getVariables());
             status = CrawlerStatus.SUCCESS;
         } catch (Exception e) {
             status = CrawlerStatus.FAILED;
