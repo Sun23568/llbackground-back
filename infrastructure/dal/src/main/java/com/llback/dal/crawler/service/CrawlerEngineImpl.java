@@ -9,6 +9,7 @@ import okhttp3.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -86,11 +87,97 @@ public class CrawlerEngineImpl implements CrawlerEngine {
             ResponseBody responseBody = response.body();
             String result = responseBody != null ? responseBody.string() : "";
             log.info("爬虫任务执行成功: {}", url);
-            return result;
+            // 应用后置处理器
+            return applyPostProcessor(result, config.getPostProcessor());
         } catch (IOException e) {
             log.error("爬虫执行异常: {}", url, e);
             throw new RuntimeException("爬虫执行异常: " + e.getMessage(), e);
         }
+    }
+
+    /**
+     * 应用后置处理器，对原始响应进行字段提取
+     *
+     * <p>
+     * postProcessor JSON 格式：
+     * 
+     * <pre>
+     * {
+     *   "type": "jsonExtract",
+     *   "fields": {
+     *     "日期": "data.todayRecord[0].date",
+     *     "题号": "data.todayRecord[0].question.questionFrontendId"
+     *   }
+     * }
+     * </pre>
+     *
+     * @param rawResult         HTTP 原始响应体
+     * @param postProcessorJson 后置处理器配置 JSON
+     * @return 处理后的结果（提取失败时原样返回）
+     */
+    private String applyPostProcessor(String rawResult, String postProcessorJson) {
+        if (postProcessorJson == null || postProcessorJson.trim().isEmpty()) {
+            return rawResult;
+        }
+        try {
+            JSONObject config = JSON.parseObject(postProcessorJson);
+            String type = config.getString("type");
+            if ("jsonExtract".equals(type)) {
+                JSONObject fields = config.getJSONObject("fields");
+                if (fields == null || fields.isEmpty()) {
+                    return rawResult;
+                }
+                Object root = JSON.parse(rawResult);
+                JSONObject extracted = new JSONObject(new LinkedHashMap<>()); // 保持插入顺序
+                for (String alias : fields.keySet()) {
+                    String path = fields.getString(alias);
+                    Object value = getByPath(root, path);
+                    extracted.put(alias, value);
+                }
+                log.info("后置处理器执行成功，提取字段: {}", fields.keySet());
+                return extracted.toJSONString();
+            }
+        } catch (Exception e) {
+            log.warn("后置处理器执行失败，返回原始数据: {}", e.getMessage());
+        }
+        return rawResult;
+    }
+
+    /**
+     * 按点分隔路径（支持数组下标，如 "data.items[0].name"）从 JSON 中取值
+     *
+     * @param node JSON 根节点
+     * @param path 路径字符串
+     * @return 对应路径的值，路径不存在时返回 null
+     */
+    private Object getByPath(Object node, String path) {
+        if (node == null || path == null || path.trim().isEmpty()) {
+            return null;
+        }
+        String[] parts = path.split("\\.");
+        Object current = node;
+        for (String part : parts) {
+            if (current == null)
+                return null;
+            if (part.contains("[")) {
+                // 处理数组下标，如 "todayRecord[0]"
+                String key = part.substring(0, part.indexOf('['));
+                int idx = Integer.parseInt(part.replaceAll(".*\\[(\\d+)\\].*", "$1"));
+                if (!key.isEmpty() && current instanceof JSONObject) {
+                    current = ((JSONObject) current).get(key);
+                }
+                if (current instanceof com.alibaba.fastjson2.JSONArray) {
+                    current = ((com.alibaba.fastjson2.JSONArray) current).get(idx);
+                }
+            } else {
+                if (current instanceof JSONObject) {
+                    current = ((JSONObject) current).get(part);
+                } else {
+                    return null;
+                }
+            }
+        }
+        return current;
     }
 
     /**
