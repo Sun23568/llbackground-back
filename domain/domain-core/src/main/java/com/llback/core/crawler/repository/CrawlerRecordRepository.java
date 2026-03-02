@@ -35,4 +35,12 @@ public interface CrawlerRecordRepository {
      * @return 分页结果
      */
     PageInfo<CrawlerRecordEo> findAll(int pageNum, int pageSize);
+
+    /**
+     * 查询指定配置最新一条成功记录
+     *
+     * @param configId 配置ID
+     * @return 最新成功记录，无则返回 null
+     */
+    CrawlerRecordEo findLatestSuccess(StringId configId);
 }

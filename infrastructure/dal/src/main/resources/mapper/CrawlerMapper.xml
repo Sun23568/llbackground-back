@@ -141,4 +141,21 @@
         FROM crawler_record
         ORDER BY execute_time DESC
     </select>
+    <!-- 查询指定配置最新一条成功记录 -->
+    <select id="queryLatestSuccessRecord" resultType="com.llback.dal.crawler.po.CrawlerRecordPo">
+        SELECT
+            pk_id,
+            config_id,
+            config_name,
+            execute_time,
+            status,
+            result_data,
+            error_message,
+            duration
+        FROM crawler_record
+        WHERE config_id = #{configId}
+          AND status = 'SUCCESS'
+        ORDER BY execute_time DESC
+        LIMIT 1
+    </select>
 </mapper>

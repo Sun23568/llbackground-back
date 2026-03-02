@@ -61,4 +61,12 @@ public class CrawlerApi implements RestApi {
     public RestResult getCrawlerRecordList(QueryCrawlerRecordListReq req) {
         return this.execute(req);
     }
+
+    /**
+     * 获取指定配置的最新成功记录
+     */
+    @GetMapping("/record/latest")
+    public RestResult getLatestCrawlerRecord(QueryLatestCrawlerRecordReq req) {
+        return this.execute(req);
+    }
 }

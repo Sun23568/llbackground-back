@@ -79,4 +79,12 @@ public interface CrawlerDao {
      * @return 记录列表
      */
     List<CrawlerRecordPo> queryAllRecord();
+
+    /**
+     * 查询指定配置最新一条成功记录
+     *
+     * @param configId 配置ID
+     * @return 最新成功记录，无则返回 null
+     */
+    CrawlerRecordPo queryLatestSuccessRecord(@Param("configId") String configId);
 }

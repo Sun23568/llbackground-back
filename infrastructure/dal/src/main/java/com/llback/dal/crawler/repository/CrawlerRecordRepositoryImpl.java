@@ -44,4 +44,10 @@ public class CrawlerRecordRepositoryImpl implements CrawlerRecordRepository {
         PageInfo<CrawlerRecordPo> poPage = new PageInfo<>(poList);
         return PoAssembleUtil.poPage2EoPage(poPage, CrawlerRecordEo.class);
     }
+
+    @Override
+    public CrawlerRecordEo findLatestSuccess(StringId configId) {
+        CrawlerRecordPo po = crawlerDao.queryLatestSuccessRecord(configId.toString());
+        return po != null ? PoAssembleUtil.po2Eo(po, CrawlerRecordEo.class) : null;
+    }
 }
