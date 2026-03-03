@@ -43,6 +43,17 @@ spring:
     url: jdbc:mysql://120.27.201.34:3306/llback?allowPublicKeyRetrieval=true
     username: ll
     password: O(i*U7y6
+  mail:
+    host: smtp.163.com
+    port: 465
+    username: YOUR_EMAIL@163.com
+    password: YOUR_AUTHORIZATION_CODE
+    protocol: smtps
+    default-encoding: UTF-8
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true
+      mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
   servlet:
     multipart:
       max-file-size: 10MB
