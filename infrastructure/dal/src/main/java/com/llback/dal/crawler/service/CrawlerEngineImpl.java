@@ -199,62 +199,76 @@ public class CrawlerEngineImpl implements CrawlerEngine {
     }
 
     /**
-     * 检查条件是否满足
+     * 检查条件是否满足（支持多规则 AND/OR）
      *
      * <p>
      * condition 格式：
      * 
      * <pre>
-     * {
-     *   "field": "难度",           // 字段名（jsonExtract 提取后的别名，或原始 JSON 路径）
-     *   "operator": "eq",          // 运算符: eq/neq/contains/gt/lt/notEmpty/isEmpty
-     *   "value": "Hard"            // 比较值（notEmpty/isEmpty 时可不填）
-     * }
+     * 多规则: {"logic":"AND","rules":[{"field":"难度","operator":"eq","value":"Hard"},...]}
+     * 单条件（兼容）: {"field":"难度","operator":"eq","value":"Hard"}
      * </pre>
-     *
-     * @param dataJson  当前数据（JSON 字符串）
-     * @param condition 条件配置
-     * @return 是否满足条件
      */
     private boolean checkCondition(String dataJson, JSONObject condition) {
         try {
-            String field = condition.getString("field");
-            String operator = condition.getString("operator");
-            String expected = condition.getString("value");
-
-            if (field == null || field.trim().isEmpty() || operator == null) {
-                return true; // 条件配置不完整，默认通过
-            }
-
-            // 从当前 JSON 数据中获取字段值
             Object root = JSON.parse(dataJson);
-            Object rawValue = getByPath(root, field);
-            String actual = rawValue == null ? null : rawValue.toString();
-
-            switch (operator) {
-                case "eq":
-                    return expected != null && expected.equals(actual);
-                case "neq":
-                    return !expected.equals(actual);
-                case "contains":
-                    return actual != null && expected != null && actual.contains(expected);
-                case "gt":
-                    return actual != null && expected != null
-                            && Double.parseDouble(actual) > Double.parseDouble(expected);
-                case "lt":
-                    return actual != null && expected != null
-                            && Double.parseDouble(actual) < Double.parseDouble(expected);
-                case "notEmpty":
-                    return actual != null && !actual.trim().isEmpty();
-                case "isEmpty":
-                    return actual == null || actual.trim().isEmpty();
-                default:
-                    log.warn("未知的条件运算符: {}", operator);
-                    return true;
+            // 新格式：{logic, rules:[...]}
+            JSONArray rules = condition.getJSONArray("rules");
+            if (rules != null && !rules.isEmpty()) {
+                String logic = condition.getString("logic");
+                boolean isAnd = !"OR".equalsIgnoreCase(logic); // 默认 AND
+                for (int i = 0; i < rules.size(); i++) {
+                    JSONObject rule = rules.getJSONObject(i);
+                    boolean result = evalRule(root, rule);
+                    if (isAnd && !result) {
+                        log.info("条件[AND]第{}条不满足: {}", i + 1, rule);
+                        return false;
+                    }
+                    if (!isAnd && result) {
+                        log.info("条件[OR]第{}条满足: {}", i + 1, rule);
+                        return true;
+                    }
+                }
+                return isAnd; // AND 全通过→true；OR 全不满足→false
             }
+            // 旧格式：单条件向后兼容
+            return evalRule(root, condition);
         } catch (Exception e) {
             log.warn("条件判断失败，默认发送: {}", e.getMessage());
             return true;
+        }
+    }
+
+    /** 评估单条规则 */
+    private boolean evalRule(Object root, JSONObject rule) {
+        String field = rule.getString("field");
+        String operator = rule.getString("operator");
+        String expected = rule.getString("value");
+        if (field == null || field.trim().isEmpty() || operator == null) {
+            return true;
+        }
+        Object rawValue = getByPath(root, field);
+        String actual = rawValue == null ? null : rawValue.toString();
+        switch (operator) {
+            case "eq":
+                return expected != null && expected.equals(actual);
+            case "neq":
+                return expected == null ? actual != null : !expected.equals(actual);
+            case "contains":
+                return actual != null && expected != null && actual.contains(expected);
+            case "gt":
+                return actual != null && expected != null
+                        && Double.parseDouble(actual) > Double.parseDouble(expected);
+            case "lt":
+                return actual != null && expected != null
+                        && Double.parseDouble(actual) < Double.parseDouble(expected);
+            case "notEmpty":
+                return actual != null && !actual.trim().isEmpty();
+            case "isEmpty":
+                return actual == null || actual.trim().isEmpty();
+            default:
+                log.warn("未知的条件运算符: {}", operator);
+                return true;
         }
     }
 
