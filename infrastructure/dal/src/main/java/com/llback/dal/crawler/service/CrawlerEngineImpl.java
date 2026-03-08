@@ -176,7 +176,19 @@ public class CrawlerEngineImpl implements CrawlerEngine {
             JSONObject extracted = new JSONObject(new LinkedHashMap<>());
             for (String alias : fields.keySet()) {
                 String path = fields.getString(alias);
-                Object value = getByPath(root, path);
+                Object value;
+                if (path != null && path.contains("${")) {
+                    Matcher m = Pattern.compile("\\$\\{([^}]+)\\}").matcher(path);
+                    StringBuffer sb = new StringBuffer();
+                    while (m.find()) {
+                        Object val = getByPath(root, m.group(1));
+                        m.appendReplacement(sb, Matcher.quoteReplacement(val == null ? "" : val.toString()));
+                    }
+                    m.appendTail(sb);
+                    value = sb.toString();
+                } else {
+                    value = getByPath(root, path);
+                }
                 extracted.put(alias, value);
             }
             log.info("后置处理器[jsonExtract]执行成功，提取字段: {}", fields.keySet());
@@ -339,7 +351,7 @@ public class CrawlerEngineImpl implements CrawlerEngine {
                             .append("<span style='display:inline-block; width: 100px; color: #909399; font-weight: bold;'>")
                             .append(escapeHtml(entry.getKey())).append("：</span>")
                             .append("<span style='color: #303133;'>")
-                            .append(escapeHtml(String.valueOf(entry.getValue()))).append("</span>")
+                            .append(formatMarkdownLink(String.valueOf(entry.getValue()))).append("</span>")
                             .append("</div>");
                 }
             } else {
@@ -391,6 +403,26 @@ public class CrawlerEngineImpl implements CrawlerEngine {
     }
 
     /**
+     * 将包含 Markdown 链接或图片格式的字符串转换为 HTML 标签
+     */
+    private String formatMarkdownLink(String text) {
+        if (text == null)
+            return "";
+        String escaped = escapeHtml(text);
+
+        // 1. 支持将 ![文字](链接) 替换成 <img src="链接" alt="文字" style="max-width:100%;
+        // border-radius:8px; margin-top:8px;">
+        escaped = escaped.replaceAll("!\\[([^\\]]*)\\]\\(([^\\)]+)\\)",
+                "<br><img src=\"$2\" alt=\"$1\" style=\"max-width:100%; border-radius:8px; margin-top:8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);\">");
+
+        // 2. 支持将普通 [文字](链接) 替换成 <a href="链接">文字</a> (负向先行断言确保前面没有感叹号)
+        escaped = escaped.replaceAll("(?<!!)\\[([^\\]]+)\\]\\(([^\\)]+)\\)",
+                "<a href=\"$2\" target=\"_blank\" style=\"color:#409EFF;text-decoration:none;font-weight:bold;\">$1</a>");
+
+        return escaped;
+    }
+
+    /**
      * 按点分隔路径（支持数组下标，如 "data.items[0].name"）从 JSON 中取值
      *
      * @param node JSON 根节点
@@ -409,7 +441,21 @@ public class CrawlerEngineImpl implements CrawlerEngine {
             if (part.contains("[")) {
                 // 处理数组下标，如 "todayRecord[0]"
                 String key = part.substring(0, part.indexOf('['));
-                int idx = Integer.parseInt(part.replaceAll(".*\\[(\\d+)\\].*", "$1"));
+                String idxStr = part.replaceAll(".*\\[(\\d+)\\].*", "$1");
+
+                // 防御：如果正则替换后还是原来的字符，说明中括号里不是纯数字（比如 [点击这里](url)）
+                // 此时说明这整个 path 根本不是 JSON 取值路径，而是一个原文模板，应当直接原样返回
+                if (idxStr.equals(part)) {
+                    return path;
+                }
+
+                int idx = 0;
+                try {
+                    idx = Integer.parseInt(idxStr);
+                } catch (NumberFormatException e) {
+                    return path;
+                }
+
                 if (!key.isEmpty() && current instanceof JSONObject) {
                     current = ((JSONObject) current).get(key);
                 }
