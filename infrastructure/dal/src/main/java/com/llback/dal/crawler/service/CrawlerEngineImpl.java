@@ -327,13 +327,38 @@ public class CrawlerEngineImpl implements CrawlerEngine {
      */
     private String buildEmailHtml(String content) {
         String time = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-        // 格式化 JSON
-        String formatted = content;
+        // 转换 JSON 为更美观的 HTML 格式
+        StringBuilder formattedContent = new StringBuilder();
         try {
             Object parsed = JSON.parse(content);
-            formatted = JSON.toJSONString(parsed);
-        } catch (Exception ignored) {
+            if (parsed instanceof JSONObject) {
+                JSONObject jsonObject = (JSONObject) parsed;
+                for (Map.Entry<String, Object> entry : jsonObject.entrySet()) {
+                    formattedContent.append(
+                            "<div style='margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #ebeef5;'>")
+                            .append("<span style='display:inline-block; width: 100px; color: #909399; font-weight: bold;'>")
+                            .append(escapeHtml(entry.getKey())).append("：</span>")
+                            .append("<span style='color: #303133;'>")
+                            .append(escapeHtml(String.valueOf(entry.getValue()))).append("</span>")
+                            .append("</div>");
+                }
+            } else {
+                // 如果不是对象，降级为格式化 JSON
+                formattedContent.append(
+                        "<pre style='background:#f8f9fa;border-radius:6px;padding:16px;font-size:13px;color:#303133;" +
+                                "overflow-x:auto;white-space:pre-wrap;word-break:break-all;border-left:4px solid #409EFF'>")
+                        .append(escapeHtml(
+                                JSON.toJSONString(parsed, com.alibaba.fastjson2.JSONWriter.Feature.PrettyFormat)))
+                        .append("</pre>");
+            }
+        } catch (Exception e) {
+            formattedContent.append(
+                    "<pre style='background:#f8f9fa;border-radius:6px;padding:16px;font-size:13px;color:#303133;" +
+                            "overflow-x:auto;white-space:pre-wrap;word-break:break-all;border-left:4px solid #409EFF'>")
+                    .append(escapeHtml(content))
+                    .append("</pre>");
         }
+
         return "<html><body style='font-family:Arial,sans-serif;margin:0;padding:20px;background:#f5f7fa'>" +
                 "<div style='max-width:700px;margin:0 auto;background:#fff;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden'>"
                 +
@@ -342,10 +367,11 @@ public class CrawlerEngineImpl implements CrawlerEngine {
                 "<p style='color:rgba(255,255,255,0.85);margin:8px 0 0 0;font-size:13px'>执行时间：" + time + "</p>" +
                 "</div>" +
                 "<div style='padding:24px 32px'>" +
-                "<p style='color:#606266;font-size:14px;margin-top:0'>以下是本次爬虫执行的结果数据：</p>" +
-                "<pre style='background:#f8f9fa;border-radius:6px;padding:16px;font-size:13px;color:#303133;" +
-                "overflow-x:auto;white-space:pre-wrap;word-break:break-all;border-left:4px solid #409EFF'>" +
-                escapeHtml(formatted) + "</pre>" +
+                "<p style='color:#606266;font-size:14px;margin-top:0;margin-bottom:20px;'>以下是本次爬虫执行的结果数据：</p>" +
+                "<div style='background:#fcfcfc; border: 1px solid #ebeef5; border-radius: 6px; padding: 20px; font-size: 14px;'>"
+                +
+                formattedContent.toString() +
+                "</div>" +
                 "</div>" +
                 "<div style='padding:12px 32px;background:#f5f7fa;font-size:12px;color:#909399'>" +
                 "此邮件由系统自动发送，请勿回复。" +
