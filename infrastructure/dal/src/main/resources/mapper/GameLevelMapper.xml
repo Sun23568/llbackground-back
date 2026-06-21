@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.llback.dal.game.dao.GameLevelDao">
+    <insert id="insert" parameterType="com.llback.dal.game.po.GameLevelPo">
+        INSERT INTO game_level (
+            pk_id, level_no, level_name, level_data, enabled, sort_no, create_time, update_time
+        ) VALUES (
+            #{pkId}, #{levelNo}, #{levelName}, #{levelData}, #{enabled}, #{sortNo}, NOW(), NOW()
+        )
+    </insert>
+
+    <update id="update" parameterType="com.llback.dal.game.po.GameLevelPo">
+        UPDATE game_level
+        SET level_no = #{levelNo},
+            level_name = #{levelName},
+            level_data = #{levelData},
+            enabled = #{enabled},
+            sort_no = #{sortNo},
+            update_time = NOW()
+        WHERE pk_id = #{pkId}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM game_level
+        WHERE pk_id = #{pkId}
+    </delete>
+
+    <select id="selectById" resultType="com.llback.dal.game.po.GameLevelPo">
+        SELECT
+            pk_id,
+            level_no,
+            level_name,
+            level_data,
+            enabled,
+            sort_no,
+            create_time,
+            update_time
+        FROM game_level
+        WHERE pk_id = #{pkId}
+    </select>
+
+    <select id="selectAll" resultType="com.llback.dal.game.po.GameLevelPo">
+        SELECT
+            pk_id,
+            level_no,
+            level_name,
+            level_data,
+            enabled,
+            sort_no,
+            create_time,
+            update_time
+        FROM game_level
+        ORDER BY sort_no ASC, level_no ASC, create_time DESC
+    </select>
+
+    <select id="selectEnabled" resultType="com.llback.dal.game.po.GameLevelPo">
+        SELECT
+            pk_id,
+            level_no,
+            level_name,
+            level_data,
+            enabled,
+            sort_no,
+            create_time,
+            update_time
+        FROM game_level
+        WHERE enabled = 1
+        ORDER BY sort_no ASC, level_no ASC
+    </select>
+</mapper>

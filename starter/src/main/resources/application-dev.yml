@@ -56,8 +56,8 @@ spring:
       mail.smtp.socketFactory.class: javax.net.ssl.SSLSocketFactory
   servlet:
     multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
+      max-file-size: 200MB
+      max-request-size: 200MB
 ftp:
   ip: 120.27.201.34
   port: 21
