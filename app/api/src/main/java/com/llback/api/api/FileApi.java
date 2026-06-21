@@ -31,8 +31,9 @@ public class FileApi implements RestApi {
     public RestResult uploadFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam(value = "customFileId", required = false) String customFileId,
-            @RequestParam(value = "replace", required = false, defaultValue = "false") Boolean replace) {
-        return this.execute(UploadFileCmd.of(file, customFileId, replace));
+            @RequestParam(value = "replace", required = false, defaultValue = "false") Boolean replace,
+            @RequestParam(value = "folder", required = false) String folder) {
+        return this.execute(UploadFileCmd.of(file, customFileId, replace, folder));
     }
 
     /**

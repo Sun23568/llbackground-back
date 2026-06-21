@@ -27,6 +27,11 @@ public class UploadFileCmd implements Command {
     private Boolean replace;
 
     /**
+     * 服务器存储目录（可选）。
+     */
+    private String folder;
+
+    /**
      * 创建命令
      *
      * @param file 文件
@@ -35,10 +40,15 @@ public class UploadFileCmd implements Command {
      * @return 上传文件命令
      */
     public static UploadFileCmd of(MultipartFile file, String customFileId, Boolean replace) {
+        return of(file, customFileId, replace, null);
+    }
+
+    public static UploadFileCmd of(MultipartFile file, String customFileId, Boolean replace, String folder) {
         return UploadFileCmd.builder()
                 .file(file)
                 .customFileId(customFileId)
                 .replace(replace != null ? replace : false)
+                .folder(folder)
                 .build();
     }
 }

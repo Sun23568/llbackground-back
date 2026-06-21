@@ -83,8 +83,8 @@ public class UploadFileHandler implements Handler<UploadFileResult, UploadFileCm
         String filePath;
         try {
             // 以日期为目录 (yyyyMMdd格式)
-            String dateFolder = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
-            filePath = FtpUtil.uploadFile(dateFolder, fileId, cmd.getFile().getInputStream());
+            String uploadFolder = resolveUploadFolder(cmd.getFolder());
+            filePath = FtpUtil.uploadFile(uploadFolder, fileId, cmd.getFile().getInputStream());
         } catch (IOException e) {
             log.error("上传文件到FTP失败", e);
             throw new BizException("上传服务器异常: " + e.getMessage());
@@ -119,6 +119,15 @@ public class UploadFileHandler implements Handler<UploadFileResult, UploadFileCm
                 isReplacing,
                 now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
         );
+    }
+
+    private String resolveUploadFolder(String folder) {
+        if (StringUtils.isBlank(folder)) {
+            return LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        }
+        String trimmedFolder = folder.trim();
+        AssertUtil.assertTrue(trimmedFolder.matches("[A-Za-z0-9_-]{1,64}"), "服务器存储目录不合法");
+        return trimmedFolder;
     }
 
     /**
