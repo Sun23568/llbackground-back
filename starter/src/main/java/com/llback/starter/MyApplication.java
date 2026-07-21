@@ -1,5 +1,7 @@
 package com.llback.starter;
 
+// TK-24: 工单流程测试注释（无实际作用）
+
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
