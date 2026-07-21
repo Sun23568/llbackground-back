@@ -9,6 +9,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+// TK-23: 测试工单流 - 后端入口文件注释
 /**
  * @author: llback
  * @description: SpringBoot启动类
