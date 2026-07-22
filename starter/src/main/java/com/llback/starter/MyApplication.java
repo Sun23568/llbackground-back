@@ -1,5 +1,6 @@
 package com.llback.starter;
 
+// 流程测试注释 - TK-26
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
