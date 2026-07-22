@@ -14,6 +14,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @description: SpringBoot启动类
  * @date: 2017/10/24 11:55
  */
+// TK-29 测试注释
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.llback"})
 @MapperScan("com.llback.dal.**.dao")
