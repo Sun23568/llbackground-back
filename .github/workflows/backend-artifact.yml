@@ -1,0 +1,82 @@
+name: Build backend release artifact
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: backend-artifact-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-publish-and-notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+          cache: maven
+
+      - name: Build and package backend
+        run: |
+          mvn -B -pl starter -am package -DskipTests
+          artifact="llback-backend-${GITHUB_SHA}.jar"
+          cp starter/target/starter-2.0.0-SNAPSHOT.jar "$artifact"
+          sha256sum "$artifact" | awk '{print $1}' > "$artifact.sha256"
+          echo "ARTIFACT_NAME=$artifact" >> "$GITHUB_ENV"
+          echo "ARTIFACT_SHA256=$(cat "$artifact.sha256")" >> "$GITHUB_ENV"
+          echo "RELEASE_TAG=artifact-${GITHUB_SHA}" >> "$GITHUB_ENV"
+
+      - name: Publish GitHub Release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" "$ARTIFACT_NAME" --clobber
+          else
+            gh release create "$RELEASE_TAG" "$ARTIFACT_NAME" \
+              --target "$GITHUB_SHA" --title "Backend artifact ${GITHUB_SHA}" --generate-notes
+          fi
+
+      - name: Notify llback artifact callback
+        env:
+          LLBACK_ARTIFACT_CALLBACK_URL: ${{ secrets.LLBACK_ARTIFACT_CALLBACK_URL }}
+          LLBACK_DEPLOY_WEBHOOK_SECRET: ${{ secrets.LLBACK_DEPLOY_WEBHOOK_SECRET }}
+        run: |
+          set -euo pipefail
+          : "${LLBACK_ARTIFACT_CALLBACK_URL:?Missing LLBACK_ARTIFACT_CALLBACK_URL secret}"
+          : "${LLBACK_DEPLOY_WEBHOOK_SECRET:?Missing LLBACK_DEPLOY_WEBHOOK_SECRET secret}"
+          timestamp="$(date -u +%s)"
+          body="$(python3 - <<'PY'
+          import json, os
+          print(json.dumps({
+              'project_name': 'llback', 'branch': os.environ['GITHUB_REF_NAME'],
+              'commit_sha': os.environ['GITHUB_SHA'], 'repository': os.environ['GITHUB_REPOSITORY'],
+              'workflow_run_id': os.environ['GITHUB_RUN_ID'],
+              'artifacts': [{'name': os.environ['ARTIFACT_NAME'],
+                             'url': f"{os.environ['GITHUB_SERVER_URL']}/{os.environ['GITHUB_REPOSITORY']}/releases/download/{os.environ['RELEASE_TAG']}/{os.environ['ARTIFACT_NAME']}",
+                             'sha256': os.environ['ARTIFACT_SHA256']}],
+          }, separators=(',', ':')))
+          PY
+          )"
+          signature="$(TIMESTAMP="$timestamp" BODY="$body" python3 - <<'PY'
+          import hashlib, hmac, os
+          print(hmac.new(os.environ['LLBACK_DEPLOY_WEBHOOK_SECRET'].encode(),
+                         f"{os.environ['TIMESTAMP']}.{os.environ['BODY']}".encode(), hashlib.sha256).hexdigest())
+          PY
+          )"
+          curl --fail-with-body --silent --show-error --connect-timeout 10 --max-time 30 \
+            --request POST "$LLBACK_ARTIFACT_CALLBACK_URL" \
+            --header 'Content-Type: application/json' \
+            --header "X-LLBack-Timestamp: $timestamp" \
+            --header "X-LLBack-Signature: sha256=$signature" \
+            --data-binary "$body"
