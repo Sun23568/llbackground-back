@@ -9,11 +9,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-/**
- * @author: llback
- * @description: SpringBoot启动类
- * @date: 2017/10/24 11:55
- */
 @SpringBootApplication
 @ComponentScan(basePackages = {"com.llback"})
 @MapperScan("com.llback.dal.**.dao")
